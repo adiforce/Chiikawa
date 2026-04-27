@@ -3,530 +3,158 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ちいかわ GW 採購清單 5/1〜5/5</title>
+<title>🐾 我的日本工具箱</title>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --cream: #fdf6ee;
-    --pink: #f5b8c8;
     --pink-dark: #e8849a;
-    --yellow: #fce97a;
-    --mint: #b8e8d8;
-    --lavender: #d4c8f0;
+    --pink: #f5b8c8;
+    --cream: #fdf6ee;
     --brown: #7a4f3a;
-    --text: #3d2b1f;
+    --tab-h: 60px;
+    --header-h: 52px;
   }
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: 'Noto Sans TC', sans-serif;
-    background: var(--cream);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: radial-gradient(circle, #e8d5c4 1px, transparent 1px);
-    background-size: 24px 24px;
-    opacity: 0.5;
-    pointer-events: none;
-    z-index: 0;
-  }
-  .container {
-    position: relative;
-    z-index: 1;
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 24px 16px 60px;
-  }
-  .header {
-    text-align: center;
-    padding: 32px 0 24px;
-    animation: floatIn 0.6s ease both;
-  }
-  .header-badge {
-    display: inline-block;
-    background: var(--pink-dark);
-    color: white;
-    font-family: 'Zen Maru Gothic', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    padding: 4px 14px;
-    border-radius: 99px;
-    margin-bottom: 12px;
-  }
-  .header h1 {
-    font-family: 'Zen Maru Gothic', sans-serif;
-    font-size: 28px;
-    font-weight: 900;
-    color: var(--brown);
-    line-height: 1.3;
-  }
-  .header h1 span { color: var(--pink-dark); }
-  .header-sub { margin-top: 8px; font-size: 13px; color: #a07060; }
-  .emoji-row { margin-top: 12px; font-size: 22px; letter-spacing: 4px; }
 
-  .section { margin-bottom: 28px; animation: floatIn 0.5s ease both; }
-  .section-title { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-  .section-icon { font-size: 20px; }
-  .section-label {
-    font-family: 'Zen Maru Gothic', sans-serif;
-    font-size: 16px; font-weight: 700; color: var(--brown);
-  }
-  .section-line {
-    flex: 1; height: 2px;
-    background: repeating-linear-gradient(to right, var(--pink) 0px, var(--pink) 6px, transparent 6px, transparent 10px);
-  }
-
-  .card {
-    background: white;
-    border-radius: 20px;
-    padding: 18px 20px;
-    margin-bottom: 12px;
-    border: 2px solid transparent;
-    box-shadow: 0 3px 12px rgba(100,60,40,0.08);
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    transition: transform 0.18s, box-shadow 0.18s;
-    position: relative;
-  }
-  .card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(100,60,40,0.13); }
-  .card.hot   { border-color: var(--pink);    background: linear-gradient(135deg,#fff 60%,#fff5f8); }
-  .card.new   { border-color: var(--mint);    background: linear-gradient(135deg,#fff 60%,#f0fbf7); }
-  .card.game  { border-color: var(--lavender);background: linear-gradient(135deg,#fff 60%,#f7f4ff); }
-  .card.store { border-color: var(--yellow);  background: linear-gradient(135deg,#fff 60%,#fffbee); }
-  .card.info  { border-color: #c8d8f0;        background: linear-gradient(135deg,#fff 60%,#f0f5ff); }
-
-  .card-emoji { font-size: 28px; flex-shrink: 0; line-height: 1; margin-top: 2px; }
-  .card-body { flex: 1; min-width: 0; }
-  .card-name {
-    font-family: 'Zen Maru Gothic', sans-serif;
-    font-size: 15px; font-weight: 700; color: var(--brown); margin-bottom: 4px;
-  }
-  .card-desc { font-size: 12.5px; color: #7a5a48; line-height: 1.65; }
-
-  .tag {
-    display: inline-block; font-size: 10px; font-weight: 700;
-    padding: 2px 8px; border-radius: 99px; margin-top: 6px; margin-right: 4px;
-  }
-  .tag-pink   { background: var(--pink);    color: #6b1a30; }
-  .tag-mint   { background: var(--mint);    color: #1a5e48; }
-  .tag-purple { background: var(--lavender);color: #3d2080; }
-  .tag-yellow { background: var(--yellow);  color: #6b5000; }
-  .tag-red    { background: #ff8888;        color: white; }
-  .tag-blue   { background: #a8d0f0;        color: #1a3a60; }
-  .tag-gray   { background: #e0d8d0;        color: #5a4a40; }
-
-  .ribbon {
-    position: absolute; top: -2px; right: 18px;
-    background: var(--pink-dark); color: white;
-    font-size: 9px; font-weight: 700;
-    padding: 3px 10px; border-radius: 0 0 8px 8px; letter-spacing: 1px;
-  }
-  .ribbon.green  { background: #5abf9a; }
-  .ribbon.gray   { background: #9a8a80; }
-
-  .progress-wrap {
-    background: white; border-radius: 20px; padding: 16px 20px;
-    margin-bottom: 28px; box-shadow: 0 3px 12px rgba(100,60,40,0.08); text-align: center;
-  }
-  .progress-label {
-    font-family: 'Zen Maru Gothic', sans-serif;
-    font-size: 13px; font-weight: 700; color: var(--brown); margin-bottom: 10px;
-  }
-  .progress-bar-bg { background: #f0e8e0; border-radius: 99px; height: 12px; overflow: hidden; }
-  .progress-bar-fill {
+  html, body {
     height: 100%;
-    background: linear-gradient(to right, var(--pink), var(--pink-dark));
-    border-radius: 99px; transition: width 0.4s ease; width: 0%;
+    font-family: 'Noto Sans TC', sans-serif;
+    background: #f0e8e0;
+    overflow: hidden;
   }
-  .progress-count { margin-top: 8px; font-size: 12px; color: #a07060; }
 
-  .reset-btn {
-    display: block; margin: 12px auto 0;
-    background: none; border: 1.5px solid #d0b8a8;
-    border-radius: 99px; padding: 6px 18px;
-    font-size: 11px; color: #a07060; cursor: pointer;
-    font-family: 'Noto Sans TC', sans-serif; transition: all 0.15s;
+  /* ── Header ── */
+  .app-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--header-h);
+    background: var(--pink-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    box-shadow: 0 2px 12px rgba(100,40,40,0.2);
   }
-  .reset-btn:hover { background: #f5ede8; border-color: var(--pink-dark); color: var(--pink-dark); }
 
-  .checklist { display: flex; flex-direction: column; gap: 8px; }
-  .check-item {
-    display: flex; align-items: center; gap: 10px;
-    background: white; border-radius: 14px; padding: 12px 16px;
-    box-shadow: 0 2px 8px rgba(100,60,40,0.07);
-    cursor: pointer; transition: all 0.15s;
-    border: 2px solid transparent; user-select: none;
+  .app-title {
+    font-family: 'Zen Maru Gothic', sans-serif;
+    font-size: 17px;
+    font-weight: 900;
+    color: white;
+    letter-spacing: 1px;
   }
-  .check-item:hover { border-color: var(--pink); }
-  .check-item.checked { background: #fff0f4; border-color: var(--pink-dark); opacity: 0.7; }
-  .check-item.checked .check-text { text-decoration: line-through; color: #b08080; }
-  .check-box {
-    width: 22px; height: 22px; border: 2.5px solid var(--pink-dark);
-    border-radius: 7px; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; transition: all 0.15s; background: white;
-  }
-  .check-item.checked .check-box { background: var(--pink-dark); border-color: var(--pink-dark); color: white; }
-  .check-text { font-size: 13.5px; color: var(--text); transition: all 0.15s; flex: 1; }
-  .check-sub { font-size: 11px; color: #b08080; white-space: nowrap; flex-shrink: 0; }
 
-  .note {
-    background: #fff8e6; border-left: 4px solid var(--yellow);
-    border-radius: 0 14px 14px 0; padding: 12px 16px;
-    font-size: 12.5px; color: #7a6020; line-height: 1.7; margin-top: 8px;
+  /* ── iframe 容器 ── */
+  .iframe-wrap {
+    position: fixed;
+    top: var(--header-h);
+    bottom: var(--tab-h);
+    left: 0; right: 0;
   }
-  .note.blue { background: #f0f5ff; border-left-color: #7aacf0; color: #2a4a80; }
 
-  .footer { text-align: center; padding: 32px 0 16px; font-size: 11.5px; color: #b09080; line-height: 1.9; }
-
-  @keyframes floatIn {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
+  .iframe-wrap iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: none;
+    background: var(--cream);
   }
-  .section:nth-child(2) { animation-delay: 0.05s; }
-  .section:nth-child(3) { animation-delay: 0.10s; }
-  .section:nth-child(4) { animation-delay: 0.15s; }
-  .section:nth-child(5) { animation-delay: 0.20s; }
-  .section:nth-child(6) { animation-delay: 0.25s; }
-  .section:nth-child(7) { animation-delay: 0.30s; }
-  .section:nth-child(8) { animation-delay: 0.35s; }
+
+  .iframe-wrap iframe.active {
+    display: block;
+  }
+
+  /* ── Tab Bar ── */
+  .tab-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: var(--tab-h);
+    background: white;
+    border-top: 2px solid var(--pink);
+    display: flex;
+    z-index: 200;
+    box-shadow: 0 -3px 14px rgba(100,40,40,0.10);
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  .tab-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: #c0a090;
+    transition: color 0.15s;
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .tab-btn .icon { font-size: 22px; line-height: 1; }
+  .tab-btn .label { font-size: 10px; font-weight: 700; font-family: 'Noto Sans TC', sans-serif; }
+
+  .tab-btn.active { color: var(--pink-dark); }
+
+  .tab-btn.active::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 25%; right: 25%;
+    height: 3px;
+    background: var(--pink-dark);
+    border-radius: 0 0 4px 4px;
+  }
 </style>
 </head>
 <body>
-<div class="container">
 
-  <div class="header">
-    <div class="header-badge">2026 GW ちいかわ 採購指南</div>
-    <h1>ちいかわ全都要<span>🐾</span></h1>
-    <div class="header-sub">5月1日〜5月5日 京都・大阪</div>
-    <div class="emoji-row">🌸🐭🐱🐰🦝</div>
-  </div>
+<!-- Header -->
+<header class="app-header">
+  <div class="app-title">🐾 我的日本工具箱</div>
+</header>
 
-  <div class="progress-wrap">
-    <div class="progress-label">採購進度（自動儲存）</div>
-    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressBar"></div></div>
-    <div class="progress-count" id="progressCount">0 / 0 已入手</div>
-    <button class="reset-btn" onclick="resetAll()">🔄 重置清單</button>
-  </div>
-
-  <!-- 期間限定活動 -->
-  <div class="section">
-    <div class="section-title">
-      <span class="section-icon">🔥</span>
-      <span class="section-label">期間限定活動</span>
-      <div class="section-line"></div>
-    </div>
-    <div class="card hot">
-      <div class="ribbon">必去</div>
-      <div class="card-emoji">🎪</div>
-      <div class="card-body">
-        <div class="card-name">ちいかわぽけっと POP UP STORE</div>
-        <div class="card-desc">
-          なんばマルイ 3F 活動空間（大阪）<br>
-          4/18（六）〜 5/10（日）11:00〜20:00<br>
-          購買即贈「ちいぽけ オリジナルスタンプ Vol.2」<br>
-          滿 ¥2,200 再送桜の木遊戲貼紙
-        </div>
-        <span class="tag tag-pink">大阪 なんば</span>
-        <span class="tag tag-red">GW全期間開催</span>
-      </div>
-    </div>
-    <div class="card hot">
-      <div class="card-emoji">🎂</div>
-      <div class="card-body">
-        <div class="card-name">5/1 ちいかわ＆ハチワレ 生日！</div>
-        <div class="card-desc">
-          5月1日是 ちいかわ 和 ハチワレ 的生日🎉<br>
-          常設店當天可能有特別活動或生日限定商品<br>
-          建議當天去常設店打卡！
-        </div>
-        <span class="tag tag-pink">京都・大阪 常設店</span>
-        <span class="tag tag-red">5/1 限定</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- 京都 POP UP 狀況 -->
-  <div class="section">
-    <div class="section-title">
-      <span class="section-icon">🔍</span>
-      <span class="section-label">京都 POP UP 狀況確認</span>
-      <div class="section-line"></div>
-    </div>
-    <div class="card info">
-      <div class="ribbon gray">已結束</div>
-      <div class="card-emoji">🏬</div>
-      <div class="card-body">
-        <div class="card-name">京都高島屋 POP UP STORE</div>
-        <div class="card-desc">
-          12/18（2025）〜 1/7（2026）已結束<br>
-          5月無高島屋 POP UP，不需特地前往
-        </div>
-        <span class="tag tag-gray">已結束</span>
-      </div>
-    </div>
-    <div class="card info">
-      <div class="card-emoji">📢</div>
-      <div class="card-body">
-        <div class="card-name">出發前確認最新 POP UP</div>
-        <div class="card-desc">
-          官方通常提前 2〜4 週公告，目前 5月京都尚無新活動<br>
-          請追蹤：<strong>@chiikawa_kouhou</strong>（グッズ公式）<br>
-          或查詢：<strong>chiikawa-info.jp/pus.html</strong>（全國一覧）
-        </div>
-        <span class="tag tag-blue">出發前確認</span>
-      </div>
-    </div>
-    <div class="note blue">
-      📌 京都常設店（四条河原町 キデイランド 3F）隨時有商品，不需特定 POP UP 也能掃貨！
-    </div>
-  </div>
-
-  <!-- 常設店 -->
-  <div class="section">
-    <div class="section-title">
-      <span class="section-icon">🏪</span>
-      <span class="section-label">常設店</span>
-      <div class="section-line"></div>
-    </div>
-    <div class="card store">
-      <div class="ribbon green">京都</div>
-      <div class="card-emoji">🌸</div>
-      <div class="card-body">
-        <div class="card-name">ちいかわらんど 京都四条河原町店</div>
-        <div class="card-desc">キデイランド京都四条河原町 3F<br>四条烏丸から徒歩約10分</div>
-        <span class="tag tag-yellow">住宿附近</span>
-      </div>
-    </div>
-    <div class="card store">
-      <div class="ribbon green">大阪</div>
-      <div class="card-emoji">🦊</div>
-      <div class="card-body">
-        <div class="card-name">ちいかわらんど 大阪梅田店</div>
-        <div class="card-desc">キデイランド大阪梅田店 内<br>關西商品最齊全的店鋪</div>
-        <span class="tag tag-yellow">大阪梅田</span>
-      </div>
-    </div>
-    <div class="note">⚠️ GW 期間可能實施入店預約制！出發前追蹤 <strong>@chiikawa_land</strong> 確認入場資訊</div>
-  </div>
-
-  <!-- 新出娃娃 -->
-  <div class="section">
-    <div class="section-title">
-      <span class="section-icon">🧸</span>
-      <span class="section-label">新出娃娃</span>
-      <div class="section-line"></div>
-    </div>
-    <div class="card new">
-      <div class="ribbon">4月新出</div>
-      <div class="card-emoji">👸</div>
-      <div class="card-body">
-        <div class="card-name">プリンセス誕生日ぬいぐるみ</div>
-        <div class="card-desc">ちいかわ・ハチワレ 穿公主裝👑，うさぎ 穿王子裝🤴<br>5/1 生日紀念主題，夾娃娃機景品</div>
-        <span class="tag tag-mint">夾娃娃機</span><span class="tag tag-pink">生日主題</span>
-      </div>
-    </div>
-    <div class="card new">
-      <div class="card-emoji">⚔️</div>
-      <div class="card-body">
-        <div class="card-name">討伐マスコット②</div>
-        <div class="card-desc">ちいかわ・ハチワレ・うさぎ・モモンガ 全4種<br>拿武器討伐系列第2彈</div>
-        <span class="tag tag-mint">夾娃娃機</span><span class="tag tag-purple">全4種</span>
-      </div>
-    </div>
-    <div class="card new">
-      <div class="card-emoji">🟡</div>
-      <div class="card-body">
-        <div class="card-name">ぽよよんおかおボールマスコット</div>
-        <div class="card-desc">圓滾滾臉型，ちいかわ・ハチワレ・うさぎ 全3種<br>軟綿綿球體系列，超療癒</div>
-        <span class="tag tag-mint">夾娃娃機</span><span class="tag tag-purple">全3種</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- 夾娃娃機 -->
-  <div class="section">
-    <div class="section-title">
-      <span class="section-icon">🎮</span>
-      <span class="section-label">夾娃娃機推薦店</span>
-      <div class="section-line"></div>
-    </div>
-    <div class="card game">
-      <div class="card-emoji">📍</div>
-      <div class="card-body">
-        <div class="card-name">大阪梅田エリア</div>
-        <div class="card-desc">
-          • SEGA 梅田（梅田駅すぐ）<br>
-          • タイトーステーション 梅田（阪急東通商店街）<br>
-          • GiGO 梅田（グランフロント大阪近く）<br>
-          • ラウンドワン 難波店
-        </div>
-        <span class="tag tag-purple">景品豊富</span>
-      </div>
-    </div>
-    <div class="card game">
-      <div class="card-emoji">📍</div>
-      <div class="card-body">
-        <div class="card-name">京都エリア</div>
-        <div class="card-desc">
-          • タイトーステーション 京都河原町（四条大橋近く）<br>
-          • ラウンドワン 京都五条店
-        </div>
-        <span class="tag tag-purple">住宿附近</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- 省錢採購 -->
-  <div class="section">
-    <div class="section-title">
-      <span class="section-icon">💴</span>
-      <span class="section-label">省錢採購</span>
-      <div class="section-line"></div>
-    </div>
-    <div class="card">
-      <div class="card-emoji">🛒</div>
-      <div class="card-body">
-        <div class="card-name">DAISO 限定ちいかわシリーズ</div>
-        <div class="card-desc">4/14 起全國 DAISO 陸續上架，全28款<br>文具・零錢包・缶バッジ等，百元起跳</div>
-        <span class="tag tag-yellow">¥110〜</span><span class="tag tag-pink">DAISO限定</span>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-emoji">🍪</div>
-      <div class="card-body">
-        <div class="card-name">刺繍缶バッジビスケット②</div>
-        <div class="card-desc">5月全國超市・便利商店發售<br>全13種刺繡缶バッジ隨機附贈</div>
-        <span class="tag tag-yellow">超市・コンビニ</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- 採購清單 -->
-  <div class="section">
-    <div class="section-title">
-      <span class="section-icon">✅</span>
-      <span class="section-label">我的採購清單（進度自動儲存）</span>
-      <div class="section-line"></div>
-    </div>
-    <div class="checklist" id="checklist">
-      <div class="check-item" data-id="0" onclick="toggle(this)">
-        <div class="check-box">✓</div>
-        <div class="check-text">出發前確認 @chiikawa_kouhou 有無新 POP UP</div>
-        <div class="check-sub">出發前</div>
-      </div>
-      <div class="check-item" data-id="1" onclick="toggle(this)">
-        <div class="check-box">✓</div>
-        <div class="check-text">出發前確認 @chiikawa_land 入店預約制公告</div>
-        <div class="check-sub">出發前</div>
-      </div>
-      <div class="check-item" data-id="2" onclick="toggle(this)">
-        <div class="check-box">✓</div>
-        <div class="check-text">去 ちいかわらんど 京都四条河原町店</div>
-        <div class="check-sub">京都</div>
-      </div>
-      <div class="check-item" data-id="3" onclick="toggle(this)">
-        <div class="check-box">✓</div>
-        <div class="check-text">去 ちいかわぽけっと POP UP（なんばマルイ 3F）</div>
-        <div class="check-sub">大阪</div>
-      </div>
-      <div class="check-item" data-id="4" onclick="toggle(this)">
-        <div class="check-box">✓</div>
-        <div class="check-text">去 ちいかわらんど 大阪梅田店</div>
-        <div class="check-sub">大阪</div>
-      </div>
-      <div class="check-item" data-id="5" onclick="toggle(this)">
-        <div class="check-box">✓</div>
-        <div class="check-text">5/1 生日當天去常設店打卡！🎂</div>
-        <div class="check-sub">5/1</div>
-      </div>
-      <div class="check-item" data-id="6" onclick="toggle(this)">
-        <div class="check-box">✓</div>
-        <div class="check-text">プリンセス誕生日ぬいぐるみ（夾娃娃機）</div>
-        <div class="check-sub">公主款</div>
-      </div>
-      <div class="check-item" data-id="7" onclick="toggle(this)">
-        <div class="check-box">✓</div>
-        <div class="check-text">討伐マスコット② 全4種（夾娃娃機）</div>
-        <div class="check-sub">討伐款</div>
-      </div>
-      <div class="check-item" data-id="8" onclick="toggle(this)">
-        <div class="check-box">✓</div>
-        <div class="check-text">ぽよよんおかおボールマスコット（夾娃娃機）</div>
-        <div class="check-sub">圓球款</div>
-      </div>
-      <div class="check-item" data-id="9" onclick="toggle(this)">
-        <div class="check-box">✓</div>
-        <div class="check-text">DAISO 限定ちいかわシリーズ（全28款）</div>
-        <div class="check-sub">¥110〜</div>
-      </div>
-      <div class="check-item" data-id="10" onclick="toggle(this)">
-        <div class="check-box">✓</div>
-        <div class="check-text">刺繍缶バッジビスケット②（超市・コンビニ）</div>
-        <div class="check-sub">コンビニ</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="footer">
-    ちいかわ 採購指南 · GW 2026<br>
-    資訊以官方公告為準 · 最新消息追蹤 @chiikawa_kouhou<br>
-    進度已自動儲存於瀏覽器 🐾
-  </div>
-
+<!-- iframes -->
+<div class="iframe-wrap">
+  <iframe id="frame-0" class="active" src="chiikawa-gw.html"></iframe>
+  <iframe id="frame-1"                src="receipt.html"></iframe>
+  <!-- 新增工具：複製上面一行，改 id 和 src 即可 -->
 </div>
+
+<!-- Tab Bar -->
+<nav class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab(0)">
+    <span class="icon">🐾</span>
+    <span class="label">採購清單</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab(1)">
+    <span class="icon">🧾</span>
+    <span class="label">發票掃描</span>
+  </button>
+  <!-- 新增 Tab：複製上面的 button，改 onclick 數字、icon 和 label -->
+</nav>
+
 <script>
-  const STORAGE_KEY = 'chiikawa-gw-2026';
+  const LAST_TAB_KEY = 'japan-toolbox-tab';
+  let current = parseInt(localStorage.getItem(LAST_TAB_KEY) || '0');
 
-  function loadState() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
-    catch(e) { return {}; }
+  const frames = document.querySelectorAll('.iframe-wrap iframe');
+  const btns   = document.querySelectorAll('.tab-btn');
+
+  function switchTab(idx) {
+    frames.forEach((f, i) => f.classList.toggle('active', i === idx));
+    btns.forEach((b, i)   => b.classList.toggle('active',  i === idx));
+    current = idx;
+    localStorage.setItem(LAST_TAB_KEY, idx);
   }
 
-  function saveState(state) {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-    catch(e) {}
-  }
-
-  function toggle(el) {
-    el.classList.toggle('checked');
-    const state = loadState();
-    state[el.dataset.id] = el.classList.contains('checked');
-    saveState(state);
-    updateProgress();
-  }
-
-  function resetAll() {
-    if (!confirm('確定要重置所有進度嗎？')) return;
-    localStorage.removeItem(STORAGE_KEY);
-    document.querySelectorAll('.check-item').forEach(el => el.classList.remove('checked'));
-    updateProgress();
-  }
-
-  function updateProgress() {
-    const items = document.querySelectorAll('.check-item');
-    const done = document.querySelectorAll('.check-item.checked').length;
-    const total = items.length;
-    const pct = total > 0 ? Math.round(done / total * 100) : 0;
-    document.getElementById('progressBar').style.width = pct + '%';
-    document.getElementById('progressCount').textContent =
-      done + ' / ' + total + ' 已入手' + (done === total && total > 0 ? ' 🎉全制覇！' : ' 🐾');
-  }
-
-  // Restore saved state on load
-  (function init() {
-    const state = loadState();
-    document.querySelectorAll('.check-item').forEach(el => {
-      if (state[el.dataset.id]) el.classList.add('checked');
-    });
-    updateProgress();
-  })();
+  // 還原上次開的頁籤
+  if (current !== 0) switchTab(current);
 </script>
+
 </body>
 </html>
