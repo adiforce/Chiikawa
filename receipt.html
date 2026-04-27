@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>發票解析工具（通用版）</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+        :root {
+            --bg: #0f1117;
+            --surface: #1a1d27;
+            --surface2: #21253a;
+            --border: #2e3350;
+            --accent: #4f7fff;
+            --accent2: #7c5cff;
+            --green: #22c55e;
+            --red: #ef4444;
+            --yellow: #f59e0b;
+            --text: #e8eaf0;
+            --muted: #6b7280;
+            --radius: 12px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px 16px 60px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 28px;
+            padding-top: 8px;
+        }
+        .header h1 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .header p { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+        /* Card */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .card-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: var(--muted);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        /* Input */
+        input[type="password"], select {
+            width: 100%;
+            padding: 13px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--surface2);
+            color: var(--text);
+            font-size: 15px;
+            font-family: 'JetBrains Mono', monospace;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input[type="password"]:focus, select:focus {
+            border-color: var(--accent);
+        }
+        select {
+            font-family: 'Noto Sans TC', sans-serif;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 36px;
+            cursor: pointer;
+        }
+
+        /* Checkbox */
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .checkbox-row input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+        .checkbox-row label {
+            font-size: 13px;
+            color: var(--muted);
+            cursor: pointer;
+        }
+
+        /* File upload */
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+            position: relative;
+        }
+        .upload-area:hover { border-color: var(--accent); background: rgba(79,127,255,0.04); }
+        .upload-area input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+        .upload-icon { font-size: 28px; margin-bottom: 6px; }
+        .upload-text { font-size: 13px; color: var(--muted); }
+
+        #preview {
+            width: 100%;
+            max-height: 160px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-top: 12px;
+            display: none;
+            background: #000;
+        }
+
+        /* Button */
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: 'Noto Sans TC', sans-serif;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.1s;
+            letter-spacing: 1px;
+        }
+        .btn:active { transform: scale(0.98); }
+        .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: white;
+        }
+        .btn-green { background: var(--green); color: white; }
+        .btn-teal { background: #0891b2; color: white; }
+        .btn-red { background: var(--red); color: white; }
+
+        /* Status */
+        #statusText {
+            font-size: 13px;
+            color: var(--muted);
+            text-align: center;
+            min-height: 18px;
+            white-space: pre-wrap;
+            padding: 4px 0;
+        }
+        #statusText.success { color: var(--green); }
+        #statusText.error { color: var(--red); }
+
+        /* Loading */
+        .loading-dots::after {
+            content: '';
+            animation: dots 1.2s steps(4, end) infinite;
+        }
+        @keyframes dots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 24px 0 16px;
+            color: var(--muted);
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* Invoice Card */
+        .invoice-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 14px;
+            margin-bottom: 14px;
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .card-meta { font-size: 11px; color: var(--muted); }
+        .card-model {
+            display: inline-block;
+            font-size: 10px;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 2px 6px;
+            color: var(--accent);
+            font-family: 'JetBrains Mono', monospace;
+            margin-top: 3px;
+        }
+        .btn-delete {
+            padding: 6px 12px;
+            font-size: 11px;
+            border-radius: 6px;
+            width: auto;
+            letter-spacing: 0;
+        }
+
+        /* Table */
+        .table-wrap {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            margin-bottom: 12px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 420px;
+            font-size: 13px;
+        }
+        th {
+            background: var(--surface2);
+            color: var(--accent);
+            padding: 8px 10px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            border-bottom: 1px solid var(--border);
+        }
+        td {
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--border);
+        }
+        tr:last-child td { border-bottom: none; }
+        tr:last-child td {
+            background: rgba(79,127,255,0.06);
+            font-weight: 700;
+        }
+        td:last-child {
+            text-align: right;
+            color: var(--yellow);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+        }
+
+        /* Action buttons */
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .action-grid .btn {
+            padding: 11px;
+            font-size: 13px;
+            letter-spacing: 0;
+        }
+        .action-grid .btn-share { grid-column: span 2; }
+
+        /* Empty state */
+        .empty { text-align: center; color: var(--muted); font-size: 14px; padding: 30px 0; }
+        .empty-icon { font-size: 36px; margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>🧾 發票解析</h1>
+        <p>Gemini / Claude · 日本收據掃描</p>
+    </div>
+
+    <!-- 引擎切換 -->
+    <div class="card">
+        <div class="card-label">AI 引擎</div>
+        <select id="engineSelect">
+            <option value="gemini">Gemini（原版）</option>
+            <option value="claude">Claude（新版）</option>
+        </select>
+    </div>
+
+    <!-- API Key -->
+    <div class="card">
+        <div class="card-label" id="keyLabel">Gemini API Key</div>
+        <input type="password" id="apiKey" placeholder="AIza...">
+        <div class="checkbox-row">
+            <input type="checkbox" id="saveKey">
+            <label for="saveKey">記住金鑰（存在本機）</label>
+        </div>
+    </div>
+
+    <!-- Model select -->
+    <div class="card">
+        <div class="card-label">模型選擇</div>
+        <select id="modelSelect">
+            <option value="gemini-2.5-flash" selected>Gemini 2.5 Flash · 主力推薦</option>
+            <option value="gemini-2.5-pro">Gemini 2.5 Pro · 算力強／慢</option>
+            <option value="claude-haiku-4-5" class="claude-opt" style="display:none">Claude Haiku 4.5 · 快速省費</option>
+            <option value="claude-sonnet-4-5" class="claude-opt" style="display:none">Claude Sonnet 4.5 · 主力推薦</option>
+        </select>
+    </div>
+
+    <!-- Upload -->
+    <div class="card">
+        <div class="card-label">上傳發票照片</div>
+        <div class="upload-area">
+            <input type="file" id="imageInput" accept="image/*">
+            <div class="upload-icon">📷</div>
+            <div class="upload-text">點擊選取 / 拍照</div>
+        </div>
+        <img id="preview" alt="發票預覽">
+    </div>
+
+    <button class="btn btn-primary" id="submitBtn">🔍 送出解析</button>
+    <div style="height: 12px;"></div>
+    <div id="statusText"></div>
+
+    <div class="divider">解析紀錄（存在本機）</div>
+    <div id="historyContainer"></div>
+
+<script>
+    const engineSelect = document.getElementById('engineSelect');
+    const apiKeyInput = document.getElementById('apiKey');
+    const keyLabel = document.getElementById('keyLabel');
+    const saveKeyCheck = document.getElementById('saveKey');
+    const modelSelect = document.getElementById('modelSelect');
+    const imageInput = document.getElementById('imageInput');
+    const preview = document.getElementById('preview');
+    const submitBtn = document.getElementById('submitBtn');
+    const statusEl = document.getElementById('statusText');
+    const historyContainer = document.getElementById('historyContainer');
+
+    let base64Image = '';
+    let imageMime = 'image/jpeg';
+    let invoiceHistory = JSON.parse(localStorage.getItem('invoice_history_v2')) || [];
+    window.tempActionData = {};
+
+    // 引擎選項設定
+    const ENGINE_CONFIG = {
+        gemini: {
+            label: 'Gemini API Key',
+            placeholder: 'AIza...',
+            storageKey: 'saved_gemini_key',
+            models: ['gemini-2.5-flash', 'gemini-2.5-pro']
+        },
+        claude: {
+            label: 'Anthropic API Key',
+            placeholder: 'sk-ant-api03-...',
+            storageKey: 'saved_claude_key',
+            models: ['claude-haiku-4-5', 'claude-sonnet-4-5']
+        }
+    };
+
+    function switchEngine(engine) {
+        const cfg = ENGINE_CONFIG[engine];
+        keyLabel.textContent = cfg.label;
+        apiKeyInput.placeholder = cfg.placeholder;
+        apiKeyInput.value = localStorage.getItem(cfg.storageKey) || '';
+        saveKeyCheck.checked = !!localStorage.getItem(cfg.storageKey);
+
+        // 切換 model options
+        Array.from(modelSelect.options).forEach(opt => {
+            const isGemini = opt.value.startsWith('gemini');
+            const isClaude = opt.value.startsWith('claude');
+            if (engine === 'gemini') opt.style.display = isGemini ? '' : 'none';
+            else opt.style.display = isClaude ? '' : 'none';
+        });
+        // 選第一個可見的
+        const firstVisible = Array.from(modelSelect.options).find(o => o.style.display !== 'none');
+        if (firstVisible) modelSelect.value = firstVisible.value;
+
+        localStorage.setItem('saved_engine', engine);
+    }
+
+    // 初始化引擎
+    const savedEngine = localStorage.getItem('saved_engine') || 'gemini';
+    engineSelect.value = savedEngine;
+    switchEngine(savedEngine);
+
+    engineSelect.addEventListener('change', () => switchEngine(engineSelect.value));
+
+    saveKeyCheck.addEventListener('change', () => {
+        const cfg = ENGINE_CONFIG[engineSelect.value];
+        if (!saveKeyCheck.checked) localStorage.removeItem(cfg.storageKey);
+    });
+
+    modelSelect.addEventListener('change', () => {
+        localStorage.setItem('saved_model_' + engineSelect.value, modelSelect.value);
+    });
+
+    imageInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        imageMime = file.type || 'image/jpeg';
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            preview.src = ev.target.result;
+            preview.style.display = 'block';
+            base64Image = ev.target.result.split(',')[1];
+            setStatus('照片已載入，可按送出解析。', '');
+        };
+        reader.readAsDataURL(file);
+    });
+
+    function setStatus(msg, type) {
+        statusEl.textContent = msg;
+        statusEl.className = type || '';
+    }
+
+    function renderHistory() {
+        historyContainer.innerHTML = '';
+        window.tempActionData = {};
+
+        if (invoiceHistory.length === 0) {
+            historyContainer.innerHTML = '<div class="empty"><div class="empty-icon">🗂️</div>目前沒有任何紀錄</div>';
+            return;
+        }
+
+        invoiceHistory.forEach((record, index) => {
+            let detailsTsv = '';   // 複製明細：日期＋中文翻譯＋金額
+            let totalTsv = '';
+            let shareText = '【發票解析明細】\n\n';
+            let trs = '';
+
+            record.data.forEach((row, rIndex) => {
+                const isLast = rIndex === record.data.length - 1;
+                trs += `<tr>
+                    <td>${row.date || ''}</td>
+                    <td>${row.item}</td>
+                    <td>${row.translation || ''}</td>
+                    <td>¥${Number(row.price).toLocaleString()}</td>
+                </tr>`;
+
+                if (isLast) {
+                    // 加總列
+                    totalTsv = `${row.date || ''}\t${row.item}\t¥${row.price}`;
+                } else {
+                    // 明細：改成複製「中文翻譯」欄位
+                    const displayName = row.translation || row.item;
+                    if (detailsTsv) detailsTsv += '\n';
+                    detailsTsv += `${row.date || ''}\t${displayName}\t¥${row.price}`;
+                }
+
+                if (row.translation) {
+                    shareText += `${row.date || '      '} | ${row.item} | ${row.translation} | ¥${Number(row.price).toLocaleString()}\n`;
+                } else {
+                    shareText += `${row.date || '      '} | ${row.item} | ¥${Number(row.price).toLocaleString()}\n`;
+                }
+            });
+
+            window.tempActionData[index] = { detailsTsv, totalTsv, shareText };
+
+            const timeStr = new Date(record.timestamp).toLocaleString('zh-TW', { hour12: false });
+            const engineBadge = record.engine === 'claude' ? '🟣 Claude' : '🔵 Gemini';
+            const card = document.createElement('div');
+            card.className = 'invoice-card';
+            card.innerHTML = `
+                <div class="card-header">
+                    <div>
+                        <div class="card-meta">🕐 ${timeStr}</div>
+                        ${record.model ? `<div class="card-model">${engineBadge} · ${record.model}</div>` : ''}
+                    </div>
+                    <button class="btn btn-red btn-delete" onclick="deleteRecord(${index})">刪除</button>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr><th>日期</th><th>項目（原文）</th><th>中文翻譯</th><th>日幣</th></tr>
+                        </thead>
+                        <tbody>${trs}</tbody>
+                    </table>
+                </div>
+                <div class="action-grid">
+                    <button class="btn btn-green" onclick="handleCopy(this, ${index}, 'details')">📋 複製明細（中文）</button>
+                    <button class="btn btn-green" onclick="handleCopy(this, ${index}, 'total')">📋 複製加總</button>
+                    <button class="btn btn-teal btn-share" onclick="handleShare(this, ${index})">📤 系統分享 / 複製全部</button>
+                </div>
+            `;
+            historyContainer.appendChild(card);
+        });
+    }
+
+    renderHistory();
+
+    submitBtn.addEventListener('click', async () => {
+        const apiKey = apiKeyInput.value.trim();
+        const model = modelSelect.value;
+        const engine = engineSelect.value;
+        const cfg = ENGINE_CONFIG[engine];
+
+        if (!apiKey) return alert('請先填入 API Key');
+        if (!base64Image) return alert('請先選取發票照片');
+
+        if (saveKeyCheck.checked) localStorage.setItem(cfg.storageKey, apiKey);
+
+        submitBtn.disabled = true;
+        statusEl.innerHTML = `<span class="loading-dots">使用 ${model} 解析中</span>`;
+        statusEl.className = '';
+
+        const prompt = `請解析這張日本發票或收據。
+請嚴格輸出純 JSON 陣列，不要加 \`\`\`json 標籤，不要說任何其他文字。
+將日文商品名稱翻譯成通順的台灣繁體中文，避免生硬機翻。
+格式規則：
+1. 每筆品項：{"date": "MM/DD", "item": "店名 - 日文原文", "translation": "繁體中文翻譯", "price": 數字}
+2. 最後一筆為加總：{"date": "", "item": "店名（總計）", "translation": "", "price": 總金額數字}
+3. price 只填數字，不含貨幣符號`;
+
+        try {
+            let parsedData;
+
+            if (engine === 'gemini') {
+                // Gemini API
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [
+                                { text: prompt },
+                                { inline_data: { mime_type: imageMime, data: base64Image } }
+                            ]
+                        }]
+                    })
+                });
+                const data = await res.json();
+                if (data.error) throw new Error(data.error.message);
+                let rawText = data.candidates[0].content.parts[0].text;
+                rawText = rawText.replace(/```json/gi, '').replace(/```/g, '').trim();
+                parsedData = JSON.parse(rawText);
+
+            } else {
+                // Claude API
+                const res = await fetch('https://api.anthropic.com/v1/messages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': apiKey,
+                        'anthropic-version': '2023-06-01',
+                        'anthropic-dangerous-direct-browser-access': 'true'
+                    },
+                    body: JSON.stringify({
+                        model: model,
+                        max_tokens: 1500,
+                        messages: [{
+                            role: 'user',
+                            content: [
+                                { type: 'image', source: { type: 'base64', media_type: imageMime, data: base64Image } },
+                                { type: 'text', text: prompt }
+                            ]
+                        }]
+                    })
+                });
+                const data = await res.json();
+                if (data.error) throw new Error(data.error.message);
+                let rawText = data.content[0].text;
+                rawText = rawText.replace(/```json/gi, '').replace(/```/g, '').trim();
+                parsedData = JSON.parse(rawText);
+            }
+
+            // 整理加總列
+            if (parsedData.length > 1) {
+                const items = parsedData.slice(0, -1);
+                const firstItem = items[0];
+                const storeName = firstItem.item.includes(' - ')
+                    ? firstItem.item.split(' - ')[0].trim() : '店家';
+                const summaryNames = items.slice(0, 3).map(r => {
+                    const name = r.translation || (r.item.includes(' - ') ? r.item.split(' - ')[1].trim() : r.item);
+                    return name.substring(0, 4);
+                });
+                const suffix = items.length > 3 ? '...' : '';
+                const totalRow = parsedData[parsedData.length - 1];
+                totalRow.date = firstItem.date;
+                totalRow.item = `加總：${storeName}（${summaryNames.join('、')}${suffix}）`;
+            }
+
+            invoiceHistory.unshift({ timestamp: Date.now(), engine, model, data: parsedData });
+            localStorage.setItem('invoice_history_v2', JSON.stringify(invoiceHistory));
+            renderHistory();
+
+            imageInput.value = '';
+            preview.style.display = 'none';
+            base64Image = '';
+            setStatus('✅ 解析完成並已儲存！', 'success');
+
+        } catch (err) {
+            setStatus('❌ 出錯了：' + err.message, 'error');
+        } finally {
+            submitBtn.disabled = false;
+        }
+    });
+
+    window.deleteRecord = (index) => {
+        if (!confirm('確定要刪除這筆紀錄嗎？')) return;
+        invoiceHistory.splice(index, 1);
+        localStorage.setItem('invoice_history_v2', JSON.stringify(invoiceHistory));
+        renderHistory();
+    };
+
+    window.handleCopy = (btn, index, type) => {
+        const text = type === 'details'
+            ? window.tempActionData[index].detailsTsv
+            : window.tempActionData[index].totalTsv;
+        if (!text) return alert('沒有資料');
+        navigator.clipboard.writeText(text).then(() => {
+            const orig = btn.textContent;
+            btn.textContent = '✅ 已複製';
+            setTimeout(() => btn.textContent = orig, 2000);
+        }).catch(() => alert('複製失敗'));
+    };
+
+    window.handleShare = async (btn, index) => {
+        const text = window.tempActionData[index].shareText;
+        if (!text) return alert('沒有資料');
+        const shareData = { title: '發票解析結果', text };
+        if (navigator.share && navigator.canShare(shareData)) {
+            try { await navigator.share(shareData); } catch {}
+        } else {
+            navigator.clipboard.writeText(text).then(() => {
+                const orig = btn.textContent;
+                btn.textContent = '✅ 已複製完整文字';
+                setTimeout(() => btn.textContent = orig, 2000);
+            });
+        }
+    };
+</script>
+</body>
+</html>
