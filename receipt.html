@@ -327,17 +327,18 @@
 
   <!-- Upload -->
   <div class="card">
-    <div class="preview-area" id="previewArea" onclick="document.getElementById('fileInput').click()">
+    <div class="preview-area" id="previewArea" onclick="document.getElementById('galleryInput').click()">
       <img id="previewImg" alt="發票預覽">
       <div class="preview-placeholder" id="previewPlaceholder">
         <div class="big-icon">📷</div>
-        <div class="hint">點擊選取 / 拍照</div>
+        <div class="hint">點擊從相簿選取</div>
       </div>
     </div>
-    <input type="file" id="fileInput" accept="image/*" capture="environment" onchange="onFileChange(event)">
+    <input type="file" id="galleryInput" accept="image/*" onchange="onFileChange(event)">
+    <input type="file" id="cameraInput" accept="image/*" capture="environment" onchange="onFileChange(event)">
     <div class="cam-btns">
-      <button class="cam-btn" onclick="document.getElementById('fileInput').click()">📁 選圖</button>
-      <button class="cam-btn" onclick="openCamera()">📷 拍照</button>
+      <button class="cam-btn" onclick="document.getElementById('galleryInput').click()">🖼️ 選圖</button>
+      <button class="cam-btn" onclick="document.getElementById('cameraInput').click()">📷 拍照</button>
       <button class="cam-btn primary" id="analyzeBtn" onclick="analyze()" disabled>🔍 解析</button>
     </div>
   </div>
@@ -452,13 +453,9 @@
   function onFileChange(e) {
     const file = e.target.files[0];
     if (!file) return;
+    // reset so same file can be re-selected
+    e.target.value = '';
     readImage(file);
-  }
-
-  function openCamera() {
-    const input = document.getElementById('fileInput');
-    input.setAttribute('capture', 'environment');
-    input.click();
   }
 
   function readImage(file) {
@@ -571,7 +568,8 @@
       renderHistory();
 
       // 清空
-      document.getElementById('fileInput').value = '';
+      document.getElementById('galleryInput').value = '';
+      document.getElementById('cameraInput').value = '';
       document.getElementById('previewImg').classList.remove('show');
       document.getElementById('previewPlaceholder').style.display = '';
       base64Image = '';
