@@ -315,12 +315,8 @@
       <div class="field">
         <label id="keyLabel">API Key</label>
         <input type="password" id="apiKey" placeholder="AIza...">
-        <div class="checkbox-row">
-          <input type="checkbox" id="saveKey">
-          <label for="saveKey">記住金鑰（存在本機）</label>
-        </div>
       </div>
-      <button class="save-btn" onclick="saveSettings()">💾 儲存設定</button>
+      <button class="save-btn" onclick="saveSettings()">💾 儲存（自動記住）</button>
       <div class="api-status" id="apiStatus"></div>
     </div>
   </div>
@@ -410,7 +406,6 @@
 
     const savedKey = localStorage.getItem(cfg.storageKey) || '';
     document.getElementById('apiKey').value = savedKey;
-    document.getElementById('saveKey').checked = !!savedKey;
 
     // 更新 model options
     const sel = document.getElementById('modelSelect');
@@ -420,9 +415,7 @@
 
     if (!silent) localStorage.setItem('receipt-engine', engine);
 
-    if (savedKey && !silent) {
-      showApiStatus('✅ API Key 已載入', 'ok');
-    } else if (savedKey) {
+    if (savedKey) {
       showApiStatus('✅ API Key 已儲存', 'ok');
     }
   }
@@ -431,12 +424,10 @@
     const engine = document.getElementById('engineSelect').value;
     const apiKey = document.getElementById('apiKey').value.trim();
     const model  = document.getElementById('modelSelect').value;
-    const save   = document.getElementById('saveKey').checked;
     const cfg    = ENGINE_CONFIG[engine];
 
     if (!apiKey) { showApiStatus('⚠️ 請輸入 API Key', 'err'); return; }
-    if (save) localStorage.setItem(cfg.storageKey, apiKey);
-    else      localStorage.removeItem(cfg.storageKey);
+    localStorage.setItem(cfg.storageKey, apiKey);
     localStorage.setItem('receipt-engine', engine);
     localStorage.setItem('receipt-model-' + engine, model);
     showApiStatus('✅ 設定已儲存！', 'ok');
