@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>商品查價</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #fdf6ee;
+    --pink: #f5b8c8;
+    --pink-dark: #e8849a;
+    --mint: #b8e8d8;
+    --mint-dark: #5abf9a;
+    --yellow: #fce97a;
+    --brown: #7a4f3a;
+    --text: #3d2b1f;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: radial-gradient(circle, #e8d5c4 1px, transparent 1px);
+    background-size: 24px 24px;
+    opacity: 0.45;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative; z-index: 1;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 20px 16px 40px;
+  }
+
+  /* ── Header ── */
+  .header { text-align: center; padding: 20px 0 18px; }
+  .header h1 {
+    font-family: 'Zen Maru Gothic', sans-serif;
+    font-size: 22px; font-weight: 900; color: var(--brown);
+  }
+  .header-sub { font-size: 12px; color: #a07060; margin-top: 4px; }
+
+  /* ── Settings ── */
+  .settings-card {
+    background: white; border-radius: 18px;
+    padding: 16px 18px; margin-bottom: 16px;
+    box-shadow: 0 3px 12px rgba(100,60,40,0.08);
+    border: 2px solid #f0e0d0;
+  }
+
+  .settings-toggle {
+    display: flex; align-items: center; justify-content: space-between;
+    cursor: pointer; user-select: none;
+  }
+
+  .settings-toggle-label {
+    font-family: 'Zen Maru Gothic', sans-serif;
+    font-size: 13px; font-weight: 700; color: var(--brown);
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  .settings-body { margin-top: 14px; display: none; }
+  .settings-body.open { display: block; }
+
+  .field { margin-bottom: 12px; }
+  .field label { font-size: 11px; font-weight: 700; color: #a07060; display: block; margin-bottom: 4px; }
+
+  .field select, .field input {
+    width: 100%; padding: 9px 12px;
+    border: 1.5px solid #e0d0c0; border-radius: 10px;
+    font-size: 13px; font-family: 'Noto Sans TC', sans-serif;
+    background: var(--cream); color: var(--text);
+    outline: none; transition: border-color 0.15s;
+  }
+  .field select:focus, .field input:focus { border-color: var(--pink-dark); }
+
+  .field input[type="password"] { letter-spacing: 2px; }
+
+  .save-btn {
+    width: 100%; padding: 9px;
+    background: var(--pink-dark); color: white;
+    border: none; border-radius: 10px;
+    font-size: 13px; font-weight: 700;
+    font-family: 'Noto Sans TC', sans-serif;
+    cursor: pointer; transition: opacity 0.15s;
+  }
+  .save-btn:hover { opacity: 0.88; }
+
+  .api-status {
+    font-size: 11px; margin-top: 8px; text-align: center;
+  }
+  .api-status.ok  { color: var(--mint-dark); }
+  .api-status.err { color: #e05050; }
+
+  /* ── Camera / Upload ── */
+  .camera-card {
+    background: white; border-radius: 18px;
+    padding: 16px; margin-bottom: 16px;
+    box-shadow: 0 3px 12px rgba(100,60,40,0.08);
+    border: 2px solid #f0e0d0;
+  }
+
+  .preview-area {
+    width: 100%; aspect-ratio: 4/3;
+    border-radius: 12px; overflow: hidden;
+    background: #f0e8e0;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 12px; position: relative;
+    cursor: pointer;
+    border: 2px dashed #d0b8a8;
+    transition: border-color 0.15s;
+  }
+  .preview-area:hover { border-color: var(--pink-dark); }
+  .preview-area img {
+    width: 100%; height: 100%; object-fit: cover;
+    border-radius: 10px; display: none;
+  }
+  .preview-area img.show { display: block; }
+
+  .preview-placeholder {
+    display: flex; flex-direction: column;
+    align-items: center; gap: 8px; color: #c0a090;
+  }
+  .preview-placeholder .big-icon { font-size: 40px; }
+  .preview-placeholder .hint { font-size: 12px; }
+
+  input[type="file"] { display: none; }
+
+  .cam-btns { display: flex; gap: 10px; }
+
+  .cam-btn {
+    flex: 1; padding: 11px;
+    border: 2px solid var(--pink);
+    background: white; border-radius: 12px;
+    font-size: 13px; font-weight: 700;
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--pink-dark); cursor: pointer;
+    transition: all 0.15s; display: flex;
+    align-items: center; justify-content: center; gap: 6px;
+  }
+  .cam-btn:hover { background: var(--pink); color: white; }
+  .cam-btn.primary {
+    background: var(--pink-dark); color: white; border-color: var(--pink-dark);
+  }
+  .cam-btn.primary:hover { opacity: 0.88; }
+  .cam-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* ── Result ── */
+  .result-card {
+    background: white; border-radius: 18px;
+    padding: 18px; margin-bottom: 16px;
+    box-shadow: 0 3px 12px rgba(100,60,40,0.08);
+    border: 2px solid var(--mint);
+    display: none;
+    animation: fadeUp 0.3s ease both;
+  }
+  .result-card.show { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .result-name {
+    font-family: 'Zen Maru Gothic', sans-serif;
+    font-size: 17px; font-weight: 900; color: var(--brown);
+    margin-bottom: 14px; line-height: 1.4;
+  }
+
+  .price-row {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px; margin-bottom: 14px;
+  }
+
+  .price-box {
+    border-radius: 12px; padding: 12px 14px;
+    text-align: center;
+  }
+  .price-box.jp { background: #fff0f8; border: 1.5px solid var(--pink); }
+  .price-box.tw { background: #f0fff8; border: 1.5px solid var(--mint); }
+
+  .price-box .flag { font-size: 20px; margin-bottom: 4px; }
+  .price-box .country { font-size: 10px; font-weight: 700; color: #a08070; }
+  .price-box .amount {
+    font-family: 'Zen Maru Gothic', sans-serif;
+    font-size: 18px; font-weight: 900; color: var(--brown);
+    margin-top: 2px;
+  }
+  .price-box .amount.na { font-size: 13px; color: #b0a090; }
+
+  .divider { border: none; border-top: 1.5px dashed #e8d8c8; margin: 12px 0; }
+
+  .section-label {
+    font-size: 10px; font-weight: 700; color: #a07060;
+    letter-spacing: 1px; margin-bottom: 6px;
+  }
+
+  .feature-text {
+    font-size: 13px; color: #5a4030; line-height: 1.75;
+    white-space: pre-wrap;
+  }
+
+  .verdict-box {
+    margin-top: 12px; border-radius: 12px;
+    padding: 11px 14px;
+    background: #fffbee; border: 1.5px solid var(--yellow);
+    font-size: 13px; color: #7a6020; line-height: 1.6;
+  }
+
+  /* ── Loading ── */
+  .loading-card {
+    background: white; border-radius: 18px;
+    padding: 32px; margin-bottom: 16px;
+    box-shadow: 0 3px 12px rgba(100,60,40,0.08);
+    border: 2px solid #f0e0d0;
+    text-align: center; display: none;
+  }
+  .loading-card.show { display: block; }
+
+  .spinner {
+    width: 36px; height: 36px;
+    border: 3px solid var(--pink);
+    border-top-color: var(--pink-dark);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 12px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-text {
+    font-family: 'Zen Maru Gothic', sans-serif;
+    font-size: 14px; color: var(--brown);
+  }
+
+  /* ── Error ── */
+  .error-box {
+    background: #fff0f0; border: 1.5px solid #f5a0a0;
+    border-radius: 12px; padding: 12px 14px;
+    font-size: 13px; color: #a02020; line-height: 1.6;
+    margin-bottom: 12px; display: none;
+  }
+  .error-box.show { display: block; }
+
+  /* ── History ── */
+  .history-section { margin-top: 8px; }
+  .history-label {
+    font-family: 'Zen Maru Gothic', sans-serif;
+    font-size: 13px; font-weight: 700; color: var(--brown);
+    margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+  }
+
+  .history-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .history-item {
+    background: white; border-radius: 14px;
+    padding: 12px 14px;
+    box-shadow: 0 2px 8px rgba(100,60,40,0.06);
+    border: 1.5px solid #f0e0d0;
+    cursor: pointer; transition: all 0.15s;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .history-item:hover { border-color: var(--pink); transform: translateY(-2px); }
+
+  .history-thumb {
+    width: 44px; height: 44px; border-radius: 8px;
+    object-fit: cover; flex-shrink: 0;
+    background: #f0e8e0;
+  }
+
+  .history-info { flex: 1; min-width: 0; }
+  .history-name {
+    font-size: 13px; font-weight: 700; color: var(--brown);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .history-prices { font-size: 11px; color: #a08070; margin-top: 2px; }
+
+  .history-del {
+    font-size: 16px; color: #d0b8a8; cursor: pointer;
+    flex-shrink: 0; padding: 4px;
+    transition: color 0.15s;
+  }
+  .history-del:hover { color: #e05050; }
+
+  .clear-btn {
+    display: block; margin: 10px auto 0;
+    background: none; border: 1.5px solid #d0b8a8;
+    border-radius: 99px; padding: 5px 16px;
+    font-size: 11px; color: #a07060; cursor: pointer;
+    font-family: 'Noto Sans TC', sans-serif; transition: all 0.15s;
+  }
+  .clear-btn:hover { border-color: #e05050; color: #e05050; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>🔍 商品查價</h1>
+    <div class="header-sub">拍照即查 日本價・台灣價・功能</div>
+  </div>
+
+  <!-- Settings -->
+  <div class="settings-card">
+    <div class="settings-toggle" onclick="toggleSettings()">
+      <span class="settings-toggle-label">⚙️ API 設定</span>
+      <span id="settingsArrow">▾</span>
+    </div>
+    <div class="settings-body" id="settingsBody">
+      <div class="field">
+        <label>模型供應商</label>
+        <select id="provider" onchange="onProviderChange()">
+          <option value="gemini">Google Gemini</option>
+          <option value="anthropic">Anthropic Claude</option>
+        </select>
+      </div>
+      <div class="field" id="modelField">
+        <label>模型</label>
+        <select id="model">
+          <option value="gemini-2.0-flash">gemini-2.0-flash（推薦）</option>
+          <option value="gemini-1.5-flash">gemini-1.5-flash</option>
+          <option value="gemini-1.5-pro">gemini-1.5-pro</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>API Key</label>
+        <input type="password" id="apiKey" placeholder="貼上你的 API Key">
+      </div>
+      <button class="save-btn" onclick="saveSettings()">💾 儲存設定</button>
+      <div class="api-status" id="apiStatus"></div>
+    </div>
+  </div>
+
+  <!-- Camera -->
+  <div class="camera-card">
+    <div class="preview-area" id="previewArea" onclick="document.getElementById('fileInput').click()">
+      <img id="previewImg" alt="預覽">
+      <div class="preview-placeholder" id="previewPlaceholder">
+        <div class="big-icon">📷</div>
+        <div class="hint">點擊拍照或上傳圖片</div>
+      </div>
+    </div>
+    <input type="file" id="fileInput" accept="image/*" capture="environment" onchange="onFileChange(event)">
+    <div class="cam-btns">
+      <button class="cam-btn" onclick="document.getElementById('fileInput').click()">📁 選圖</button>
+      <button class="cam-btn" onclick="openCamera()">📷 拍照</button>
+      <button class="cam-btn primary" id="analyzeBtn" onclick="analyze()" disabled>🔍 查價</button>
+    </div>
+  </div>
+
+  <!-- Error -->
+  <div class="error-box" id="errorBox"></div>
+
+  <!-- Loading -->
+  <div class="loading-card" id="loadingCard">
+    <div class="spinner"></div>
+    <div class="loading-text">AI 分析中，請稍候⋯</div>
+  </div>
+
+  <!-- Result -->
+  <div class="result-card" id="resultCard">
+    <div class="result-name" id="resultName"></div>
+    <div class="price-row">
+      <div class="price-box jp">
+        <div class="flag">🇯🇵</div>
+        <div class="country">日本價格</div>
+        <div class="amount" id="priceJP">—</div>
+      </div>
+      <div class="price-box tw">
+        <div class="flag">🇹🇼</div>
+        <div class="country">台灣價格</div>
+        <div class="amount" id="priceTW">—</div>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="section-label">✨ 功能與規格</div>
+    <div class="feature-text" id="resultFeature"></div>
+    <div class="verdict-box" id="resultVerdict"></div>
+  </div>
+
+  <!-- History -->
+  <div class="history-section" id="historySection" style="display:none">
+    <div class="history-label">🕐 查詢紀錄</div>
+    <div class="history-list" id="historyList"></div>
+    <button class="clear-btn" onclick="clearHistory()">清除紀錄</button>
+  </div>
+
+</div>
+
+<script>
+  // ── 設定 ──
+  const CFG_KEY = 'product-checker-cfg';
+  const HIS_KEY = 'product-checker-history';
+
+  const GEMINI_MODELS = [
+    { value: 'gemini-2.0-flash', label: 'gemini-2.0-flash（推薦）' },
+    { value: 'gemini-1.5-flash', label: 'gemini-1.5-flash' },
+    { value: 'gemini-1.5-pro',  label: 'gemini-1.5-pro' },
+  ];
+  const ANTHROPIC_MODELS = [
+    { value: 'claude-sonnet-4-6', label: 'claude-sonnet-4-6（推薦）' },
+    { value: 'claude-haiku-4-5-20251001', label: 'claude-haiku-4-5（省額度）' },
+  ];
+
+  let imageBase64 = null;
+  let imageMime   = 'image/jpeg';
+  let settingsOpen = false;
+
+  // 載入設定
+  (function init() {
+    const cfg = loadCfg();
+    if (cfg.provider) document.getElementById('provider').value = cfg.provider;
+    if (cfg.apiKey)   document.getElementById('apiKey').value   = cfg.apiKey;
+    updateModelOptions();
+    if (cfg.model) document.getElementById('model').value = cfg.model;
+    renderHistory();
+    if (cfg.apiKey) {
+      document.getElementById('apiStatus').textContent = '✅ API Key 已儲存';
+      document.getElementById('apiStatus').className = 'api-status ok';
+    }
+  })();
+
+  function loadCfg() {
+    try { return JSON.parse(localStorage.getItem(CFG_KEY)) || {}; } catch(e) { return {}; }
+  }
+
+  function saveCfg(obj) {
+    const cur = loadCfg();
+    localStorage.setItem(CFG_KEY, JSON.stringify({ ...cur, ...obj }));
+  }
+
+  function toggleSettings() {
+    settingsOpen = !settingsOpen;
+    document.getElementById('settingsBody').classList.toggle('open', settingsOpen);
+    document.getElementById('settingsArrow').textContent = settingsOpen ? '▴' : '▾';
+  }
+
+  function onProviderChange() {
+    updateModelOptions();
+  }
+
+  function updateModelOptions() {
+    const provider = document.getElementById('provider').value;
+    const sel = document.getElementById('model');
+    const opts = provider === 'gemini' ? GEMINI_MODELS : ANTHROPIC_MODELS;
+    sel.innerHTML = opts.map(o => `<option value="${o.value}">${o.label}</option>`).join('');
+    const cfg = loadCfg();
+    if (cfg.model) sel.value = cfg.model;
+  }
+
+  function saveSettings() {
+    const provider = document.getElementById('provider').value;
+    const model    = document.getElementById('model').value;
+    const apiKey   = document.getElementById('apiKey').value.trim();
+    if (!apiKey) {
+      showStatus('⚠️ 請輸入 API Key', 'err'); return;
+    }
+    saveCfg({ provider, model, apiKey });
+    showStatus('✅ 設定已儲存！', 'ok');
+    setTimeout(() => toggleSettings(), 600);
+  }
+
+  function showStatus(msg, type) {
+    const el = document.getElementById('apiStatus');
+    el.textContent = msg;
+    el.className = 'api-status ' + type;
+  }
+
+  // ── 圖片 ──
+  function onFileChange(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    loadImage(file);
+  }
+
+  function openCamera() {
+    const input = document.getElementById('fileInput');
+    input.removeAttribute('capture');
+    input.setAttribute('capture', 'environment');
+    input.click();
+  }
+
+  function loadImage(file) {
+    imageMime = file.type || 'image/jpeg';
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataUrl = e.target.result;
+      imageBase64 = dataUrl.split(',')[1];
+      const img = document.getElementById('previewImg');
+      img.src = dataUrl;
+      img.classList.add('show');
+      document.getElementById('previewPlaceholder').style.display = 'none';
+      document.getElementById('analyzeBtn').disabled = false;
+      document.getElementById('resultCard').classList.remove('show');
+      document.getElementById('errorBox').classList.remove('show');
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // ── 分析 ──
+  async function analyze() {
+    if (!imageBase64) return;
+    const cfg = loadCfg();
+    if (!cfg.apiKey) {
+      showError('請先在設定中輸入 API Key'); toggleSettings(); return;
+    }
+
+    setLoading(true);
+    hideError();
+    document.getElementById('resultCard').classList.remove('show');
+
+    const prompt = `你是一個商品查價助手。請仔細分析這張圖片中的商品，並以 JSON 格式回傳以下欄位（不要有任何其他文字，只回傳 JSON）：
+
+{
+  "name": "商品完整名稱（中文或原文）",
+  "jp_price": "日本市場價格（含幣別，例：¥3,980。若不確定請寫 不明）",
+  "tw_price": "台灣市場價格（含幣別，例：NT$1,200。若台灣無販售請寫 未販售）",
+  "features": "主要功能與規格說明（繁體中文，3~5點，每點換行）",
+  "verdict": "值不值得在日本買的建議（繁體中文，考慮台日價差、是否台灣有賣）"
+}`;
+
+    try {
+      let result;
+      if (cfg.provider === 'gemini') {
+        result = await callGemini(cfg.apiKey, cfg.model, prompt);
+      } else {
+        result = await callAnthropic(cfg.apiKey, cfg.model, prompt);
+      }
+      renderResult(result);
+      saveHistory(result);
+    } catch(e) {
+      showError('分析失敗：' + e.message);
+    }
+
+    setLoading(false);
+  }
+
+  async function callGemini(apiKey, model, prompt) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+    const body = {
+      contents: [{
+        parts: [
+          { inline_data: { mime_type: imageMime, data: imageBase64 } },
+          { text: prompt }
+        ]
+      }],
+      generationConfig: { temperature: 0.2 }
+    };
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error?.message || `HTTP ${res.status}`);
+    }
+    const data = await res.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    return parseJSON(text);
+  }
+
+  async function callAnthropic(apiKey, model, prompt) {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify({
+        model,
+        max_tokens: 1024,
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'image', source: { type: 'base64', media_type: imageMime, data: imageBase64 } },
+            { type: 'text', text: prompt }
+          ]
+        }]
+      })
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error?.message || `HTTP ${res.status}`);
+    }
+    const data = await res.json();
+    const text = data.content?.[0]?.text || '';
+    return parseJSON(text);
+  }
+
+  function parseJSON(text) {
+    const clean = text.replace(/```json|```/g, '').trim();
+    try { return JSON.parse(clean); }
+    catch(e) { throw new Error('AI 回傳格式有誤，請再試一次'); }
+  }
+
+  // ── 顯示結果 ──
+  function renderResult(r) {
+    document.getElementById('resultName').textContent    = r.name || '未知商品';
+    document.getElementById('priceJP').textContent       = r.jp_price || '不明';
+    document.getElementById('priceTW').textContent       = r.tw_price || '未販售';
+    document.getElementById('resultFeature').textContent = r.features || '';
+    document.getElementById('resultVerdict').textContent = r.verdict ? '💡 ' + r.verdict : '';
+
+    const twEl = document.getElementById('priceTW');
+    if (!r.tw_price || r.tw_price === '未販售') twEl.classList.add('na');
+    else twEl.classList.remove('na');
+
+    document.getElementById('resultCard').classList.add('show');
+    document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // ── 歷史紀錄 ──
+  function loadHistory() {
+    try { return JSON.parse(localStorage.getItem(HIS_KEY)) || []; } catch(e) { return []; }
+  }
+
+  function saveHistory(result) {
+    const list = loadHistory();
+    const item = {
+      id: Date.now(),
+      name: result.name,
+      jp_price: result.jp_price,
+      tw_price: result.tw_price,
+      features: result.features,
+      verdict: result.verdict,
+      thumb: document.getElementById('previewImg').src
+    };
+    list.unshift(item);
+    if (list.length > 20) list.pop();
+    localStorage.setItem(HIS_KEY, JSON.stringify(list));
+    renderHistory();
+  }
+
+  function renderHistory() {
+    const list = loadHistory();
+    const sec  = document.getElementById('historySection');
+    const el   = document.getElementById('historyList');
+    if (!list.length) { sec.style.display = 'none'; return; }
+    sec.style.display = 'block';
+    el.innerHTML = list.map(item => `
+      <div class="history-item" onclick="showHistoryItem(${item.id})">
+        <img class="history-thumb" src="${item.thumb}" alt="">
+        <div class="history-info">
+          <div class="history-name">${item.name || '未知商品'}</div>
+          <div class="history-prices">🇯🇵 ${item.jp_price || '—'} ・ 🇹🇼 ${item.tw_price || '—'}</div>
+        </div>
+        <div class="history-del" onclick="event.stopPropagation(); deleteHistory(${item.id})">✕</div>
+      </div>
+    `).join('');
+  }
+
+  function showHistoryItem(id) {
+    const list = loadHistory();
+    const item = list.find(i => i.id === id);
+    if (!item) return;
+    // 還原圖片
+    const img = document.getElementById('previewImg');
+    img.src = item.thumb;
+    img.classList.add('show');
+    document.getElementById('previewPlaceholder').style.display = 'none';
+    imageBase64 = item.thumb.split(',')[1] || null;
+    document.getElementById('analyzeBtn').disabled = false;
+    renderResult(item);
+  }
+
+  function deleteHistory(id) {
+    const list = loadHistory().filter(i => i.id !== id);
+    localStorage.setItem(HIS_KEY, JSON.stringify(list));
+    renderHistory();
+  }
+
+  function clearHistory() {
+    if (!confirm('確定要清除所有查詢紀錄？')) return;
+    localStorage.removeItem(HIS_KEY);
+    renderHistory();
+  }
+
+  // ── Helpers ──
+  function setLoading(on) {
+    document.getElementById('loadingCard').classList.toggle('show', on);
+    document.getElementById('analyzeBtn').disabled = on;
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('errorBox');
+    el.textContent = '⚠️ ' + msg;
+    el.classList.add('show');
+  }
+
+  function hideError() {
+    document.getElementById('errorBox').classList.remove('show');
+  }
+</script>
+</body>
+</html>
