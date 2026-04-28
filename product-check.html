@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>商品查價</title>
+<title>Product Price Checker</title>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -43,7 +43,6 @@
     padding: 20px 16px 40px;
   }
 
-  /* ── Header ── */
   .header { text-align: center; padding: 20px 0 18px; }
   .header h1 {
     font-family: 'Zen Maru Gothic', sans-serif;
@@ -51,7 +50,6 @@
   }
   .header-sub { font-size: 12px; color: #a07060; margin-top: 4px; }
 
-  /* ── Settings ── */
   .settings-card {
     background: white; border-radius: 18px;
     padding: 16px 18px; margin-bottom: 16px;
@@ -103,7 +101,6 @@
   .api-status.ok  { color: var(--mint-dark); }
   .api-status.err { color: #e05050; }
 
-  /* ── Camera / Upload ── */
   .camera-card {
     background: white; border-radius: 18px;
     padding: 16px; margin-bottom: 16px;
@@ -156,7 +153,6 @@
   .cam-btn.primary:hover { opacity: 0.88; }
   .cam-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-  /* ── Result ── */
   .result-card {
     background: white; border-radius: 18px;
     padding: 18px; margin-bottom: 16px;
@@ -218,7 +214,6 @@
     font-size: 13px; color: #7a6020; line-height: 1.6;
   }
 
-  /* ── Loading ── */
   .loading-card {
     background: white; border-radius: 18px;
     padding: 32px; margin-bottom: 16px;
@@ -243,7 +238,6 @@
     font-size: 14px; color: var(--brown);
   }
 
-  /* ── Error ── */
   .error-box {
     background: #fff0f0; border: 1.5px solid #f5a0a0;
     border-radius: 12px; padding: 12px 14px;
@@ -252,7 +246,6 @@
   }
   .error-box.show { display: block; }
 
-  /* ── History ── */
   .history-section { margin-top: 8px; }
   .history-label {
     font-family: 'Zen Maru Gothic', sans-serif;
@@ -305,120 +298,107 @@
 <body>
 <div class="container">
 
-  <!-- Header -->
   <div class="header">
-    <h1>🔍 商品查價</h1>
-    <div class="header-sub">拍照即查 日本價・台灣價・功能</div>
+    <h1>Product Price Checker</h1>
+    <div class="header-sub">Snap a photo to compare Japan vs Taiwan prices</div>
   </div>
 
-  <!-- Settings -->
   <div class="settings-card">
     <div class="settings-toggle" onclick="toggleSettings()">
-      <span class="settings-toggle-label">⚙️ API 設定</span>
-      <span id="settingsArrow">▾</span>
+      <span class="settings-toggle-label">API Settings</span>
+      <span id="settingsArrow">v</span>
     </div>
     <div class="settings-body" id="settingsBody">
       <div class="field">
-        <label>模型供應商</label>
+        <label>Provider</label>
         <select id="provider" onchange="onProviderChange()">
           <option value="gemini">Google Gemini</option>
           <option value="anthropic">Anthropic Claude</option>
         </select>
       </div>
       <div class="field" id="modelField">
-        <label>模型</label>
-        <select id="model">
-          <option value="gemini-2.0-flash">gemini-2.0-flash（推薦）</option>
-          <option value="gemini-1.5-flash">gemini-1.5-flash</option>
-          <option value="gemini-1.5-pro">gemini-1.5-pro</option>
-        </select>
+        <label>Model</label>
+        <select id="model"></select>
       </div>
       <div class="field">
         <label>API Key</label>
-        <input type="password" id="apiKey" placeholder="貼上你的 API Key">
+        <input type="password" id="apiKey" placeholder="Paste your API Key">
       </div>
-      <button class="save-btn" onclick="saveSettings()">💾 儲存設定</button>
+      <button class="save-btn" onclick="saveSettings()">Save Settings</button>
       <div class="api-status" id="apiStatus"></div>
     </div>
   </div>
 
-  <!-- Camera -->
   <div class="camera-card">
     <div class="preview-area" id="previewArea" onclick="document.getElementById('galleryInput').click()">
-      <img id="previewImg" alt="預覽">
+      <img id="previewImg" alt="preview">
       <div class="preview-placeholder" id="previewPlaceholder">
-        <div class="big-icon">📷</div>
-        <div class="hint">點擊從相簿選取</div>
+        <div class="big-icon">PHOTO</div>
+        <div class="hint">Click to select image</div>
       </div>
     </div>
     <input type="file" id="galleryInput" accept="image/*" onchange="onFileChange(event)">
     <input type="file" id="cameraInput" accept="image/*" capture="environment" onchange="onFileChange(event)">
     <div class="cam-btns">
-      <button class="cam-btn" onclick="document.getElementById('galleryInput').click()">🖼️ 選圖</button>
-      <button class="cam-btn" onclick="document.getElementById('cameraInput').click()">📷 拍照</button>
-      <button class="cam-btn primary" id="analyzeBtn" onclick="analyze()" disabled>🔍 查價</button>
+      <button class="cam-btn" onclick="document.getElementById('galleryInput').click()">Select</button>
+      <button class="cam-btn" onclick="document.getElementById('cameraInput').click()">Camera</button>
+      <button class="cam-btn primary" id="analyzeBtn" onclick="analyze()" disabled>Analyze</button>
     </div>
   </div>
 
-  <!-- Error -->
   <div class="error-box" id="errorBox"></div>
 
-  <!-- Loading -->
   <div class="loading-card" id="loadingCard">
     <div class="spinner"></div>
-    <div class="loading-text">AI 分析中，請稍候⋯</div>
+    <div class="loading-text">Analyzing with AI...</div>
   </div>
 
-  <!-- Result -->
   <div class="result-card" id="resultCard">
     <div class="result-name" id="resultName"></div>
     <div class="price-row">
       <div class="price-box jp">
-        <div class="flag">🇯🇵</div>
-        <div class="country">日本價格</div>
+        <div class="flag">JP</div>
+        <div class="country">Japan Price</div>
         <div class="amount" id="priceJP">—</div>
       </div>
       <div class="price-box tw">
-        <div class="flag">🇹🇼</div>
-        <div class="country">台灣價格</div>
+        <div class="flag">TW</div>
+        <div class="country">Taiwan Price</div>
         <div class="amount" id="priceTW">—</div>
       </div>
     </div>
     <hr class="divider">
-    <div class="section-label">✨ 功能與規格</div>
+    <div class="section-label">Features & Specs</div>
     <div class="feature-text" id="resultFeature"></div>
     <div class="verdict-box" id="resultVerdict"></div>
   </div>
 
-  <!-- History -->
   <div class="history-section" id="historySection" style="display:none">
-    <div class="history-label">🕐 查詢紀錄</div>
+    <div class="history-label">History</div>
     <div class="history-list" id="historyList"></div>
-    <button class="clear-btn" onclick="clearHistory()">清除紀錄</button>
+    <button class="clear-btn" onclick="clearHistory()">Clear History</button>
   </div>
 
 </div>
 
 <script>
-  // ── 設定 ──
   const CFG_KEY = 'product-checker-cfg';
   const HIS_KEY = 'product-checker-history';
 
   const GEMINI_MODELS = [
-    { value: 'gemini-2.0-flash', label: 'gemini-2.0-flash（recommended）' },
+    { value: 'gemini-2.0-flash', label: 'gemini-2.0-flash' },
     { value: 'gemini-1.5-flash', label: 'gemini-1.5-flash' },
     { value: 'gemini-1.5-pro',  label: 'gemini-1.5-pro' },
   ];
-const ANTHROPIC_MODELS = [
-  { value: 'claude-haiku-4-5-20251001', label: 'claude-haiku-4-5 (recommended)' },
-  { value: 'claude-sonnet-4-20250514', label: 'claude-sonnet-4-20250514' },
-];
+  const ANTHROPIC_MODELS = [
+    { value: 'claude-haiku-4-5-20251001', label: 'claude-haiku-4-5' },
+    { value: 'claude-sonnet-4-20250514', label: 'claude-sonnet-4-20250514' },
+  ];
 
   let imageBase64 = null;
   let imageMime   = 'image/jpeg';
   let settingsOpen = false;
 
-  // 載入設定
   (function init() {
     const cfg = loadCfg();
     if (cfg.provider) document.getElementById('provider').value = cfg.provider;
@@ -427,7 +407,7 @@ const ANTHROPIC_MODELS = [
     if (cfg.model) document.getElementById('model').value = cfg.model;
     renderHistory();
     if (cfg.apiKey) {
-      document.getElementById('apiStatus').textContent = '✅ API Key 已儲存';
+      document.getElementById('apiStatus').textContent = 'API Key saved';
       document.getElementById('apiStatus').className = 'api-status ok';
     }
   })();
@@ -438,13 +418,13 @@ const ANTHROPIC_MODELS = [
 
   function saveCfg(obj) {
     const cur = loadCfg();
-    localStorage.setItem(CFG_KEY, JSON.stringify({ ...cur, ...obj }));
+    localStorage.setItem(CFG_KEY, JSON.stringify(Object.assign(cur, obj)));
   }
 
   function toggleSettings() {
     settingsOpen = !settingsOpen;
     document.getElementById('settingsBody').classList.toggle('open', settingsOpen);
-    document.getElementById('settingsArrow').textContent = settingsOpen ? '▴' : '▾';
+    document.getElementById('settingsArrow').textContent = settingsOpen ? '^' : 'v';
   }
 
   function onProviderChange() {
@@ -455,7 +435,9 @@ const ANTHROPIC_MODELS = [
     const provider = document.getElementById('provider').value;
     const sel = document.getElementById('model');
     const opts = provider === 'gemini' ? GEMINI_MODELS : ANTHROPIC_MODELS;
-    sel.innerHTML = opts.map(o => `<option value="${o.value}">${o.label}</option>`).join('');
+    sel.innerHTML = opts.map(function(o) {
+      return '<option value="' + o.value + '">' + o.label + '</option>';
+    }).join('');
     const cfg = loadCfg();
     if (cfg.model) sel.value = cfg.model;
   }
@@ -465,11 +447,12 @@ const ANTHROPIC_MODELS = [
     const model    = document.getElementById('model').value;
     const apiKey   = document.getElementById('apiKey').value.trim();
     if (!apiKey) {
-      showStatus('⚠️ 請輸入 API Key', 'err'); return;
+      showStatus('Please enter API Key', 'err');
+      return;
     }
-    saveCfg({ provider, model, apiKey });
-    showStatus('✅ 設定已儲存！', 'ok');
-    setTimeout(() => toggleSettings(), 600);
+    saveCfg({ provider: provider, model: model, apiKey: apiKey });
+    showStatus('Settings saved', 'ok');
+    setTimeout(function() { toggleSettings(); }, 600);
   }
 
   function showStatus(msg, type) {
@@ -478,7 +461,6 @@ const ANTHROPIC_MODELS = [
     el.className = 'api-status ' + type;
   }
 
-  // ── 圖片 ──
   function onFileChange(e) {
     const file = e.target.files[0];
     if (!file) return;
@@ -489,7 +471,7 @@ const ANTHROPIC_MODELS = [
   function loadImage(file) {
     imageMime = file.type || 'image/jpeg';
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = function(e) {
       const dataUrl = e.target.result;
       imageBase64 = dataUrl.split(',')[1];
       const img = document.getElementById('previewImg');
@@ -503,19 +485,20 @@ const ANTHROPIC_MODELS = [
     reader.readAsDataURL(file);
   }
 
-  // ── 分析 ──
   async function analyze() {
     if (!imageBase64) return;
     const cfg = loadCfg();
     if (!cfg.apiKey) {
-      showError('請先在設定中輸入 API Key'); toggleSettings(); return;
+      showError('Please enter API Key in settings');
+      toggleSettings();
+      return;
     }
 
     setLoading(true);
     hideError();
     document.getElementById('resultCard').classList.remove('show');
 
-const prompt = 'You are a product price comparison assistant. Analyze this product image and return ONLY JSON:\n{\n  "name": "Product name",\n  "jp_price": "Japan price with currency or unknown",\n  "tw_price": "Taiwan price with currency or unavailable",\n  "features": "Key features (3-5 points, each on new line)",\n  "verdict": "Is it worth buying in Japan?"\n}';
+    const prompt = 'You are a product price comparison expert. Analyze this product image and return ONLY valid JSON (no markdown, no comments):\n{\n  "name": "Product name",\n  "jp_price": "Japan price with currency symbol or unavailable",\n  "tw_price": "Taiwan price with currency symbol or unavailable",\n  "features": "Main features and specs (3-5 bullet points separated by newlines)",\n  "verdict": "Is it worth buying in Japan compared to Taiwan? Brief assessment."\n}';
 
     try {
       let result;
@@ -527,14 +510,14 @@ const prompt = 'You are a product price comparison assistant. Analyze this produ
       renderResult(result);
       saveHistory(result);
     } catch(e) {
-      showError('分析失敗：' + e.message);
+      showError('Error: ' + e.message);
     }
 
     setLoading(false);
   }
 
   async function callGemini(apiKey, model, prompt) {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+    const url = 'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + apiKey;
     const body = {
       contents: [{
         parts: [
@@ -554,7 +537,7 @@ const prompt = 'You are a product price comparison assistant. Analyze this produ
       throw new Error(err.error.message || 'HTTP ' + res.status);
     }
     const data = await res.json();
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    const text = data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0] && data.candidates[0].content.parts[0].text ? data.candidates[0].content.parts[0].text : '';
     return parseJSON(text);
   }
 
@@ -567,7 +550,7 @@ const prompt = 'You are a product price comparison assistant. Analyze this produ
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model,
+        model: model,
         max_tokens: 1024,
         messages: [{
           role: 'user',
@@ -583,33 +566,34 @@ const prompt = 'You are a product price comparison assistant. Analyze this produ
       throw new Error(err.error.message || 'HTTP ' + res.status);
     }
     const data = await res.json();
-    const text = data.content[0].text || '';
+    const text = data.content && data.content[0] && data.content[0].text ? data.content[0].text : '';
     return parseJSON(text);
   }
 
   function parseJSON(text) {
     const clean = text.replace(/```json|```/g, '').trim();
     try { return JSON.parse(clean); }
-    catch(e) { throw new Error('AI 回傳格式有誤，請再試一次'); }
+    catch(e) { throw new Error('Invalid JSON response'); }
   }
 
-  // ── 顯示結果 ──
   function renderResult(r) {
-    document.getElementById('resultName').textContent    = r.name || '未知商品';
-    document.getElementById('priceJP').textContent       = r.jp_price || '不明';
-    document.getElementById('priceTW').textContent       = r.tw_price || '未販售';
+    document.getElementById('resultName').textContent    = r.name || 'Unknown';
+    document.getElementById('priceJP').textContent       = r.jp_price || 'N/A';
+    document.getElementById('priceTW').textContent       = r.tw_price || 'N/A';
     document.getElementById('resultFeature').textContent = r.features || '';
-    document.getElementById('resultVerdict').textContent = r.verdict ? '💡 ' + r.verdict : '';
+    document.getElementById('resultVerdict').textContent = r.verdict ? r.verdict : '';
 
     const twEl = document.getElementById('priceTW');
-    if (!r.tw_price || r.tw_price === '未販售') twEl.classList.add('na');
-    else twEl.classList.remove('na');
+    if (!r.tw_price || r.tw_price.indexOf('N/A') >= 0 || r.tw_price.indexOf('unavailable') >= 0) {
+      twEl.classList.add('na');
+    } else {
+      twEl.classList.remove('na');
+    }
 
     document.getElementById('resultCard').classList.add('show');
     document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  // ── 歷史紀錄 ──
   function loadHistory() {
     try { return JSON.parse(localStorage.getItem(HIS_KEY)) || []; } catch(e) { return []; }
   }
@@ -637,23 +621,18 @@ const prompt = 'You are a product price comparison assistant. Analyze this produ
     const el   = document.getElementById('historyList');
     if (!list.length) { sec.style.display = 'none'; return; }
     sec.style.display = 'block';
-    el.innerHTML = list.map(item => `
-      <div class="history-item" onclick="showHistoryItem(${item.id})">
-        <img class="history-thumb" src="${item.thumb}" alt="">
-        <div class="history-info">
-          <div class="history-name">${item.name || '未知商品'}</div>
-          <div class="history-prices">🇯🇵 ${item.jp_price || '—'} ・ 🇹🇼 ${item.tw_price || '—'}</div>
-        </div>
-        <div class="history-del" onclick="event.stopPropagation(); deleteHistory(${item.id})">✕</div>
-      </div>
-    `).join('');
+    el.innerHTML = list.map(function(item) {
+      return '<div class="history-item" onclick="showHistoryItem(' + item.id + ')"><img class="history-thumb" src="' + item.thumb + '" alt=""><div class="history-info"><div class="history-name">' + (item.name || 'Unknown') + '</div><div class="history-prices">JP ' + (item.jp_price || 'N/A') + ' | TW ' + (item.tw_price || 'N/A') + '</div></div><div class="history-del" onclick="event.stopPropagation(); deleteHistory(' + item.id + ')">X</div></div>';
+    }).join('');
   }
 
   function showHistoryItem(id) {
     const list = loadHistory();
-    const item = list.find(i => i.id === id);
+    let item = null;
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].id === id) { item = list[i]; break; }
+    }
     if (!item) return;
-    // 還原圖片
     const img = document.getElementById('previewImg');
     img.src = item.thumb;
     img.classList.add('show');
@@ -664,18 +643,17 @@ const prompt = 'You are a product price comparison assistant. Analyze this produ
   }
 
   function deleteHistory(id) {
-    const list = loadHistory().filter(i => i.id !== id);
+    const list = loadHistory().filter(function(i) { return i.id !== id; });
     localStorage.setItem(HIS_KEY, JSON.stringify(list));
     renderHistory();
   }
 
   function clearHistory() {
-    if (!confirm('確定要清除所有查詢紀錄？')) return;
+    if (!confirm('Clear all history?')) return;
     localStorage.removeItem(HIS_KEY);
     renderHistory();
   }
 
-  // ── Helpers ──
   function setLoading(on) {
     document.getElementById('loadingCard').classList.toggle('show', on);
     document.getElementById('analyzeBtn').disabled = on;
@@ -683,7 +661,7 @@ const prompt = 'You are a product price comparison assistant. Analyze this produ
 
   function showError(msg) {
     const el = document.getElementById('errorBox');
-    el.textContent = '⚠️ ' + msg;
+    el.textContent = msg;
     el.classList.add('show');
   }
 
