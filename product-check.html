@@ -541,34 +541,34 @@
     return parseJSON(text);
   }
 
-  async function callAnthropic(apiKey, model, prompt) {
-    const res = await fetch('https://still-hall-a032.adiforcejava.workers.dev/anthropic/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: model,
-        max_tokens: 1024,
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'image', source: { type: 'base64', media_type: imageMime, data: imageBase64 } },
-            { type: 'text', text: prompt }
-          ]
-        }]
-      })
-    });
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error.message || 'HTTP ' + res.status);
-    }
-    const data = await res.json();
-    const text = data.content && data.content[0] && data.content[0].text ? data.content[0].text : '';
-    return parseJSON(text);
+async function callAnthropic(apiKey, model, prompt) {
+  const res = await fetch('https://still-hall-a032.adiforcejava.workers.dev/anthropic/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01'
+    },
+    body: JSON.stringify({
+      model: model,
+      max_tokens: 1024,
+      messages: [{
+        role: 'user',
+        content: [
+          { type: 'image', source: { type: 'base64', media_type: imageMime, data: imageBase64 } },
+          { type: 'text', text: prompt }
+        ]
+      }]
+    })
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.error.message || 'HTTP ' + res.status);
   }
+  const data = await res.json();
+  const text = data.content && data.content[0] && data.content[0].text ? data.content[0].text : '';
+  return parseJSON(text);
+}
 
   function parseJSON(text) {
     const clean = text.replace(/```json|```/g, '').trim();
