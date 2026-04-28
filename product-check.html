@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
@@ -17,286 +18,287 @@
     --text: #3d2b1f;
   }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+- { margin: 0; padding: 0; box-sizing: border-box; }
 
-  body {
-    font-family: 'Noto Sans TC', sans-serif;
-    background: var(--cream);
-    color: var(--text);
-    min-height: 100vh;
-  }
+body {
+font-family: ‘Noto Sans TC’, sans-serif;
+background: var(–cream);
+color: var(–text);
+min-height: 100vh;
+}
 
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image: radial-gradient(circle, #e8d5c4 1px, transparent 1px);
-    background-size: 24px 24px;
-    opacity: 0.45;
-    pointer-events: none;
-    z-index: 0;
-  }
+body::before {
+content: ‘’;
+position: fixed; inset: 0;
+background-image: radial-gradient(circle, #e8d5c4 1px, transparent 1px);
+background-size: 24px 24px;
+opacity: 0.45;
+pointer-events: none;
+z-index: 0;
+}
 
-  .container {
-    position: relative; z-index: 1;
-    max-width: 480px;
-    margin: 0 auto;
-    padding: 20px 16px 40px;
-  }
+.container {
+position: relative; z-index: 1;
+max-width: 480px;
+margin: 0 auto;
+padding: 20px 16px 40px;
+}
 
-  .header { text-align: center; padding: 20px 0 18px; }
-  .header h1 {
-    font-family: 'Zen Maru Gothic', sans-serif;
-    font-size: 22px; font-weight: 900; color: var(--brown);
-  }
-  .header-sub { font-size: 12px; color: #a07060; margin-top: 4px; }
+.header { text-align: center; padding: 20px 0 18px; }
+.header h1 {
+font-family: ‘Zen Maru Gothic’, sans-serif;
+font-size: 22px; font-weight: 900; color: var(–brown);
+}
+.header-sub { font-size: 12px; color: #a07060; margin-top: 4px; }
 
-  .settings-card {
-    background: white; border-radius: 18px;
-    padding: 16px 18px; margin-bottom: 16px;
-    box-shadow: 0 3px 12px rgba(100,60,40,0.08);
-    border: 2px solid #f0e0d0;
-  }
+.settings-card {
+background: white; border-radius: 18px;
+padding: 16px 18px; margin-bottom: 16px;
+box-shadow: 0 3px 12px rgba(100,60,40,0.08);
+border: 2px solid #f0e0d0;
+}
 
-  .settings-toggle {
-    display: flex; align-items: center; justify-content: space-between;
-    cursor: pointer; user-select: none;
-  }
+.settings-toggle {
+display: flex; align-items: center; justify-content: space-between;
+cursor: pointer; user-select: none;
+}
 
-  .settings-toggle-label {
-    font-family: 'Zen Maru Gothic', sans-serif;
-    font-size: 13px; font-weight: 700; color: var(--brown);
-    display: flex; align-items: center; gap: 6px;
-  }
+.settings-toggle-label {
+font-family: ‘Zen Maru Gothic’, sans-serif;
+font-size: 13px; font-weight: 700; color: var(–brown);
+display: flex; align-items: center; gap: 6px;
+}
 
-  .settings-body { margin-top: 14px; display: none; }
-  .settings-body.open { display: block; }
+.settings-body { margin-top: 14px; display: none; }
+.settings-body.open { display: block; }
 
-  .field { margin-bottom: 12px; }
-  .field label { font-size: 11px; font-weight: 700; color: #a07060; display: block; margin-bottom: 4px; }
+.field { margin-bottom: 12px; }
+.field label { font-size: 11px; font-weight: 700; color: #a07060; display: block; margin-bottom: 4px; }
 
-  .field select, .field input {
-    width: 100%; padding: 9px 12px;
-    border: 1.5px solid #e0d0c0; border-radius: 10px;
-    font-size: 13px; font-family: 'Noto Sans TC', sans-serif;
-    background: var(--cream); color: var(--text);
-    outline: none; transition: border-color 0.15s;
-  }
-  .field select:focus, .field input:focus { border-color: var(--pink-dark); }
+.field select, .field input {
+width: 100%; padding: 9px 12px;
+border: 1.5px solid #e0d0c0; border-radius: 10px;
+font-size: 13px; font-family: ‘Noto Sans TC’, sans-serif;
+background: var(–cream); color: var(–text);
+outline: none; transition: border-color 0.15s;
+}
+.field select:focus, .field input:focus { border-color: var(–pink-dark); }
 
-  .field input[type="password"] { letter-spacing: 2px; }
+.field input[type=“password”] { letter-spacing: 2px; }
 
-  .save-btn {
-    width: 100%; padding: 9px;
-    background: var(--pink-dark); color: white;
-    border: none; border-radius: 10px;
-    font-size: 13px; font-weight: 700;
-    font-family: 'Noto Sans TC', sans-serif;
-    cursor: pointer; transition: opacity 0.15s;
-  }
-  .save-btn:hover { opacity: 0.88; }
+.save-btn {
+width: 100%; padding: 9px;
+background: var(–pink-dark); color: white;
+border: none; border-radius: 10px;
+font-size: 13px; font-weight: 700;
+font-family: ‘Noto Sans TC’, sans-serif;
+cursor: pointer; transition: opacity 0.15s;
+}
+.save-btn:hover { opacity: 0.88; }
 
-  .api-status {
-    font-size: 11px; margin-top: 8px; text-align: center;
-  }
-  .api-status.ok  { color: var(--mint-dark); }
-  .api-status.err { color: #e05050; }
+.api-status {
+font-size: 11px; margin-top: 8px; text-align: center;
+}
+.api-status.ok  { color: var(–mint-dark); }
+.api-status.err { color: #e05050; }
 
-  .camera-card {
-    background: white; border-radius: 18px;
-    padding: 16px; margin-bottom: 16px;
-    box-shadow: 0 3px 12px rgba(100,60,40,0.08);
-    border: 2px solid #f0e0d0;
-  }
+.camera-card {
+background: white; border-radius: 18px;
+padding: 16px; margin-bottom: 16px;
+box-shadow: 0 3px 12px rgba(100,60,40,0.08);
+border: 2px solid #f0e0d0;
+}
 
-  .preview-area {
-    width: 100%; aspect-ratio: 4/3;
-    border-radius: 12px; overflow: hidden;
-    background: #f0e8e0;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 12px; position: relative;
-    cursor: pointer;
-    border: 2px dashed #d0b8a8;
-    transition: border-color 0.15s;
-  }
-  .preview-area:hover { border-color: var(--pink-dark); }
-  .preview-area img {
-    width: 100%; height: 100%; object-fit: cover;
-    border-radius: 10px; display: none;
-  }
-  .preview-area img.show { display: block; }
+.preview-area {
+width: 100%; aspect-ratio: 4/3;
+border-radius: 12px; overflow: hidden;
+background: #f0e8e0;
+display: flex; align-items: center; justify-content: center;
+margin-bottom: 12px; position: relative;
+cursor: pointer;
+border: 2px dashed #d0b8a8;
+transition: border-color 0.15s;
+}
+.preview-area:hover { border-color: var(–pink-dark); }
+.preview-area img {
+width: 100%; height: 100%; object-fit: cover;
+border-radius: 10px; display: none;
+}
+.preview-area img.show { display: block; }
 
-  .preview-placeholder {
-    display: flex; flex-direction: column;
-    align-items: center; gap: 8px; color: #c0a090;
-  }
-  .preview-placeholder .big-icon { font-size: 40px; }
-  .preview-placeholder .hint { font-size: 12px; }
+.preview-placeholder {
+display: flex; flex-direction: column;
+align-items: center; gap: 8px; color: #c0a090;
+}
+.preview-placeholder .big-icon { font-size: 40px; }
+.preview-placeholder .hint { font-size: 12px; }
 
-  input[type="file"] { display: none; }
+input[type=“file”] { display: none; }
 
-  .cam-btns { display: flex; gap: 10px; }
+.cam-btns { display: flex; gap: 10px; }
 
-  .cam-btn {
-    flex: 1; padding: 11px;
-    border: 2px solid var(--pink);
-    background: white; border-radius: 12px;
-    font-size: 13px; font-weight: 700;
-    font-family: 'Noto Sans TC', sans-serif;
-    color: var(--pink-dark); cursor: pointer;
-    transition: all 0.15s; display: flex;
-    align-items: center; justify-content: center; gap: 6px;
-  }
-  .cam-btn:hover { background: var(--pink); color: white; }
-  .cam-btn.primary {
-    background: var(--pink-dark); color: white; border-color: var(--pink-dark);
-  }
-  .cam-btn.primary:hover { opacity: 0.88; }
-  .cam-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.cam-btn {
+flex: 1; padding: 11px;
+border: 2px solid var(–pink);
+background: white; border-radius: 12px;
+font-size: 13px; font-weight: 700;
+font-family: ‘Noto Sans TC’, sans-serif;
+color: var(–pink-dark); cursor: pointer;
+transition: all 0.15s; display: flex;
+align-items: center; justify-content: center; gap: 6px;
+}
+.cam-btn:hover { background: var(–pink); color: white; }
+.cam-btn.primary {
+background: var(–pink-dark); color: white; border-color: var(–pink-dark);
+}
+.cam-btn.primary:hover { opacity: 0.88; }
+.cam-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-  .result-card {
-    background: white; border-radius: 18px;
-    padding: 18px; margin-bottom: 16px;
-    box-shadow: 0 3px 12px rgba(100,60,40,0.08);
-    border: 2px solid var(--mint);
-    display: none;
-    animation: fadeUp 0.3s ease both;
-  }
-  .result-card.show { display: block; }
+.result-card {
+background: white; border-radius: 18px;
+padding: 18px; margin-bottom: 16px;
+box-shadow: 0 3px 12px rgba(100,60,40,0.08);
+border: 2px solid var(–mint);
+display: none;
+animation: fadeUp 0.3s ease both;
+}
+.result-card.show { display: block; }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(12px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(12px); }
+to   { opacity: 1; transform: translateY(0); }
+}
 
-  .result-name {
-    font-family: 'Zen Maru Gothic', sans-serif;
-    font-size: 17px; font-weight: 900; color: var(--brown);
-    margin-bottom: 14px; line-height: 1.4;
-  }
+.result-name {
+font-family: ‘Zen Maru Gothic’, sans-serif;
+font-size: 17px; font-weight: 900; color: var(–brown);
+margin-bottom: 14px; line-height: 1.4;
+}
 
-  .price-row {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 10px; margin-bottom: 14px;
-  }
+.price-row {
+display: grid; grid-template-columns: 1fr 1fr;
+gap: 10px; margin-bottom: 14px;
+}
 
-  .price-box {
-    border-radius: 12px; padding: 12px 14px;
-    text-align: center; cursor: pointer; transition: all 0.15s;
-  }
-  .price-box:hover { transform: translateY(-2px); }
-  .price-box.jp { background: #fff0f8; border: 1.5px solid var(--pink); }
-  .price-box.tw { background: #f0fff8; border: 1.5px solid var(--mint); }
-  .price-box a { text-decoration: none; display: block; }
-  .price-box a:hover .amount { text-decoration: underline; }
+.price-box {
+border-radius: 12px; padding: 12px 14px;
+text-align: center; cursor: pointer; transition: all 0.15s;
+}
+.price-box:hover { transform: translateY(-2px); }
+.price-box.jp { background: #fff0f8; border: 1.5px solid var(–pink); }
+.price-box.tw { background: #f0fff8; border: 1.5px solid var(–mint); }
+.price-box a { text-decoration: none; display: block; }
+.price-box a:hover .amount { text-decoration: underline; }
 
-  .price-box .flag { font-size: 20px; margin-bottom: 4px; }
-  .price-box .country { font-size: 10px; font-weight: 700; color: #a08070; }
-  .price-box .amount {
-    font-family: 'Zen Maru Gothic', sans-serif;
-    font-size: 18px; font-weight: 900; color: var(--brown);
-    margin-top: 2px;
-  }
-  .price-box .amount.na { font-size: 13px; color: #b0a090; }
+.price-box .flag { font-size: 20px; margin-bottom: 4px; }
+.price-box .country { font-size: 10px; font-weight: 700; color: #a08070; }
+.price-box .amount {
+font-family: ‘Zen Maru Gothic’, sans-serif;
+font-size: 18px; font-weight: 900; color: var(–brown);
+margin-top: 2px;
+}
+.price-box .amount.na { font-size: 13px; color: #b0a090; }
 
-  .divider { border: none; border-top: 1.5px dashed #e8d8c8; margin: 12px 0; }
+.divider { border: none; border-top: 1.5px dashed #e8d8c8; margin: 12px 0; }
 
-  .section-label {
-    font-size: 10px; font-weight: 700; color: #a07060;
-    letter-spacing: 1px; margin-bottom: 6px;
-  }
+.section-label {
+font-size: 10px; font-weight: 700; color: #a07060;
+letter-spacing: 1px; margin-bottom: 6px;
+}
 
-  .feature-text {
-    font-size: 13px; color: #5a4030; line-height: 1.75;
-    white-space: pre-wrap;
-  }
+.feature-text {
+font-size: 13px; color: #5a4030; line-height: 1.75;
+white-space: pre-wrap;
+}
 
-  .verdict-box {
-    margin-top: 12px; border-radius: 12px;
-    padding: 11px 14px;
-    background: #fffbee; border: 1.5px solid var(--yellow);
-    font-size: 13px; color: #7a6020; line-height: 1.6;
-  }
+.verdict-box {
+margin-top: 12px; border-radius: 12px;
+padding: 11px 14px;
+background: #fffbee; border: 1.5px solid var(–yellow);
+font-size: 13px; color: #7a6020; line-height: 1.6;
+}
 
-  .loading-card {
-    background: white; border-radius: 18px;
-    padding: 32px; margin-bottom: 16px;
-    box-shadow: 0 3px 12px rgba(100,60,40,0.08);
-    border: 2px solid #f0e0d0;
-    text-align: center; display: none;
-  }
-  .loading-card.show { display: block; }
+.loading-card {
+background: white; border-radius: 18px;
+padding: 32px; margin-bottom: 16px;
+box-shadow: 0 3px 12px rgba(100,60,40,0.08);
+border: 2px solid #f0e0d0;
+text-align: center; display: none;
+}
+.loading-card.show { display: block; }
 
-  .spinner {
-    width: 36px; height: 36px;
-    border: 3px solid var(--pink);
-    border-top-color: var(--pink-dark);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin: 0 auto 12px;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
+.spinner {
+width: 36px; height: 36px;
+border: 3px solid var(–pink);
+border-top-color: var(–pink-dark);
+border-radius: 50%;
+animation: spin 0.8s linear infinite;
+margin: 0 auto 12px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
 
-  .loading-text {
-    font-family: 'Zen Maru Gothic', sans-serif;
-    font-size: 14px; color: var(--brown);
-  }
+.loading-text {
+font-family: ‘Zen Maru Gothic’, sans-serif;
+font-size: 14px; color: var(–brown);
+}
 
-  .error-box {
-    background: #fff0f0; border: 1.5px solid #f5a0a0;
-    border-radius: 12px; padding: 12px 14px;
-    font-size: 13px; color: #a02020; line-height: 1.6;
-    margin-bottom: 12px; display: none;
-  }
-  .error-box.show { display: block; }
+.error-box {
+background: #fff0f0; border: 1.5px solid #f5a0a0;
+border-radius: 12px; padding: 12px 14px;
+font-size: 13px; color: #a02020; line-height: 1.6;
+margin-bottom: 12px; display: none;
+}
+.error-box.show { display: block; }
 
-  .history-section { margin-top: 8px; }
-  .history-label {
-    font-family: 'Zen Maru Gothic', sans-serif;
-    font-size: 13px; font-weight: 700; color: var(--brown);
-    margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
-  }
+.history-section { margin-top: 8px; }
+.history-label {
+font-family: ‘Zen Maru Gothic’, sans-serif;
+font-size: 13px; font-weight: 700; color: var(–brown);
+margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+}
 
-  .history-list { display: flex; flex-direction: column; gap: 8px; }
+.history-list { display: flex; flex-direction: column; gap: 8px; }
 
-  .history-item {
-    background: white; border-radius: 14px;
-    padding: 12px 14px;
-    box-shadow: 0 2px 8px rgba(100,60,40,0.06);
-    border: 1.5px solid #f0e0d0;
-    cursor: pointer; transition: all 0.15s;
-    display: flex; align-items: center; gap: 12px;
-  }
-  .history-item:hover { border-color: var(--pink); transform: translateY(-2px); }
+.history-item {
+background: white; border-radius: 14px;
+padding: 12px 14px;
+box-shadow: 0 2px 8px rgba(100,60,40,0.06);
+border: 1.5px solid #f0e0d0;
+cursor: pointer; transition: all 0.15s;
+display: flex; align-items: center; gap: 12px;
+}
+.history-item:hover { border-color: var(–pink); transform: translateY(-2px); }
 
-  .history-thumb {
-    width: 44px; height: 44px; border-radius: 8px;
-    object-fit: cover; flex-shrink: 0;
-    background: #f0e8e0;
-  }
+.history-thumb {
+width: 44px; height: 44px; border-radius: 8px;
+object-fit: cover; flex-shrink: 0;
+background: #f0e8e0;
+}
 
-  .history-info { flex: 1; min-width: 0; }
-  .history-name {
-    font-size: 13px; font-weight: 700; color: var(--brown);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
-  .history-prices { font-size: 11px; color: #a08070; margin-top: 2px; }
+.history-info { flex: 1; min-width: 0; }
+.history-name {
+font-size: 13px; font-weight: 700; color: var(–brown);
+white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.history-prices { font-size: 11px; color: #a08070; margin-top: 2px; }
 
-  .history-del {
-    font-size: 16px; color: #d0b8a8; cursor: pointer;
-    flex-shrink: 0; padding: 4px;
-    transition: color 0.15s;
-  }
-  .history-del:hover { color: #e05050; }
+.history-del {
+font-size: 16px; color: #d0b8a8; cursor: pointer;
+flex-shrink: 0; padding: 4px;
+transition: color 0.15s;
+}
+.history-del:hover { color: #e05050; }
 
-  .clear-btn {
-    display: block; margin: 10px auto 0;
-    background: none; border: 1.5px solid #d0b8a8;
-    border-radius: 99px; padding: 5px 16px;
-    font-size: 11px; color: #a07060; cursor: pointer;
-    font-family: 'Noto Sans TC', sans-serif; transition: all 0.15s;
-  }
-  .clear-btn:hover { border-color: #e05050; color: #e05050; }
+.clear-btn {
+display: block; margin: 10px auto 0;
+background: none; border: 1.5px solid #d0b8a8;
+border-radius: 99px; padding: 5px 16px;
+font-size: 11px; color: #a07060; cursor: pointer;
+font-family: ‘Noto Sans TC’, sans-serif; transition: all 0.15s;
+}
+.clear-btn:hover { border-color: #e05050; color: #e05050; }
 </style>
+
 </head>
 <body>
 <div class="container">
@@ -588,39 +590,118 @@ async function callAnthropic(apiKey, model, prompt) {
   async function searchPrices(result) {
     const searchTerm = (result.brand || '') + ' ' + result.name + ' ' + (result.model || '');
     
-    // 生成蝦皮搜尋連結
-    result.tw_url = 'https://shopee.tw/search?keyword=' + encodeURIComponent(searchTerm);
-    result.tw_price = '🔍 點擊搜尋蝦皮';
+    try {
+      // 用 web search 查蝦皮價格
+      const twRes = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': loadCfg().apiKey,
+          'anthropic-version': '2023-06-01'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 300,
+          tools: [
+            {
+              type: 'web_search',
+              name: 'web_search'
+            }
+          ],
+          messages: [{
+            role: 'user',
+            content: 'search site:shopee.tw "' + searchTerm + '" price 台幣 price，只告訴我最便宜的價格（格式：NT$1,299）'
+          }]
+        })
+      });
+      
+      if (twRes.ok) {
+        const twData = await twRes.json();
+        let twText = '';
+        if (twData.content) {
+          for (let block of twData.content) {
+            if (block.type === 'text') {
+              twText = block.text;
+              break;
+            }
+          }
+        }
+        result.tw_price = twText.includes('NT$') ? twText.match(/NT\$[\d,]+/)[0] : '查無商品';
+      } else {
+        result.tw_price = '查詢失敗';
+      }
+      
+      // 用 web search 查日本亞馬遜價格
+      const jpRes = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': loadCfg().apiKey,
+          'anthropic-version': '2023-06-01'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 300,
+          tools: [
+            {
+              type: 'web_search',
+              name: 'web_search'
+            }
+          ],
+          messages: [{
+            role: 'user',
+            content: 'search site:amazon.co.jp "' + searchTerm + '" price 円，只告訴我價格（格式：¥3,980）'
+          }]
+        })
+      });
+      
+      if (jpRes.ok) {
+        const jpData = await jpRes.json();
+        let jpText = '';
+        if (jpData.content) {
+          for (let block of jpData.content) {
+            if (block.type === 'text') {
+              jpText = block.text;
+              break;
+            }
+          }
+        }
+        result.jp_price = jpText.includes('¥') ? jpText.match(/¥[\d,]+/)[0] : '查無商品';
+      } else {
+        result.jp_price = '查詢失敗';
+      }
+      
+      result.verdict = generateVerdict(result);
+      
+      renderResult(result);
+      saveHistory(result);
+    } catch(e) {
+      console.log('查價失敗：' + e.message);
+      result.tw_price = '查詢失敗';
+      result.jp_price = '查詢失敗';
+      renderResult(result);
+      saveHistory(result);
+    }
     
-    // 生成日本亞馬遜搜尋連結
-    result.jp_url = 'https://www.amazon.co.jp/s?k=' + encodeURIComponent(searchTerm);
-    result.jp_price = '🔍 點擊搜尋日本亞馬遜';
+    setLoading(false);
+  }
+
+  function generateVerdict(result) {
+    const jp = result.jp_price;
+    const tw = result.tw_price;
     
-    // 重新渲染結果
-    renderResult(result);
-    saveHistory(result);
+    if (!jp || !tw || jp.includes('查無') || jp.includes('失敗') || tw.includes('查無') || tw.includes('失敗')) {
+      return '資料不足，無法比較。';
+    }
+    
+    return '已查詢到兩地價格，請參考上方。';
   }
 
   function renderResult(r) {
-    document.getElementById('resultName').textContent = r.name || '未知商品';
+    document.getElementById('resultName').textContent    = r.name || '未知商品';
+    document.getElementById('priceJP').textContent       = r.jp_price || 'N/A';
+    document.getElementById('priceTW').textContent       = r.tw_price || 'N/A';
     document.getElementById('resultFeature').textContent = r.features || '';
-    
-    // 日本價格 - 可點擊
-    const jpBox = document.querySelector('.price-box.jp');
-    if (r.jp_url) {
-      jpBox.innerHTML = '<a href="' + r.jp_url + '" target="_blank"><div class="flag">🇯🇵</div><div class="country">日本價格</div><div class="amount">' + (r.jp_price || '查詢') + '</div></a>';
-    } else {
-      jpBox.innerHTML = '<div class="flag">🇯🇵</div><div class="country">日本價格</div><div class="amount">' + (r.jp_price || '—') + '</div>';
-    }
-    
-    // 台灣價格 - 可點擊
-    const twBox = document.querySelector('.price-box.tw');
-    if (r.tw_url) {
-      twBox.innerHTML = '<a href="' + r.tw_url + '" target="_blank"><div class="flag">🇹🇼</div><div class="country">台灣價格</div><div class="amount">' + (r.tw_price || '查詢') + '</div></a>';
-    } else {
-      twBox.innerHTML = '<div class="flag">🇹🇼</div><div class="country">台灣價格</div><div class="amount">' + (r.tw_price || '—') + '</div>';
-    }
-    
     document.getElementById('resultVerdict').textContent = r.verdict ? r.verdict : '';
 
     document.getElementById('resultCard').classList.add('show');
@@ -702,5 +783,6 @@ async function callAnthropic(apiKey, model, prompt) {
     document.getElementById('errorBox').classList.remove('show');
   }
 </script>
+
 </body>
 </html>
