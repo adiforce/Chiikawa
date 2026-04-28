@@ -505,7 +505,7 @@
       if (cfg.provider === 'gemini') {
         result = await callGemini(cfg.apiKey, cfg.model, prompt);
       } else {
-        result = await callVertexAI(cfg.apiKey, cfg.model, prompt);
+        result = await callAnthropic(cfg.apiKey, cfg.model, prompt);
       }
       renderResult(result);
       saveHistory(result);
@@ -516,6 +516,36 @@
     setLoading(false);
   }
 
+  async function callAnthropic(apiKey, model, prompt) {
+  const res = await fetch('/.netlify/functions/anthropic-proxy', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      apiKey: apiKey,
+      model: model,
+      max_tokens: 1024,
+      messages: [{
+        role: 'user',
+        content: [
+          { type: 'image', source: { type: 'base64', media_type: imageMime, data: imageBase64 } },
+          { type: 'text', text: prompt }
+        ]
+      }]
+    })
+  });
+  
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.error.message || 'HTTP ' + res.status);
+  }
+  
+  const data = await res.json();
+  const text = data.content && data.content[0] && data.content[0].text ? data.content[0].text : '';
+  return parseJSON(text);
+}
+  
   async function callGemini(apiKey, model, prompt) {
     const url = 'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + apiKey;
     const body = {
