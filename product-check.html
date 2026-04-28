@@ -515,15 +515,7 @@
     hideError();
     document.getElementById('resultCard').classList.remove('show');
 
-    const prompt = `你是一個商品查價助手。請仔細分析這張圖片中的商品，並以 JSON 格式回傳以下欄位（不要有任何其他文字，只回傳 JSON）：
-
-{
-  "name": "商品完整名稱（中文或原文）",
-  "jp_price": "日本市場價格（含幣別，例：¥3,980。若不確定請寫 不明）",
-  "tw_price": "台灣市場價格（含幣別，例：NT$1,200。若台灣無販售請寫 未販售）",
-  "features": "主要功能與規格說明（繁體中文，3~5點，每點換行）",
-  "verdict": "值不值得在日本買的建議（繁體中文，考慮台日價差、是否台灣有賣）"
-}`;
+const prompt = 'You are a product price comparison assistant. Analyze this product image and return ONLY JSON:\n{\n  "name": "Product name",\n  "jp_price": "Japan price with currency or unknown",\n  "tw_price": "Taiwan price with currency or unavailable",\n  "features": "Key features (3-5 points, each on new line)",\n  "verdict": "Is it worth buying in Japan?"\n}';
 
     try {
       let result;
