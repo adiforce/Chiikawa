@@ -497,14 +497,15 @@
     hideError();
     document.getElementById('resultCard').classList.remove('show');
 
-    const prompt = `你是商品識別和比價專家。分析這個商品圖片，只返回有效的 JSON（不要 markdown，不要註解）：
+    const prompt = `你是商品識別和比價專家。分析這個商品圖片，根據你的知識提供價格估計。
+只返回有效的 JSON（不要 markdown，不要註解）：
 {
-  "name": "商品名稱（盡量精確）",
-  "brand": "品牌名",
+  "name": "商品名稱",
+  "brand": "品牌",
   "features": "主要特色（3-5 點，換行分隔）",
-  "tw_price": "台灣價格預估或「查蝦皮」（根據你的知識）",
-  "jp_price": "日本價格預估或「查日本」（根據你的知識）",
-  "verdict": "日本買或台灣買划算？簡短評估"
+  "tw_price": "台灣約售價（必須是 NT$XXXX 的格式，基於你知道的台灣市場價格，如果不確定就估計）",
+  "jp_price": "日本約售價（必須是 ¥XXXX 的格式，基於你知道的日本市場價格，如果不確定就估計）",
+  "verdict": "根據兩個價格，評估在日本買或台灣買哪個划算"
 }`;
 
     try {
