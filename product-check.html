@@ -497,7 +497,15 @@
     hideError();
     document.getElementById('resultCard').classList.remove('show');
 
-    const prompt = '你是商品識別專家。分析這個商品圖片，只返回有效的 JSON（不要 markdown，不要註解）：\n{\n  "name": "商品名稱（盡量精確，方便查價）",\n  "brand": "品牌名（如果看得到）",\n  "model": "型號或規格（如果看得到）",\n  "features": "主要特色和規格（3-5 個重點，以換行分隔）"\n}';
+    const prompt = `你是商品識別和比價專家。分析這個商品圖片，只返回有效的 JSON（不要 markdown，不要註解）：
+{
+  "name": "商品名稱（盡量精確）",
+  "brand": "品牌名",
+  "features": "主要特色（3-5 點，換行分隔）",
+  "tw_price": "台灣價格預估或「查蝦皮」（根據你的知識）",
+  "jp_price": "日本價格預估或「查日本」（根據你的知識）",
+  "verdict": "日本買或台灣買划算？簡短評估"
+}`;
 
     try {
       let result;
@@ -507,12 +515,12 @@
         result = await callAnthropic(cfg.apiKey, cfg.model, prompt);
       }
       renderResult(result);
-      // 自動查價格
-      searchPrices(result);
+      saveHistory(result);
     } catch(e) {
       showError('錯誤：' + e.message);
-      setLoading(false);
     }
+
+    setLoading(false);
   }
 
   async function callAnthropic(apiKey, model, prompt) {
@@ -578,133 +586,12 @@
     catch(e) { throw new Error('無效的 JSON 回應'); }
   }
 
-  async function searchPrices(result) {
-    const searchTerm = (result.brand || '') + ' ' + result.name + ' ' + (result.model || '');
-    const cfg = loadCfg();
-    
-    try {
-      // 先搜尋蝦皮
-      const shopeeUrl = 'https://shopee.tw/search?keyword=' + encodeURIComponent(searchTerm);
-      const shopeeHtml = await fetchPageContent(shopeeUrl);
-      
-      if (shopeeHtml) {
-        const twRes = await fetch('https://api.anthropic.com/v1/messages', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': cfg.apiKey,
-            'anthropic-version': '2023-06-01'
-          },
-          body: JSON.stringify({
-            model: 'claude-sonnet-4-20250514',
-            max_tokens: 100,
-            messages: [{
-              role: 'user',
-              content: '從這個蝦皮網頁內容中找出最便宜的商品價格，只回傳「NT$數字」格式：\n' + shopeeHtml.substring(0, 2000)
-            }]
-          })
-        });
-        
-        if (twRes.ok) {
-          const twData = await twRes.json();
-          result.tw_price = extractPrice(twData, 'NT$');
-        }
-      }
-      
-      // 搜尋日本亞馬遜
-      const amazonUrl = 'https://www.amazon.co.jp/s?k=' + encodeURIComponent(searchTerm);
-      const amazonHtml = await fetchPageContent(amazonUrl);
-      
-      if (amazonHtml) {
-        const jpRes = await fetch('https://api.anthropic.com/v1/messages', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': cfg.apiKey,
-            'anthropic-version': '2023-06-01'
-          },
-          body: JSON.stringify({
-            model: 'claude-sonnet-4-20250514',
-            max_tokens: 100,
-            messages: [{
-              role: 'user',
-              content: '從這個日本亞馬遜網頁內容中找出商品價格，只回傳「¥數字」格式：\n' + amazonHtml.substring(0, 2000)
-            }]
-          })
-        });
-        
-        if (jpRes.ok) {
-          const jpData = await jpRes.json();
-          result.jp_price = extractPrice(jpData, '¥');
-        }
-      }
-      
-      if (!result.tw_price) result.tw_price = 'NT$查無';
-      if (!result.jp_price) result.jp_price = '¥查無';
-      
-      result.verdict = generateVerdict(result);
-      renderResult(result);
-      saveHistory(result);
-    } catch(e) {
-      console.log('查價失敗：' + e.message);
-      result.tw_price = 'NT$查詢出錯';
-      result.jp_price = '¥查詢出錯';
-      renderResult(result);
-      saveHistory(result);
-    }
-    
-    setLoading(false);
-  }
-
-  async function fetchPageContent(url) {
-    try {
-      const response = await fetch(url, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15'
-        }
-      });
-      
-      if (!response.ok) return null;
-      
-      const html = await response.text();
-      return html;
-    } catch(e) {
-      console.log('Fetch 失敗：' + e.message);
-      return null;
-    }
-  }
-
-  function extractPrice(data, symbol) {
-    if (!data.content) return symbol + '查無';
-    
-    for (let block of data.content) {
-      if (block.type === 'text') {
-        const text = block.text;
-        if (text.includes(symbol)) {
-          return text.substring(0, 50);
-        }
-      }
-    }
-    return symbol + '查無';
-  }
-
-  function generateVerdict(result) {
-    const jp = result.jp_price;
-    const tw = result.tw_price;
-    
-    if (!jp || !tw || jp.includes('查無') || jp.includes('失敗') || tw.includes('查無') || tw.includes('失敗')) {
-      return '資料不足，無法比較。';
-    }
-    
-    return '已查詢到兩地價格，請參考上方。';
-  }
-
   function renderResult(r) {
     document.getElementById('resultName').textContent    = r.name || '未知商品';
-    document.getElementById('priceJP').textContent       = r.jp_price || 'N/A';
-    document.getElementById('priceTW').textContent       = r.tw_price || 'N/A';
+    document.getElementById('priceJP').textContent       = r.jp_price || '—';
+    document.getElementById('priceTW').textContent       = r.tw_price || '—';
     document.getElementById('resultFeature').textContent = r.features || '';
-    document.getElementById('resultVerdict').textContent = r.verdict ? r.verdict : '';
+    document.getElementById('resultVerdict').textContent = r.verdict || '';
 
     document.getElementById('resultCard').classList.add('show');
     document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
