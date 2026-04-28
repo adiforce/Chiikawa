@@ -583,62 +583,95 @@
     const cfg = loadCfg();
     
     try {
-      // 查蝦皮價格
-      const twRes = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': cfg.apiKey,
-          'anthropic-version': '2023-06-01'
-        },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 200,
-          tools: [{ type: 'web_search', name: 'web_search' }],
-          messages: [{
-            role: 'user',
-            content: '請在蝦皮搜尋「' + searchTerm + '」並告訴我找到的最低價格，只回傳「NT$數字」的格式，例如 NT$1299'
-          }]
-        })
-      });
+      // 先搜尋蝦皮
+      const shopeeUrl = 'https://shopee.tw/search?keyword=' + encodeURIComponent(searchTerm);
+      const shopeeHtml = await fetchPageContent(shopeeUrl);
       
-      const twData = await twRes.json();
-      result.tw_price = extractPrice(twData, 'NT$');
+      if (shopeeHtml) {
+        const twRes = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': cfg.apiKey,
+            'anthropic-version': '2023-06-01'
+          },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-20250514',
+            max_tokens: 100,
+            messages: [{
+              role: 'user',
+              content: '從這個蝦皮網頁內容中找出最便宜的商品價格，只回傳「NT$數字」格式：\n' + shopeeHtml.substring(0, 2000)
+            }]
+          })
+        });
+        
+        if (twRes.ok) {
+          const twData = await twRes.json();
+          result.tw_price = extractPrice(twData, 'NT$');
+        }
+      }
       
-      // 查日本亞馬遜價格
-      const jpRes = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': cfg.apiKey,
-          'anthropic-version': '2023-06-01'
-        },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 200,
-          tools: [{ type: 'web_search', name: 'web_search' }],
-          messages: [{
-            role: 'user',
-            content: '請在日本亞馬遜搜尋「' + searchTerm + '」並告訴我價格，只回傳「¥數字」的格式，例如 ¥3980'
-          }]
-        })
-      });
+      // 搜尋日本亞馬遜
+      const amazonUrl = 'https://www.amazon.co.jp/s?k=' + encodeURIComponent(searchTerm);
+      const amazonHtml = await fetchPageContent(amazonUrl);
       
-      const jpData = await jpRes.json();
-      result.jp_price = extractPrice(jpData, '¥');
+      if (amazonHtml) {
+        const jpRes = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': cfg.apiKey,
+            'anthropic-version': '2023-06-01'
+          },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-20250514',
+            max_tokens: 100,
+            messages: [{
+              role: 'user',
+              content: '從這個日本亞馬遜網頁內容中找出商品價格，只回傳「¥數字」格式：\n' + amazonHtml.substring(0, 2000)
+            }]
+          })
+        });
+        
+        if (jpRes.ok) {
+          const jpData = await jpRes.json();
+          result.jp_price = extractPrice(jpData, '¥');
+        }
+      }
+      
+      if (!result.tw_price) result.tw_price = 'NT$查無';
+      if (!result.jp_price) result.jp_price = '¥查無';
       
       result.verdict = generateVerdict(result);
       renderResult(result);
       saveHistory(result);
     } catch(e) {
       console.log('查價失敗：' + e.message);
-      result.tw_price = '查詢出錯';
-      result.jp_price = '查詢出錯';
+      result.tw_price = 'NT$查詢出錯';
+      result.jp_price = '¥查詢出錯';
       renderResult(result);
       saveHistory(result);
     }
     
     setLoading(false);
+  }
+
+  async function fetchPageContent(url) {
+    try {
+      const response = await fetch(url, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15'
+        }
+      });
+      
+      if (!response.ok) return null;
+      
+      const html = await response.text();
+      return html;
+    } catch(e) {
+      console.log('Fetch 失敗：' + e.message);
+      return null;
+    }
   }
 
   function extractPrice(data, symbol) {
