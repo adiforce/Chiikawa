@@ -589,8 +589,23 @@
 
   function renderResult(r) {
     document.getElementById('resultName').textContent    = r.name || '未知商品';
-    document.getElementById('priceJP').textContent       = r.jp_price || '—';
-    document.getElementById('priceTW').textContent       = r.tw_price || '—';
+    
+    // 處理台幣和日幣
+    let twPrice = r.tw_price || '—';
+    let jpPrice = r.jp_price || '—';
+    
+    // 如果有日幣，計算等值台幣
+    let jpTwEquivalent = '';
+    if (jpPrice && jpPrice.includes('¥')) {
+      const jpAmount = parseInt(jpPrice.replace(/[^0-9]/g, ''));
+      if (!isNaN(jpAmount)) {
+        const twEquivalent = Math.round(jpAmount * 0.2);
+        jpTwEquivalent = ' <span style="font-size: 11px; color: #a08070;">（約 NT$' + twEquivalent + '）</span>';
+      }
+    }
+    
+    document.getElementById('priceJP').innerHTML = jpPrice + jpTwEquivalent;
+    document.getElementById('priceTW').textContent = twPrice;
     document.getElementById('resultFeature').textContent = r.features || '';
     document.getElementById('resultVerdict').textContent = r.verdict || '';
 
