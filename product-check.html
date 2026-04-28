@@ -516,14 +516,15 @@
     setLoading(false);
   }
 
-  async function callAnthropic(apiKey, model, prompt) {
-  const res = await fetch('/.netlify/functions/anthropic-proxy', {
+async function callAnthropic(apiKey, model, prompt) {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01'
     },
     body: JSON.stringify({
-      apiKey: apiKey,
       model: model,
       max_tokens: 1024,
       messages: [{
@@ -571,35 +572,6 @@
     return parseJSON(text);
   }
 
-  async function callVertexAI(model, prompt) {
-  const res = await fetch('https://still-hall-a032.adiforcejava.workers.dev/vertex', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      model: 'claude-3-5-sonnet@20241022',
-      max_tokens: 1024,
-      messages: [{
-        role: 'user',
-        content: [
-          { type: 'image', source: { type: 'base64', media_type: imageMime, data: imageBase64 } },
-          { type: 'text', text: prompt }
-        ]
-      }]
-    })
-  });
-  
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.error || 'Error');
-  }
-  
-  const data = await res.json();
-  const text = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content ? data.choices[0].message.content : '';
-  return parseJSON(text);
-}
-  
 
 
   function parseJSON(text) {
