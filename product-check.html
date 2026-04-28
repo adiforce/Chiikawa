@@ -589,101 +589,79 @@ async function callAnthropic(apiKey, model, prompt) {
 
   async function searchPrices(result) {
     const searchTerm = (result.brand || '') + ' ' + result.name + ' ' + (result.model || '');
+    const cfg = loadCfg();
     
     try {
-      // 用 web search 查蝦皮價格
+      // 查蝦皮價格
       const twRes = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-api-key': loadCfg().apiKey,
+          'x-api-key': cfg.apiKey,
           'anthropic-version': '2023-06-01'
         },
         body: JSON.stringify({
           model: 'claude-sonnet-4-20250514',
-          max_tokens: 300,
-          tools: [
-            {
-              type: 'web_search',
-              name: 'web_search'
-            }
-          ],
+          max_tokens: 200,
+          tools: [{ type: 'web_search', name: 'web_search' }],
           messages: [{
             role: 'user',
-            content: 'search site:shopee.tw "' + searchTerm + '" price 台幣 price，只告訴我最便宜的價格（格式：NT$1,299）'
+            content: '請在蝦皮搜尋「' + searchTerm + '」並告訴我找到的最低價格，只回傳「NT$數字」的格式，例如 NT$1299'
           }]
         })
       });
       
-      if (twRes.ok) {
-        const twData = await twRes.json();
-        let twText = '';
-        if (twData.content) {
-          for (let block of twData.content) {
-            if (block.type === 'text') {
-              twText = block.text;
-              break;
-            }
-          }
-        }
-        result.tw_price = twText.includes('NT$') ? twText.match(/NT\$[\d,]+/)[0] : '查無商品';
-      } else {
-        result.tw_price = '查詢失敗';
-      }
+      const twData = await twRes.json();
+      result.tw_price = extractPrice(twData, 'NT$');
       
-      // 用 web search 查日本亞馬遜價格
+      // 查日本亞馬遜價格
       const jpRes = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-api-key': loadCfg().apiKey,
+          'x-api-key': cfg.apiKey,
           'anthropic-version': '2023-06-01'
         },
         body: JSON.stringify({
           model: 'claude-sonnet-4-20250514',
-          max_tokens: 300,
-          tools: [
-            {
-              type: 'web_search',
-              name: 'web_search'
-            }
-          ],
+          max_tokens: 200,
+          tools: [{ type: 'web_search', name: 'web_search' }],
           messages: [{
             role: 'user',
-            content: 'search site:amazon.co.jp "' + searchTerm + '" price 円，只告訴我價格（格式：¥3,980）'
+            content: '請在日本亞馬遜搜尋「' + searchTerm + '」並告訴我價格，只回傳「¥數字」的格式，例如 ¥3980'
           }]
         })
       });
       
-      if (jpRes.ok) {
-        const jpData = await jpRes.json();
-        let jpText = '';
-        if (jpData.content) {
-          for (let block of jpData.content) {
-            if (block.type === 'text') {
-              jpText = block.text;
-              break;
-            }
-          }
-        }
-        result.jp_price = jpText.includes('¥') ? jpText.match(/¥[\d,]+/)[0] : '查無商品';
-      } else {
-        result.jp_price = '查詢失敗';
-      }
+      const jpData = await jpRes.json();
+      result.jp_price = extractPrice(jpData, '¥');
       
       result.verdict = generateVerdict(result);
-      
       renderResult(result);
       saveHistory(result);
     } catch(e) {
       console.log('查價失敗：' + e.message);
-      result.tw_price = '查詢失敗';
-      result.jp_price = '查詢失敗';
+      result.tw_price = '查詢出錯';
+      result.jp_price = '查詢出錯';
       renderResult(result);
       saveHistory(result);
     }
     
     setLoading(false);
+  }
+
+  function extractPrice(data, symbol) {
+    if (!data.content) return symbol + '查無';
+    
+    for (let block of data.content) {
+      if (block.type === 'text') {
+        const text = block.text;
+        if (text.includes(symbol)) {
+          return text.substring(0, 50); // 取前50字確保是價格
+        }
+      }
+    }
+    return symbol + '查無';
   }
 
   function generateVerdict(result) {
