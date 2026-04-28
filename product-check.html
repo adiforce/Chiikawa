@@ -299,32 +299,32 @@
 <div class="container">
 
   <div class="header">
-    <h1>Product Price Checker</h1>
-    <div class="header-sub">Snap a photo to compare Japan vs Taiwan prices</div>
+    <h1>商品查價</h1>
+    <div class="header-sub">拍照比較日本和台灣價格</div>
   </div>
 
   <div class="settings-card">
     <div class="settings-toggle" onclick="toggleSettings()">
-      <span class="settings-toggle-label">API Settings</span>
+      <span class="settings-toggle-label">API 設定</span>
       <span id="settingsArrow">v</span>
     </div>
     <div class="settings-body" id="settingsBody">
       <div class="field">
-        <label>Provider</label>
+        <label>服務商</label>
         <select id="provider" onchange="onProviderChange()">
           <option value="gemini">Google Gemini</option>
           <option value="anthropic">Anthropic Claude</option>
         </select>
       </div>
       <div class="field" id="modelField">
-        <label>Model</label>
+        <label>模型</label>
         <select id="model"></select>
       </div>
       <div class="field">
-        <label>API Key</label>
-        <input type="password" id="apiKey" placeholder="Paste your API Key">
+        <label>API 金鑰</label>
+        <input type="password" id="apiKey" placeholder="貼上你的 API 金鑰">
       </div>
-      <button class="save-btn" onclick="saveSettings()">Save Settings</button>
+      <button class="save-btn" onclick="saveSettings()">儲存設定</button>
       <div class="api-status" id="apiStatus"></div>
     </div>
   </div>
@@ -333,16 +333,16 @@
     <div class="preview-area" id="previewArea" onclick="document.getElementById('galleryInput').click()">
       <img id="previewImg" alt="preview">
       <div class="preview-placeholder" id="previewPlaceholder">
-        <div class="big-icon">PHOTO</div>
-        <div class="hint">Click to select image</div>
+        <div class="big-icon">📷</div>
+        <div class="hint">點選選擇圖片</div>
       </div>
     </div>
     <input type="file" id="galleryInput" accept="image/*" onchange="onFileChange(event)">
     <input type="file" id="cameraInput" accept="image/*" capture="environment" onchange="onFileChange(event)">
     <div class="cam-btns">
-      <button class="cam-btn" onclick="document.getElementById('galleryInput').click()">Select</button>
-      <button class="cam-btn" onclick="document.getElementById('cameraInput').click()">Camera</button>
-      <button class="cam-btn primary" id="analyzeBtn" onclick="analyze()" disabled>Analyze</button>
+      <button class="cam-btn" onclick="document.getElementById('galleryInput').click()">選擇相片</button>
+      <button class="cam-btn" onclick="document.getElementById('cameraInput').click()">相機拍照</button>
+      <button class="cam-btn primary" id="analyzeBtn" onclick="analyze()" disabled>分析</button>
     </div>
   </div>
 
@@ -350,33 +350,33 @@
 
   <div class="loading-card" id="loadingCard">
     <div class="spinner"></div>
-    <div class="loading-text">Analyzing with AI...</div>
+    <div class="loading-text">AI 分析中...</div>
   </div>
 
   <div class="result-card" id="resultCard">
     <div class="result-name" id="resultName"></div>
     <div class="price-row">
       <div class="price-box jp">
-        <div class="flag">JP</div>
-        <div class="country">Japan Price</div>
+        <div class="flag">🇯🇵</div>
+        <div class="country">日本價格</div>
         <div class="amount" id="priceJP">—</div>
       </div>
       <div class="price-box tw">
-        <div class="flag">TW</div>
-        <div class="country">Taiwan Price</div>
+        <div class="flag">🇹🇼</div>
+        <div class="country">台灣價格</div>
         <div class="amount" id="priceTW">—</div>
       </div>
     </div>
     <hr class="divider">
-    <div class="section-label">Features & Specs</div>
+    <div class="section-label">特色與規格</div>
     <div class="feature-text" id="resultFeature"></div>
     <div class="verdict-box" id="resultVerdict"></div>
   </div>
 
   <div class="history-section" id="historySection" style="display:none">
-    <div class="history-label">History</div>
+    <div class="history-label">搜尋紀錄</div>
     <div class="history-list" id="historyList"></div>
-    <button class="clear-btn" onclick="clearHistory()">Clear History</button>
+    <button class="clear-btn" onclick="clearHistory()">清除紀錄</button>
   </div>
 
 </div>
@@ -407,7 +407,7 @@
     if (cfg.model) document.getElementById('model').value = cfg.model;
     renderHistory();
     if (cfg.apiKey) {
-      document.getElementById('apiStatus').textContent = 'API Key saved';
+      document.getElementById('apiStatus').textContent = 'API 金鑰已儲存';
       document.getElementById('apiStatus').className = 'api-status ok';
     }
   })();
@@ -447,11 +447,11 @@
     const model    = document.getElementById('model').value;
     const apiKey   = document.getElementById('apiKey').value.trim();
     if (!apiKey) {
-      showStatus('Please enter API Key', 'err');
+      showStatus('請輸入 API 金鑰', 'err');
       return;
     }
     saveCfg({ provider: provider, model: model, apiKey: apiKey });
-    showStatus('Settings saved', 'ok');
+    showStatus('設定已儲存', 'ok');
     setTimeout(function() { toggleSettings(); }, 600);
   }
 
@@ -489,7 +489,7 @@
     if (!imageBase64) return;
     const cfg = loadCfg();
     if (!cfg.apiKey) {
-      showError('Please enter API Key in settings');
+      showError('請在設定中輸入 API 金鑰');
       toggleSettings();
       return;
     }
@@ -498,7 +498,7 @@
     hideError();
     document.getElementById('resultCard').classList.remove('show');
 
-    const prompt = 'You are a product price comparison expert. Analyze this product image and return ONLY valid JSON (no markdown, no comments):\n{\n  "name": "Product name",\n  "jp_price": "Japan price with currency symbol or unavailable",\n  "tw_price": "Taiwan price with currency symbol or unavailable",\n  "features": "Main features and specs (3-5 bullet points separated by newlines)",\n  "verdict": "Is it worth buying in Japan compared to Taiwan? Brief assessment."\n}';
+    const prompt = '你是商品價格比較專家。分析這個商品圖片，只返回有效的 JSON（不要 markdown，不要註解）：\n{\n  "name": "商品名稱",\n  "jp_price": "日本價格（含貨幣符號）或無法獲得",\n  "tw_price": "台灣價格（含貨幣符號）或無法獲得",\n  "features": "主要特色和規格（3-5 個重點，以換行分隔）",\n  "verdict": "日本買和台灣買哪個划算？簡短評估。"\n}';
 
     try {
       let result;
@@ -510,7 +510,7 @@
       renderResult(result);
       saveHistory(result);
     } catch(e) {
-      showError('Error: ' + e.message);
+      showError('錯誤：' + e.message);
     }
 
     setLoading(false);
@@ -523,7 +523,7 @@ async function callAnthropic(apiKey, model, prompt) {
       'Content-Type': 'application/json',
       'x-api-key': apiKey,
       'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true'  // 加這行！
+      'anthropic-dangerous-direct-browser-access': 'true'
     },
     body: JSON.stringify({
       model: model,
@@ -578,11 +578,11 @@ async function callAnthropic(apiKey, model, prompt) {
   function parseJSON(text) {
     const clean = text.replace(/```json|```/g, '').trim();
     try { return JSON.parse(clean); }
-    catch(e) { throw new Error('Invalid JSON response'); }
+    catch(e) { throw new Error('無效的 JSON 回應'); }
   }
 
   function renderResult(r) {
-    document.getElementById('resultName').textContent    = r.name || 'Unknown';
+    document.getElementById('resultName').textContent    = r.name || '未知商品';
     document.getElementById('priceJP').textContent       = r.jp_price || 'N/A';
     document.getElementById('priceTW').textContent       = r.tw_price || 'N/A';
     document.getElementById('resultFeature').textContent = r.features || '';
@@ -627,7 +627,7 @@ async function callAnthropic(apiKey, model, prompt) {
     if (!list.length) { sec.style.display = 'none'; return; }
     sec.style.display = 'block';
     el.innerHTML = list.map(function(item) {
-      return '<div class="history-item" onclick="showHistoryItem(' + item.id + ')"><img class="history-thumb" src="' + item.thumb + '" alt=""><div class="history-info"><div class="history-name">' + (item.name || 'Unknown') + '</div><div class="history-prices">JP ' + (item.jp_price || 'N/A') + ' | TW ' + (item.tw_price || 'N/A') + '</div></div><div class="history-del" onclick="event.stopPropagation(); deleteHistory(' + item.id + ')">X</div></div>';
+      return '<div class="history-item" onclick="showHistoryItem(' + item.id + ')"><img class="history-thumb" src="' + item.thumb + '" alt=""><div class="history-info"><div class="history-name">' + (item.name || '未知商品') + '</div><div class="history-prices">日本 ' + (item.jp_price || 'N/A') + ' | 台灣 ' + (item.tw_price || 'N/A') + '</div></div><div class="history-del" onclick="event.stopPropagation(); deleteHistory(' + item.id + ')">✕</div></div>';
     }).join('');
   }
 
@@ -654,7 +654,7 @@ async function callAnthropic(apiKey, model, prompt) {
   }
 
   function clearHistory() {
-    if (!confirm('Clear all history?')) return;
+    if (!confirm('確定要清除所有紀錄嗎？')) return;
     localStorage.removeItem(HIS_KEY);
     renderHistory();
   }
