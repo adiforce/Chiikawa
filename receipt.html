@@ -106,14 +106,6 @@
   .field input[type="password"] { font-family: 'JetBrains Mono', monospace; letter-spacing: 2px; }
   .field select:focus, .field input:focus { border-color: var(--pink-dark); }
 
-  .checkbox-row {
-    display: flex; align-items: center; gap: 8px; margin-top: 8px;
-  }
-  .checkbox-row input[type="checkbox"] {
-    width: 16px; height: 16px; accent-color: var(--pink-dark); cursor: pointer;
-  }
-  .checkbox-row label { font-size: 12px; color: var(--muted); cursor: pointer; }
-
   .save-btn {
     width: 100%; padding: 10px;
     background: var(--pink-dark); color: white;
@@ -313,8 +305,12 @@
         <select id="modelSelect"></select>
       </div>
       <div class="field">
-        <label id="keyLabel">API Key</label>
-        <input type="password" id="apiKey" placeholder="AIza...">
+        <label>Google Gemini API Key</label>
+        <input type="password" id="geminiKey" placeholder="AIza...">
+      </div>
+      <div class="field">
+        <label>Anthropic Claude API Key</label>
+        <input type="password" id="claudeKey" placeholder="sk-ant-api03-...">
       </div>
       <button class="save-btn" onclick="saveSettings()">💾 儲存（自動記住）</button>
       <div class="api-status" id="apiStatus"></div>
@@ -354,8 +350,6 @@
   // ── Config ──
   const ENGINE_CONFIG = {
     gemini: {
-      label: 'Gemini API Key',
-      placeholder: 'AIza...',
       storageKey: 'receipt-gemini-key',
       models: [
         { value: 'gemini-2.0-flash',  label: 'gemini-2.0-flash（推薦）' },
@@ -364,12 +358,10 @@
       ]
     },
     claude: {
-      label: 'Anthropic API Key',
-      placeholder: 'sk-ant-api03-...',
       storageKey: 'receipt-claude-key',
       models: [
-    { value: 'claude-haiku-4-5-20251001', label: 'claude-haiku-4-5（推薦，省額度）' },
-    { value: 'claude-sonnet-4-20250514', label: 'claude-sonnet-4-20250514（高品質）' },
+        { value: 'claude-haiku-4-5-20251001', label: 'claude-haiku-4-5（推薦，省額度）' },
+        { value: 'claude-sonnet-4-20250514', label: 'claude-sonnet-4-20250514（高品質）' },
       ]
     }
   };
@@ -401,11 +393,6 @@
 
   function switchEngine(engine, silent) {
     const cfg = ENGINE_CONFIG[engine];
-    document.getElementById('keyLabel').textContent = cfg.label;
-    document.getElementById('apiKey').placeholder = cfg.placeholder;
-
-    const savedKey = localStorage.getItem(cfg.storageKey) || '';
-    document.getElementById('apiKey').value = savedKey;
 
     // 更新 model options
     const sel = document.getElementById('modelSelect');
@@ -413,21 +400,32 @@
     const savedModel = localStorage.getItem('receipt-model-' + engine);
     if (savedModel) sel.value = savedModel;
 
+    // 讀取對應的 API Key
+    const geminiKey = localStorage.getItem(ENGINE_CONFIG.gemini.storageKey) || '';
+    const claudeKey = localStorage.getItem(ENGINE_CONFIG.claude.storageKey) || '';
+    document.getElementById('geminiKey').value = geminiKey;
+    document.getElementById('claudeKey').value = claudeKey;
+
     if (!silent) localStorage.setItem('receipt-engine', engine);
 
-    if (savedKey) {
+    if ((engine === 'gemini' && geminiKey) || (engine === 'claude' && claudeKey)) {
       showApiStatus('✅ API Key 已儲存', 'ok');
     }
   }
 
   function saveSettings() {
     const engine = document.getElementById('engineSelect').value;
-    const apiKey = document.getElementById('apiKey').value.trim();
+    const geminiKey = document.getElementById('geminiKey').value.trim();
+    const claudeKey = document.getElementById('claudeKey').value.trim();
     const model  = document.getElementById('modelSelect').value;
-    const cfg    = ENGINE_CONFIG[engine];
 
-    if (!apiKey) { showApiStatus('⚠️ 請輸入 API Key', 'err'); return; }
-    localStorage.setItem(cfg.storageKey, apiKey);
+    if (!geminiKey && !claudeKey) { 
+      showApiStatus('⚠️ 請至少輸入一個 API Key', 'err'); 
+      return; 
+    }
+
+    localStorage.setItem(ENGINE_CONFIG.gemini.storageKey, geminiKey);
+    localStorage.setItem(ENGINE_CONFIG.claude.storageKey, claudeKey);
     localStorage.setItem('receipt-engine', engine);
     localStorage.setItem('receipt-model-' + engine, model);
     showApiStatus('✅ 設定已儲存！', 'ok');
@@ -444,7 +442,6 @@
   function onFileChange(e) {
     const file = e.target.files[0];
     if (!file) return;
-    // reset so same file can be re-selected
     e.target.value = '';
     readImage(file);
   }
@@ -481,10 +478,22 @@
   async function analyze() {
     const engine  = document.getElementById('engineSelect').value;
     const model   = document.getElementById('modelSelect').value;
-    const apiKey  = document.getElementById('apiKey').value.trim()
-                 || localStorage.getItem(ENGINE_CONFIG[engine].storageKey) || '';
+    const geminiKey = document.getElementById('geminiKey').value.trim() 
+                   || localStorage.getItem(ENGINE_CONFIG.gemini.storageKey) || '';
+    const claudeKey = document.getElementById('claudeKey').value.trim() 
+                   || localStorage.getItem(ENGINE_CONFIG.claude.storageKey) || '';
 
-    if (!apiKey) { setStatus('⚠️ 請先在設定中填入 API Key', 'err'); toggleSettings(); return; }
+    // 檢查對應的 API Key
+    if (engine === 'gemini' && !geminiKey) { 
+      setStatus('⚠️ 請先在設定中填入 Gemini API Key', 'err'); 
+      toggleSettings(); 
+      return; 
+    }
+    if (engine === 'claude' && !claudeKey) { 
+      setStatus('⚠️ 請先在設定中填入 Claude API Key', 'err'); 
+      toggleSettings(); 
+      return; 
+    }
     if (!base64Image) { setStatus('⚠️ 請先選取發票照片', 'err'); return; }
 
     setLoading(true, model);
@@ -502,7 +511,7 @@
       let parsedData;
 
       if (engine === 'gemini') {
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiKey}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -522,7 +531,7 @@
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'x-api-key': apiKey,
+            'x-api-key': claudeKey,
             'anthropic-version': '2023-06-01',
             'anthropic-dangerous-direct-browser-access': 'true'
           },
