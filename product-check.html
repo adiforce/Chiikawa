@@ -591,7 +591,7 @@
       throw new Error(err.error?.message || `HTTP ${res.status}`);
     }
     const data = await res.json();
-    const text = data.content?.[0]?.text || '';
+    const text = data.content[0].text || '';
     return parseJSON(text);
   }
 
