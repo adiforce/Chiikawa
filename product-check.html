@@ -569,6 +569,8 @@ try {
 
 根據你的知識庫，提供台灣和日本的參考售價。
 
+重要：在 verdict 中明確說明你的資料是來自哪一年（例如 2024年、2025年等）
+
 只返回有效的 JSON（不要 markdown，不要註解）：
 {
 "name": "完整商品名稱或型號",
@@ -576,7 +578,7 @@ try {
 "features": "主要特色（3-5 點，換行分隔）",
 "tw_price": "台灣約售價（必須是 NT$XXXX 的格式，根據你知道的台灣市場價格估計）",
 "jp_price": "日本約售價（必須是 ¥XXXX 的格式，根據你知道的日本市場價格估計）",
-"verdict": "根據兩個價格，評估在日本買或台灣買哪個划算"
+"verdict": "根據兩個價格，評估在日本買或台灣買哪個划算。並說明：本估價基於 YYYY 年的市場數據"
 }`;
 
   let parsedData;
@@ -669,7 +671,7 @@ productHistory.forEach((record, index) => {
 
   // 提取商品名稱用於搜尋
   const productName = encodeURIComponent(data.name || '商品');
-  const kakakulUrl = `https://kakaku.com/search_products/?query=${productName}`;
+  const kakakulUrl = `https://kakaku.com/pricehistory/iteminfo/${productName}`;
   const shopeeUrl = `https://shopee.tw/search?keyword=${productName}`;
 
   const card = document.createElement('div');
