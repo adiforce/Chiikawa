@@ -684,7 +684,7 @@ productHistory.forEach((record, index) => {
   const data = record.data;
 
   const q = encodeURIComponent(data.name || '商品');
-  const qPrice = encodeURIComponent((data.name || '商品') + ' 建議售價');
+  const qPrice = encodeURIComponent((data.name || '商品') + ' 日本建議售價 約多少台幣');
 
   const card = document.createElement('div');
   card.className = 'result-card';
