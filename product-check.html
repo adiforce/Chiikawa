@@ -261,9 +261,21 @@ font-size: 16px; font-weight: 600; color: var(--brown);
 margin-top: 6px;
 }
 
-.price-source {
-font-size: 9px; color: var(--muted); margin-top: 4px;
+.price-links {
+font-size: 10px; margin-top: 8px;
+display: flex; flex-wrap: wrap; gap: 4px;
 }
+
+.price-link {
+background: rgba(255,255,255,0.6);
+padding: 3px 6px;
+border-radius: 4px;
+color: #0066cc;
+text-decoration: none;
+transition: all 0.15s;
+}
+
+.price-link:hover { background: white; text-decoration: underline; }
 
 .divider-small { border: none; border-top: 1.5px dashed var(--border); margin: 12px 0; }
 
@@ -338,7 +350,7 @@ font-family: 'Noto Sans TC', sans-serif; transition: all 0.15s;
 
   <div class="header">
     <h1>🛍️ 商品查價</h1>
-    <div class="header-sub">Gemini / Claude · 日本購物比價</div>
+    <div class="header-sub">Gemini / Claude · AI 智慧比價</div>
   </div>
 
   <!-- Settings (collapsible) -->
@@ -528,50 +540,6 @@ document.getElementById('analyzeBtn').disabled = on;
 if (on) document.getElementById('loadingText').textContent = `使用 ${model} 分析中⋯`;
 }
 
-// ── Search Prices via Worker ──
-async function searchPrices(productName) {
-const workerUrl = 'https://product-search-api.adiforcejava.workers.dev';
-
-if (!workerUrl) {
-  console.warn('未設定 Worker URL，使用 AI 知識庫估價');
-  return { tw_price_source: null, jp_price_source: null };
-}
-
-const results = { tw_price_source: null, jp_price_source: null };
-
-try {
-  // 搜台灣
-  const twRes = await fetch(workerUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ productName, region: 'tw' })
-  });
-  if (twRes.ok) {
-    const twData = await twRes.json();
-    results.tw_price_source = twData.results || [];
-  }
-} catch (e) {
-  console.warn('TW 搜尋失敗:', e);
-}
-
-try {
-  // 搜日本
-  const jpRes = await fetch(workerUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ productName, region: 'jp' })
-  });
-  if (jpRes.ok) {
-    const jpData = await jpRes.json();
-    results.jp_price_source = jpData.results || [];
-  }
-} catch (e) {
-  console.warn('JP 搜尋失敗:', e);
-}
-
-return results;
-}
-
 // ── Analyze ──
 async function analyze() {
 const engine  = document.getElementById('engineSelect').value;
@@ -597,85 +565,19 @@ setLoading(true, model);
 setStatus('', '');
 
 try {
-  // 第一步：AI 分析圖片取得商品名稱
-  const initialPrompt = `你是商品識別專家。分析這個商品圖片，快速辨認商品名稱。
-只返回有效的 JSON（不要 markdown，不要註解）：
-{ "name": "商品名稱或型號" }`;
+  const prompt = `你是商品識別和比價專家。分析這個商品圖片，提供詳細的商品資訊和價格估計。
 
-  let productNameResult;
-  
-  if (engine === 'gemini') {
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [
-          { text: initialPrompt },
-          { inline_data: { mime_type: imageMime, data: base64Image } }
-        ]}]
-      })
-    });
-    const data = await res.json();
-    if (data.error) throw new Error(data.error.message);
-    let raw = data.candidates[0].content.parts[0].text;
-    productNameResult = JSON.parse(raw.replace(/```json|```/g, '').trim());
-  } else {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': claudeKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model, max_tokens: 200,
-        messages: [{ role: 'user', content: [
-          { type: 'image', source: { type: 'base64', media_type: imageMime, data: base64Image } },
-          { type: 'text', text: initialPrompt }
-        ]}]
-      })
-    });
-    const data = await res.json();
-    if (data.error) throw new Error(data.error.message);
-    let raw = data.content[0].text;
-    productNameResult = JSON.parse(raw.replace(/```json|```/g, '').trim());
-  }
-
-  const productName = productNameResult.name || '未知商品';
-  document.getElementById('loadingText').textContent = `搜尋 "${productName}" 的實際售價⋯`;
-
-  // 第二步：搜尋台灣和日本的實際售價
-  const searchResults = await searchPrices(productName);
-
-  // 第三步：用 AI 分析搜尋結果並提取價格
-  const searchContext = `
-台灣搜尋結果（${searchResults.tw_price_source ? searchResults.tw_price_source.length : 0} 筆）：
-${searchResults.tw_price_source?.slice(0, 3).map(r => `- ${r.title}\n  ${r.snippet}`).join('\n') || '無結果'}
-
-日本搜尋結果（${searchResults.jp_price_source ? searchResults.jp_price_source.length : 0} 筆）：
-${searchResults.jp_price_source?.slice(0, 3).map(r => `- ${r.title}\n  ${r.snippet}`).join('\n') || '無結果'}`;
-
-  const fullPrompt = `你是商品識別和比價專家。根據這個商品圖片和以下搜尋結果，提供詳細的比價分析。
-
-商品：${productName}
-
-搜尋結果：
-${searchContext}
-
-分析這些搜尋結果並從中提取實際售價。如果搜尋結果中找不到明確的建議售價，則根據你的知識庫估計。
+根據你的知識庫，提供台灣和日本的參考售價。
 
 只返回有效的 JSON（不要 markdown，不要註解）：
 {
 "name": "完整商品名稱或型號",
 "brand": "品牌",
 "features": "主要特色（3-5 點，換行分隔）",
-"tw_price": "台灣售價（必須是 NT$XXXX 的格式，優先從搜尋結果提取，找不到就用你的知識估計）",
-"jp_price": "日本售價（必須是 ¥XXXX 的格式，優先從搜尋結果提取，找不到就用你的知識估計）",
+"tw_price": "台灣約售價（必須是 NT$XXXX 的格式，根據你知道的台灣市場價格估計）",
+"jp_price": "日本約售價（必須是 ¥XXXX 的格式，根據你知道的日本市場價格估計）",
 "verdict": "根據兩個價格，評估在日本買或台灣買哪個划算"
 }`;
-
-  document.getElementById('loadingText').textContent = `AI 分析價格中⋯`;
 
   let parsedData;
 
@@ -685,7 +587,7 @@ ${searchContext}
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         contents: [{ parts: [
-          { text: fullPrompt },
+          { text: prompt },
           { inline_data: { mime_type: imageMime, data: base64Image } }
         ]}]
       })
@@ -707,7 +609,7 @@ ${searchContext}
         model, max_tokens: 1500,
         messages: [{ role: 'user', content: [
           { type: 'image', source: { type: 'base64', media_type: imageMime, data: base64Image } },
-          { type: 'text', text: fullPrompt }
+          { type: 'text', text: prompt }
         ]}]
       })
     });
@@ -727,9 +629,6 @@ ${searchContext}
     }
   }
   parsedData.jp_equiv = tw_equiv;
-
-  // 記錄搜尋來源
-  parsedData.search_results = searchResults;
 
   productHistory.unshift({ timestamp: Date.now(), engine, model, data: parsedData, thumb: document.getElementById('previewImg').src });
   localStorage.setItem(HIS_KEY, JSON.stringify(productHistory));
@@ -768,16 +667,13 @@ productHistory.forEach((record, index) => {
   const badgeLabel = isGemini ? '🔵 Gemini' : '🟣 Claude';
   const data = record.data;
 
+  // 提取商品名稱用於搜尋
+  const productName = encodeURIComponent(data.name || '商品');
+  const kakakulUrl = `https://kakaku.com/search_products/?query=${productName}`;
+  const shopeeUrl = `https://shopee.tw/search?keyword=${productName}`;
+
   const card = document.createElement('div');
   card.className = 'result-card';
-  
-  const twSourceInfo = data.search_results?.tw_price_source?.length 
-    ? `（搜尋找到）` 
-    : `（知識庫估計）`;
-  const jpSourceInfo = data.search_results?.jp_price_source?.length 
-    ? `（搜尋找到）` 
-    : `（知識庫估計）`;
-
   card.innerHTML = `
     <div class="result-header">
       <div>
@@ -793,14 +689,18 @@ productHistory.forEach((record, index) => {
       <div class="price-box jp">
         <div class="flag">🇯🇵</div>
         <div class="country">日本價格</div>
-        <div class="amount">${data.jp_price || '—'}</div>
-        <div class="price-source">${jpSourceInfo}<br>${data.jp_equiv || ''}</div>
+        <div class="amount">${data.jp_price || '—'}<br><span style="font-size: 10px; color: var(--muted);">${data.jp_equiv || ''}</span></div>
+        <div class="price-links">
+          <a href="${kakakulUrl}" target="_blank" class="price-link">🔍 Kakaku</a>
+        </div>
       </div>
       <div class="price-box tw">
         <div class="flag">🇹🇼</div>
         <div class="country">台灣價格</div>
         <div class="amount">${data.tw_price || '—'}</div>
-        <div class="price-source">${twSourceInfo}</div>
+        <div class="price-links">
+          <a href="${shopeeUrl}" target="_blank" class="price-link">🔍 蝦皮</a>
+        </div>
       </div>
     </div>
     
