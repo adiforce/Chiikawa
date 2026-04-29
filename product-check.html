@@ -621,13 +621,17 @@ try {
     parsedData = JSON.parse(raw.replace(/```json|```/g, '').trim());
   }
 
-  // 轉換日幣為等值台幣
+  // 轉換日幣為等值台幣（只取第一個數字）
   let tw_equiv = '';
   if (parsedData.jp_price && parsedData.jp_price.includes('¥')) {
-    const jpAmount = parseInt(parsedData.jp_price.replace(/[^0-9]/g, ''));
-    if (!isNaN(jpAmount)) {
-      const twEquivalent = Math.round(jpAmount * 0.2);
-      tw_equiv = `（約 NT$${twEquivalent}）`;
+    // 提取 jp_price 中的第一個數字（可能有範圍如 1,100-1,320）
+    const jpAmountMatch = parsedData.jp_price.match(/¥?([\d,]+)/);
+    if (jpAmountMatch) {
+      const jpAmount = parseInt(jpAmountMatch[1].replace(/,/g, ''));
+      if (!isNaN(jpAmount)) {
+        const twEquivalent = Math.round(jpAmount * 0.2);
+        tw_equiv = `（約 NT$${twEquivalent}）`;
+      }
     }
   }
   parsedData.jp_equiv = tw_equiv;
@@ -671,7 +675,7 @@ productHistory.forEach((record, index) => {
 
   // 提取商品名稱用於搜尋
   const productName = encodeURIComponent(data.name || '商品');
-  const kakakulUrl = `https://kakaku.com/pricehistory/iteminfo/${productName}`;
+  const amazonJpUrl = `https://www.amazon.co.jp/s?k=${productName}`;
   const shopeeUrl = `https://shopee.tw/search?keyword=${productName}`;
 
   const card = document.createElement('div');
@@ -693,7 +697,7 @@ productHistory.forEach((record, index) => {
         <div class="country">日本價格</div>
         <div class="amount">${data.jp_price || '—'}<br><span style="font-size: 10px; color: var(--muted);">${data.jp_equiv || ''}</span></div>
         <div class="price-links">
-          <a href="${kakakulUrl}" target="_blank" class="price-link">🔍 Kakaku</a>
+          <a href="${amazonJpUrl}" target="_blank" class="price-link">🔍 Amazon JP</a>
         </div>
       </div>
       <div class="price-box tw">
