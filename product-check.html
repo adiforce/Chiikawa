@@ -675,7 +675,7 @@ productHistory.forEach((record, index) => {
 
   // 提取商品名稱用於搜尋
   const productName = encodeURIComponent(data.name || '商品');
-  const amazonJpUrl = `https://www.amazon.co.jp/s?k=${productName}`;
+  const amazonJpUrl = `https://www.amazon.co.jp/s?k=${productName}&language=ja_JP`;
   const shopeeUrl = `https://shopee.tw/search?keyword=${productName}`;
 
   const card = document.createElement('div');
@@ -689,7 +689,7 @@ productHistory.forEach((record, index) => {
       <button class="del-btn" onclick="deleteRecord(${index})">✕ 刪除</button>
     </div>
     
-    <div class="product-name">${data.name || '未知商品'}</div>
+    <div class="product-name" onclick="searchGoogle('${productName}+建議售價')" style="cursor: pointer; text-decoration: underline; transition: color 0.2s;" onmouseover="this.style.color='var(--pink-dark)'" onmouseout="this.style.color='var(--brown)'">${data.name || '未知商品'}</div>
     
     <div class="price-row">
       <div class="price-box jp">
@@ -727,6 +727,11 @@ productHistory.splice(index, 1);
 localStorage.setItem(HIS_KEY, JSON.stringify(productHistory));
 renderHistory();
 };
+
+function searchGoogle(query) {
+  const url = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+  window.open(url, '_blank');
+}
 </script>
 
 </body>
