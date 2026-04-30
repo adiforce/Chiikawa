@@ -593,7 +593,9 @@ font-size: 14px; padding: 32px 0;
           <button class="del-btn" onclick="deleteRecord(${index})">✕ 刪除</button>
         </div>
         
-        <div class="product-name">${data.name || '未知商品'}</div>
+        <div class="product-name" onclick="searchGoogle('${data.name}')" style="cursor: pointer; text-decoration: underline;">
+          🔗 ${data.name || '未知商品'}
+        </div>
         
         <div class="section-label">🏷️ 品牌與特色</div>
         <div style="font-size: 12px; margin-bottom: 12px; color: var(--text);">
@@ -636,6 +638,12 @@ font-size: 14px; padding: 32px 0;
     const engineName = record.engine === 'gemini' ? '🔵 Gemini' : '🟣 Claude';
     const model = record.model || '不詳';
     alert(`${type === 'jp' ? '日本' : '台灣'}價格來源：\n\n${engineName}\nModel: ${model}\n\n基於 AI 知識估計`);
+  };
+
+  window.searchGoogle = (productName) => {
+    if (!productName) return;
+    const query = encodeURIComponent(`${productName} 日本與台灣售價比較`);
+    window.open(`https://www.google.com/search?q=${query}`, '_blank');
   };
 
   init();
