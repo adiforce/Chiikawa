@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
@@ -22,768 +21,615 @@
     --surface: #ffffff;
   }
 
-- { margin: 0; padding: 0; box-sizing: border-box; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-body {
-font-family: ‘Noto Sans TC’, sans-serif;
-background: var(–cream);
-color: var(–text);
-min-height: 100vh;
-}
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+  }
 
-body::before {
-content: ‘’;
-position: fixed; inset: 0;
-background-image: radial-gradient(circle, #e8d5c4 1px, transparent 1px);
-background-size: 24px 24px;
-opacity: 0.45;
-pointer-events: none;
-z-index: 0;
-}
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: radial-gradient(circle, #e8d5c4 1px, transparent 1px);
+    background-size: 24px 24px;
+    opacity: 0.45;
+    pointer-events: none;
+    z-index: 0;
+  }
 
-.container {
-position: relative; z-index: 1;
-max-width: 480px;
-margin: 0 auto;
-padding: 20px 16px 48px;
-}
+  .container {
+    position: relative; z-index: 1;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 20px 16px 48px;
+  }
 
-/* ── Header ── */
-.header { text-align: center; padding: 20px 0 18px; }
-.header h1 {
-font-family: ‘Zen Maru Gothic’, sans-serif;
-font-size: 22px; font-weight: 900; color: var(–brown);
-}
-.header-sub { font-size: 12px; color: var(–muted); margin-top: 4px; }
+  .header { text-align: center; padding: 20px 0 18px; }
+  .header h1 {
+    font-family: 'Zen Maru Gothic', sans-serif;
+    font-size: 22px; font-weight: 900; color: var(--brown);
+  }
+  .header-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
 
-/* ── Card ── */
-.card {
-background: var(–surface);
-border-radius: 18px;
-padding: 16px 18px;
-margin-bottom: 14px;
-box-shadow: 0 3px 12px rgba(100,60,40,0.08);
-border: 2px solid var(–border);
-}
+  .card {
+    background: var(--surface);
+    border-radius: 18px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+    box-shadow: 0 3px 12px rgba(100,60,40,0.08);
+    border: 2px solid var(--border);
+  }
 
-/* ── Settings (collapsible) ── */
-.settings-toggle {
-display: flex; align-items: center; justify-content: space-between;
-cursor: pointer; user-select: none;
-}
-.settings-toggle-label {
-font-family: ‘Zen Maru Gothic’, sans-serif;
-font-size: 13px; font-weight: 700; color: var(–brown);
-display: flex; align-items: center; gap: 6px;
-}
-.settings-arrow { color: var(–muted); font-size: 12px; transition: transform 0.2s; }
-.settings-arrow.open { transform: rotate(180deg); }
+  .settings-toggle {
+    display: flex; align-items: center; justify-content: space-between;
+    cursor: pointer; user-select: none;
+  }
+  .settings-toggle-label {
+    font-family: 'Zen Maru Gothic', sans-serif;
+    font-size: 13px; font-weight: 700; color: var(--brown);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .settings-arrow { color: var(--muted); font-size: 12px; transition: transform 0.2s; }
+  .settings-arrow.open { transform: rotate(180deg); }
 
-.settings-body { display: none; margin-top: 14px; }
-.settings-body.open { display: block; }
+  .settings-body { display: none; margin-top: 14px; }
+  .settings-body.open { display: block; }
 
-/* ── Field ── */
-.field { margin-bottom: 12px; }
-.field label {
-font-size: 11px; font-weight: 700; color: var(–muted);
-display: block; margin-bottom: 4px; letter-spacing: 0.5px;
-}
-.field select, .field input {
-width: 100%; padding: 10px 12px;
-border: 1.5px solid var(–border); border-radius: 10px;
-font-size: 13px; font-family: ‘Noto Sans TC’, sans-serif;
-background: var(–cream); color: var(–text);
-outline: none; transition: border-color 0.15s;
-appearance: none;
-}
-.field select {
-background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘12’ viewBox=‘0 0 12 12’%3E%3Cpath fill=’%23a07060’ d=‘M6 8L1 3h10z’/%3E%3C/svg%3E”);
-background-repeat: no-repeat;
-background-position: right 12px center;
-background-color: var(–cream);
-padding-right: 32px;
-cursor: pointer;
-}
-.field input[type=“password”] { font-family: ‘JetBrains Mono’, monospace; letter-spacing: 2px; }
-.field select:focus, .field input:focus { border-color: var(–pink-dark); }
+  .field { margin-bottom: 12px; }
+  .field label {
+    font-size: 11px; font-weight: 700; color: var(--muted);
+    display: block; margin-bottom: 4px; letter-spacing: 0.5px;
+  }
+  .field input {
+    width: 100%; padding: 10px 12px;
+    border: 1.5px solid var(--border); border-radius: 10px;
+    font-size: 13px; font-family: 'Noto Sans TC', sans-serif;
+    background: var(--cream); color: var(--text);
+    outline: none; transition: border-color 0.15s;
+  }
+  .field input[type="password"] { font-family: 'JetBrains Mono', monospace; letter-spacing: 2px; }
+  .field input:focus { border-color: var(--pink-dark); }
 
-.save-btn {
-width: 100%; padding: 10px;
-background: var(–pink-dark); color: white;
-border: none; border-radius: 10px;
-font-size: 13px; font-weight: 700;
-font-family: ‘Noto Sans TC’, sans-serif;
-cursor: pointer; transition: opacity 0.15s;
-margin-top: 4px;
-}
-.save-btn:hover { opacity: 0.88; }
+  .save-btn {
+    width: 100%; padding: 10px;
+    background: var(--pink-dark); color: white;
+    border: none; border-radius: 10px;
+    font-size: 13px; font-weight: 700;
+    font-family: 'Noto Sans TC', sans-serif;
+    cursor: pointer; transition: opacity 0.15s;
+    margin-top: 4px;
+  }
+  .save-btn:hover { opacity: 0.88; }
 
-.api-status { font-size: 11px; margin-top: 8px; text-align: center; }
-.api-status.ok  { color: var(–mint-dark); }
-.api-status.err { color: #e05050; }
+  .api-status { font-size: 11px; margin-top: 8px; text-align: center; }
+  .api-status.ok  { color: var(--mint-dark); }
+  .api-status.err { color: #e05050; }
 
-/* ── Upload ── */
-.preview-area {
-width: 100%; aspect-ratio: 4/3;
-border-radius: 12px; overflow: hidden;
-background: #f5ede4;
-display: flex; align-items: center; justify-content: center;
-margin-bottom: 12px; position: relative;
-border: 2px dashed var(–border);
-transition: border-color 0.15s;
-cursor: pointer;
-}
-.preview-area:hover { border-color: var(–pink-dark); }
-.preview-area img { width: 100%; height: 100%; object-fit: cover; display: none; border-radius: 10px; }
-.preview-area img.show { display: block; }
-.preview-placeholder { display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(–muted); }
-.preview-placeholder .big-icon { font-size: 40px; }
-.preview-placeholder .hint { font-size: 12px; }
-input[type=“file”] { display: none; }
+  .preview-area {
+    width: 100%; aspect-ratio: 4/3;
+    border-radius: 12px; overflow: hidden;
+    background: #f5ede4;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 12px; position: relative;
+    border: 2px dashed var(--border);
+    transition: border-color 0.15s;
+    cursor: pointer;
+  }
+  .preview-area:hover { border-color: var(--pink-dark); }
+  .preview-area img { width: 100%; height: 100%; object-fit: cover; display: none; border-radius: 10px; }
+  .preview-area img.show { display: block; }
+  .preview-placeholder { display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--muted); }
+  .preview-placeholder .big-icon { font-size: 40px; }
+  .preview-placeholder .hint { font-size: 12px; }
+  input[type="file"] { display: none; }
 
-.cam-btns { display: flex; gap: 10px; }
-.cam-btn {
-flex: 1; padding: 11px;
-border: 2px solid var(–pink);
-background: white; border-radius: 12px;
-font-size: 13px; font-weight: 700;
-font-family: ‘Noto Sans TC’, sans-serif;
-color: var(–pink-dark); cursor: pointer;
-transition: all 0.15s; display: flex;
-align-items: center; justify-content: center; gap: 6px;
-}
-.cam-btn:hover { background: var(–pink); color: white; }
-.cam-btn.primary { background: var(–pink-dark); color: white; border-color: var(–pink-dark); }
-.cam-btn.primary:hover { opacity: 0.88; }
-.cam-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .cam-btns { display: flex; gap: 10px; }
+  .cam-btn {
+    flex: 1; padding: 11px;
+    border: 2px solid var(--pink);
+    background: white; border-radius: 12px;
+    font-size: 13px; font-weight: 700;
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--pink-dark); cursor: pointer;
+    transition: all 0.15s;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .cam-btn:hover { background: var(--pink); color: white; }
+  .cam-btn.primary { background: var(--pink-dark); color: white; border-color: var(--pink-dark); }
+  .cam-btn.primary:hover { opacity: 0.88; }
+  .cam-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-/* ── Status ── */
-.status-text {
-font-size: 13px; color: var(–muted);
-text-align: center; min-height: 18px;
-padding: 4px 0; margin-bottom: 4px;
-}
-.status-text.ok  { color: var(–mint-dark); }
-.status-text.err { color: #e05050; }
+  .status-text {
+    font-size: 13px; color: var(--muted);
+    text-align: center; min-height: 18px;
+    padding: 4px 0; margin-bottom: 4px;
+  }
+  .status-text.ok  { color: var(--mint-dark); }
+  .status-text.err { color: #e05050; }
 
-/* ── Loading ── */
-.loading-card {
-background: var(–surface); border-radius: 18px;
-padding: 32px; margin-bottom: 14px;
-box-shadow: 0 3px 12px rgba(100,60,40,0.08);
-border: 2px solid var(–border);
-text-align: center; display: none;
-}
-.loading-card.show { display: block; }
-.spinner {
-width: 36px; height: 36px;
-border: 3px solid var(–pink);
-border-top-color: var(–pink-dark);
-border-radius: 50%;
-animation: spin 0.8s linear infinite;
-margin: 0 auto 12px;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-.loading-text { font-family: ‘Zen Maru Gothic’, sans-serif; font-size: 14px; color: var(–brown); }
+  .loading-card {
+    background: var(--surface); border-radius: 18px;
+    padding: 32px; margin-bottom: 14px;
+    box-shadow: 0 3px 12px rgba(100,60,40,0.08);
+    border: 2px solid var(--border);
+    text-align: center; display: none;
+  }
+  .loading-card.show { display: block; }
+  .spinner {
+    width: 36px; height: 36px;
+    border: 3px solid var(--pink);
+    border-top-color: var(--pink-dark);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 12px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text { font-family: 'Zen Maru Gothic', sans-serif; font-size: 14px; color: var(--brown); }
 
-/* ── Divider ── */
-.divider {
-display: flex; align-items: center; gap: 12px;
-margin: 20px 0 14px; color: var(–muted);
-font-size: 11px; letter-spacing: 2px;
-}
-.divider::before, .divider::after { content: ‘’; flex: 1; height: 1.5px; background: var(–border); }
+  .result-card {
+    background: var(--surface);
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 14px;
+    box-shadow: 0 3px 12px rgba(100,60,40,0.08);
+    border: 2px solid var(--mint);
+    animation: slideIn 0.3s ease;
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 
-/* ── Result Card ── */
-.result-card {
-background: var(–surface);
-border-radius: 18px;
-padding: 16px;
-margin-bottom: 14px;
-box-shadow: 0 3px 12px rgba(100,60,40,0.08);
-border: 2px solid var(–mint);
-animation: slideIn 0.3s ease;
-}
-@keyframes slideIn {
-from { opacity: 0; transform: translateY(-8px); }
-to   { opacity: 1; transform: translateY(0); }
-}
+  .result-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .result-meta { font-size: 11px; color: var(--muted); line-height: 1.6; }
+  .result-badge {
+    display: inline-block;
+    font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 99px;
+    margin-top: 3px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .result-badge.gemini { background: #dbeafe; color: #1d4ed8; }
+  .result-badge.claude { background: #ddd6fe; color: #5b21b6; }
 
-.result-header {
-display: flex; justify-content: space-between; align-items: flex-start;
-margin-bottom: 12px;
-}
-.result-meta { font-size: 11px; color: var(–muted); line-height: 1.6; }
-.result-badge {
-display: inline-block;
-font-size: 10px; font-weight: 700;
-padding: 2px 8px; border-radius: 99px;
-margin-top: 3px;
-font-family: ‘JetBrains Mono’, monospace;
-}
-.result-badge.gemini { background: #dbeafe; color: #1d4ed8; }
-.result-badge.claude { background: var(–lavender); color: #4c1d95; }
+  .del-btn {
+    padding: 5px 12px;
+    border: 1.5px solid var(--pink);
+    background: white; border-radius: 8px;
+    font-size: 11px; font-weight: 700; color: var(--pink-dark);
+    cursor: pointer; font-family: 'Noto Sans TC', sans-serif;
+    transition: all 0.15s; flex-shrink: 0;
+  }
+  .del-btn:hover { background: var(--pink-dark); color: white; border-color: var(--pink-dark); }
 
-.del-btn {
-padding: 5px 12px;
-border: 1.5px solid var(–pink);
-background: white; border-radius: 8px;
-font-size: 11px; font-weight: 700; color: var(–pink-dark);
-cursor: pointer; font-family: ‘Noto Sans TC’, sans-serif;
-transition: all 0.15s; flex-shrink: 0;
-}
-.del-btn:hover { background: var(–pink-dark); color: white; border-color: var(–pink-dark); }
+  .product-name {
+    font-family: 'Zen Maru Gothic', sans-serif;
+    font-size: 16px; font-weight: 900; color: var(--brown);
+    margin-bottom: 12px;
+  }
 
-/* ── Product Info ── */
-.product-name {
-font-family: ‘Zen Maru Gothic’, sans-serif;
-font-size: 16px; font-weight: 900; color: var(–brown);
-margin-bottom: 12px;
-}
+  .price-row {
+    display: flex; gap: 12px; margin-bottom: 14px;
+  }
+  .price-box {
+    flex: 1; border-radius: 12px; padding: 12px 14px;
+    text-align: center; position: relative;
+  }
+  .price-box.jp { background: #fff0f8; border: 1.5px solid var(--pink); }
+  .price-box.tw { background: #f0fff8; border: 1.5px solid var(--mint); }
 
-.price-row {
-display: grid; grid-template-columns: 1fr 1fr;
-gap: 10px; margin-bottom: 12px;
-}
+  .price-box .flag { font-size: 20px; margin-bottom: 4px; }
+  .price-box .country { font-size: 10px; font-weight: 700; color: var(--muted); }
+  .price-box .amount {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px; font-weight: 600; color: var(--brown);
+    margin-top: 6px;
+  }
 
-.price-box {
-border-radius: 12px; padding: 12px 14px;
-text-align: center; position: relative;
-}
-.price-box.jp { background: #fff0f8; border: 1.5px solid var(–pink); }
-.price-box.tw { background: #f0fff8; border: 1.5px solid var(–mint); }
+  .source-btn {
+    position: absolute; top: 6px; right: 6px;
+    width: 20px; height: 20px; border-radius: 50%;
+    border: none; background: rgba(255,255,255,0.8);
+    color: var(--muted); font-size: 11px; font-weight: bold;
+    cursor: pointer; transition: all 0.15s;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0; line-height: 1;
+  }
+  .source-btn:hover { background: rgba(255,255,255,1); color: var(--brown); }
 
-.price-box .flag { font-size: 20px; margin-bottom: 4px; }
-.price-box .country { font-size: 10px; font-weight: 700; color: var(–muted); }
-.price-box .amount {
-font-family: ‘JetBrains Mono’, monospace;
-font-size: 16px; font-weight: 600; color: var(–brown);
-margin-top: 6px;
-}
+  .section-label {
+    font-size: 10px; font-weight: 700; color: var(--muted);
+    letter-spacing: 1px; margin-bottom: 6px;
+  }
 
-.source-btn {
-position: absolute; top: 6px; right: 6px;
-width: 20px; height: 20px; border-radius: 50%;
-border: none; background: rgba(255,255,255,0.8);
-color: var(–muted); font-size: 11px; font-weight: bold;
-cursor: pointer; transition: all 0.15s;
-display: flex; align-items: center; justify-content: center;
-padding: 0; line-height: 1;
-}
-.source-btn:hover { background: rgba(255,255,255,1); color: var(–brown); }
+  .feature-text {
+    font-size: 12px; color: var(--text);
+    line-height: 1.6; padding: 10px;
+    background: #fafafa; border-radius: 8px;
+    border-left: 3px solid var(--lavender);
+    margin-bottom: 12px;
+  }
 
-.divider-small { border: none; border-top: 1.5px dashed var(–border); margin: 12px 0; }
+  .verdict-box {
+    padding: 10px;
+    background: #fffbee; border-radius: 8px;
+    border-left: 3px solid var(--yellow);
+    font-size: 12px; color: #7a6020; line-height: 1.6;
+  }
 
-.section-label {
-font-size: 10px; font-weight: 700; color: var(–muted);
-letter-spacing: 1px; margin-bottom: 6px;
-}
-
-.feature-text {
-font-size: 12px; color: var(–text); line-height: 1.8;
-white-space: pre-wrap;
-}
-
-.verdict-box {
-margin-top: 12px; border-radius: 12px;
-padding: 11px 14px;
-background: #fffbee; border: 1.5px solid var(–yellow);
-font-size: 12px; color: #7a6020; line-height: 1.6;
-}
-
-/* ── History ── */
-.history-item {
-background: var(–surface); border-radius: 14px;
-padding: 12px 14px;
-box-shadow: 0 2px 8px rgba(100,60,40,0.06);
-border: 1.5px solid var(–border);
-cursor: pointer; transition: all 0.15s;
-display: flex; align-items: center; gap: 12px;
-margin-bottom: 8px;
-}
-.history-item:hover { border-color: var(–pink); transform: translateY(-2px); }
-
-.history-thumb {
-width: 44px; height: 44px; border-radius: 8px;
-object-fit: cover; flex-shrink: 0;
-background: #f0e8e0;
-}
-
-.history-info { flex: 1; min-width: 0; }
-.history-name {
-font-size: 13px; font-weight: 700; color: var(–brown);
-white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.history-prices { font-size: 11px; color: var(–muted); margin-top: 2px; }
-
-.history-del {
-font-size: 16px; color: var(–border); cursor: pointer;
-flex-shrink: 0; padding: 4px;
-transition: color 0.15s;
-}
-.history-del:hover { color: #e05050; }
-
-.clear-btn {
-display: block; margin: 10px auto 0;
-background: none; border: 1.5px solid var(–border);
-border-radius: 99px; padding: 5px 16px;
-font-size: 11px; color: var(–muted); cursor: pointer;
-font-family: ‘Noto Sans TC’, sans-serif; transition: all 0.15s;
-}
-.clear-btn:hover { border-color: #e05050; color: #e05050; }
-
-/* ── Empty ── */
-.empty { text-align: center; color: var(–muted); font-size: 14px; padding: 32px 0; }
-.empty-icon { font-size: 36px; margin-bottom: 8px; }
+  .empty {
+    text-align: center; color: var(--muted);
+    font-size: 14px; padding: 32px 0;
+  }
+  .empty-icon { font-size: 36px; margin-bottom: 8px; }
 </style>
-
 </head>
 <body>
 <div class="container">
 
-  <!-- Header -->
-
   <div class="header">
-    <h1>🛍️ 商品查價</h1>
-    <div class="header-sub">Gemini / Claude · 日本購物比價</div>
+    <h1>💳 商品查價</h1>
+    <div class="header-sub">照片 → AI 分析 → 日本・台灣價格</div>
   </div>
 
-  <!-- Settings (collapsible) -->
-
+  <!-- Settings Card -->
   <div class="card">
     <div class="settings-toggle" onclick="toggleSettings()">
-      <span class="settings-toggle-label">⚙️ API 設定</span>
-      <span class="settings-arrow" id="settingsArrow">▾</span>
+      <div class="settings-toggle-label">⚙️ 設定</div>
+      <span class="settings-arrow">▴</span>
     </div>
-    <div class="settings-body" id="settingsBody">
-      <div class="field" style="margin-top:14px">
-        <label>AI 引擎</label>
-        <select id="engineSelect" onchange="switchEngine(this.value)">
-          <option value="gemini">Google Gemini</option>
-          <option value="claude">Anthropic Claude</option>
-        </select>
+    <div class="settings-body">
+      <div class="field">
+        <label>Gemini API Key</label>
+        <input type="password" id="geminiKey" placeholder="sk-...">
       </div>
       <div class="field">
-        <label>模型</label>
-        <select id="modelSelect"></select>
+        <label>Claude API Key</label>
+        <input type="password" id="claudeKey" placeholder="sk-ant-...">
       </div>
-      <div class="field">
-        <label>Google Gemini API Key</label>
-        <input type="password" id="geminiKey" placeholder="AIza...">
-      </div>
-      <div class="field">
-        <label>Anthropic Claude API Key</label>
-        <input type="password" id="claudeKey" placeholder="sk-ant-api03-...">
-      </div>
-      <button class="save-btn" onclick="saveSettings()">💾 儲存（自動記住）</button>
+      <button class="save-btn" onclick="saveSettings()">💾 保存設定</button>
       <div class="api-status" id="apiStatus"></div>
     </div>
   </div>
 
-  <!-- Upload -->
-
+  <!-- Upload Card -->
   <div class="card">
     <div class="preview-area" id="previewArea" onclick="document.getElementById('galleryInput').click()">
-      <img id="previewImg" alt="商品預覽">
-      <div class="preview-placeholder" id="previewPlaceholder">
+      <img id="previewImg">
+      <div id="previewPlaceholder" class="preview-placeholder">
         <div class="big-icon">📷</div>
-        <div class="hint">點擊從相簿選取</div>
+        <div class="hint">點擊選擇照片</div>
       </div>
     </div>
     <input type="file" id="galleryInput" accept="image/*" onchange="onFileChange(event)">
-    <input type="file" id="cameraInput" accept="image/*" capture="environment" onchange="onFileChange(event)">
+
     <div class="cam-btns">
-      <button class="cam-btn" onclick="document.getElementById('galleryInput').click()">🖼️ 選圖</button>
-      <button class="cam-btn" onclick="document.getElementById('cameraInput').click()">📷 拍照</button>
+      <button class="cam-btn" onclick="document.getElementById('galleryInput').click()">🗂️ 選擇照片</button>
       <button class="cam-btn primary" id="analyzeBtn" onclick="analyze()" disabled>🔍 分析</button>
     </div>
+    <div class="status-text" id="statusText">準備好了，選擇照片吧。</div>
   </div>
 
-  <div class="status-text" id="statusText"></div>
+  <!-- Loading Card -->
   <div class="loading-card" id="loadingCard">
     <div class="spinner"></div>
-    <div class="loading-text" id="loadingText">AI 分析中，請稍候⋯</div>
+    <div class="loading-text" id="loadingText">分析中⋯</div>
   </div>
 
   <!-- History -->
-
-  <div class="divider">查價紀錄（存在本機）</div>
   <div id="historyContainer"></div>
 
 </div>
+
 <script>
-  // ── Config ──
-  const ENGINE_CONFIG = {
-    gemini: {
-      storageKey: 'product-gemini-key',
-      models: [
-        { value: 'gemini-2.0-flash',  label: 'gemini-2.0-flash（推薦）' },
-        { value: 'gemini-1.5-flash',  label: 'gemini-1.5-flash' },
-        { value: 'gemini-1.5-pro',    label: 'gemini-1.5-pro' },
-      ]
-    },
-    claude: {
-      storageKey: 'product-claude-key',
-      models: [
-        { value: 'claude-sonnet-4-20250514', label: 'claude-sonnet-4-20250514（推薦）' },
-        { value: 'claude-haiku-4-5-20251001', label: 'claude-haiku-4-5（省額度）' },
-      ]
+  const HIS_KEY = 'product_history_v2';
+  let productHistory = [];
+  let base64Image = '';
+  let imageMime = 'image/jpeg';
+
+  function init() {
+    const saved = localStorage.getItem(HIS_KEY);
+    if (saved) productHistory = JSON.parse(saved);
+    
+    const geminiKey = localStorage.getItem('product-gemini-key') || '';
+    const claudeKey = localStorage.getItem('product-claude-key') || '';
+    document.getElementById('geminiKey').value = geminiKey;
+    document.getElementById('claudeKey').value = claudeKey;
+    
+    renderHistory();
+  }
+
+  function toggleSettings() {
+    const body = document.querySelector('.settings-body');
+    const arrow = document.querySelector('.settings-arrow');
+    body.classList.toggle('open');
+    arrow.classList.toggle('open');
+  }
+
+  function saveSettings() {
+    const geminiKey = document.getElementById('geminiKey').value.trim();
+    const claudeKey = document.getElementById('claudeKey').value.trim();
+    if (!geminiKey && !claudeKey) { 
+      showApiStatus('⚠️ 請至少輸入一個 API Key', 'err'); 
+      return; 
     }
-  };
+    localStorage.setItem('product-gemini-key', geminiKey);
+    localStorage.setItem('product-claude-key', claudeKey);
+    showApiStatus('✅ 設定已儲存！', 'ok');
+  }
 
-const HIS_KEY = ‘product_history_v2’;
-let base64Image = ‘’;
-let imageMime   = ‘image/jpeg’;
-let settingsOpen = false;
-let productHistory = [];
+  function showApiStatus(msg, type) {
+    const el = document.getElementById('apiStatus');
+    el.textContent = msg;
+    el.className = 'api-status ' + type;
+  }
 
-try { productHistory = JSON.parse(localStorage.getItem(HIS_KEY)) || []; } catch(e) {}
+  function onFileChange(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    e.target.value = '';
+    compressImage(file, readImage);
+  }
 
-// ── Init ──
-(function init() {
-const engine = localStorage.getItem(‘product-engine’) || ‘gemini’;
-document.getElementById(‘engineSelect’).value = engine;
-switchEngine(engine, true);
-renderHistory();
-})();
-
-function toggleSettings() {
-settingsOpen = !settingsOpen;
-document.getElementById(‘settingsBody’).classList.toggle(‘open’, settingsOpen);
-const arrow = document.getElementById(‘settingsArrow’);
-arrow.textContent = settingsOpen ? ‘▴’ : ‘▾’;
-arrow.classList.toggle(‘open’, settingsOpen);
-}
-
-function switchEngine(engine, silent) {
-const cfg = ENGINE_CONFIG[engine];
-
-```
-// 更新 model options
-const sel = document.getElementById('modelSelect');
-sel.innerHTML = cfg.models.map(m => `<option value="${m.value}">${m.label}</option>`).join('');
-const savedModel = localStorage.getItem('product-model-' + engine);
-if (savedModel) sel.value = savedModel;
-
-// 讀取對應的 API Key
-const geminiKey = localStorage.getItem(ENGINE_CONFIG.gemini.storageKey) || '';
-const claudeKey = localStorage.getItem(ENGINE_CONFIG.claude.storageKey) || '';
-document.getElementById('geminiKey').value = geminiKey;
-document.getElementById('claudeKey').value = claudeKey;
-
-if (!silent) localStorage.setItem('product-engine', engine);
-
-if ((engine === 'gemini' && geminiKey) || (engine === 'claude' && claudeKey)) {
-  showApiStatus('✅ API Key 已儲存', 'ok');
-}
-```
-
-}
-
-function saveSettings() {
-const engine = document.getElementById(‘engineSelect’).value;
-const geminiKey = document.getElementById(‘geminiKey’).value.trim();
-const claudeKey = document.getElementById(‘claudeKey’).value.trim();
-const model  = document.getElementById(‘modelSelect’).value;
-
-```
-if (!geminiKey && !claudeKey) { 
-  showApiStatus('⚠️ 請至少輸入一個 API Key', 'err'); 
-  return; 
-}
-
-localStorage.setItem(ENGINE_CONFIG.gemini.storageKey, geminiKey);
-localStorage.setItem(ENGINE_CONFIG.claude.storageKey, claudeKey);
-localStorage.setItem('product-engine', engine);
-localStorage.setItem('product-model-' + engine, model);
-showApiStatus('✅ 設定已儲存！', 'ok');
-setTimeout(() => toggleSettings(), 500);
-```
-
-}
-
-function showApiStatus(msg, type) {
-const el = document.getElementById(‘apiStatus’);
-el.textContent = msg;
-el.className = ’api-status ’ + type;
-}
-
-// ── Image ──
-function onFileChange(e) {
-const file = e.target.files[0];
-if (!file) return;
-e.target.value = ‘’;
-readImage(file);
-}
-
-function readImage(file) {
-// 圖片壓縮
-compressImage(file, (compressedFile) => {
-imageMime = compressedFile.type || ‘image/jpeg’;
-const reader = new FileReader();
-reader.onload = (e) => {
-const dataUrl = e.target.result;
-base64Image = dataUrl.split(’,’)[1];
-const img = document.getElementById(‘previewImg’);
-img.src = dataUrl;
-img.classList.add(‘show’);
-document.getElementById(‘previewPlaceholder’).style.display = ‘none’;
-document.getElementById(‘analyzeBtn’).disabled = false;
-const sizeMB = (compressedFile.size / 1024 / 1024).toFixed(2);
-setStatus(`✅ 照片已載入（${sizeMB}MB），可按分析。`, ‘’);
-};
-reader.readAsDataURL(compressedFile);
-});
-}
-
-function compressImage(file, callback) {
-const MAX_SIZE = 2 * 1024 * 1024; // 2MB
-
-```
-if (file.size <= MAX_SIZE) {
-  callback(file);
-  return;
-}
-
-const reader = new FileReader();
-reader.onload = (e) => {
-  const img = new Image();
-  img.onload = () => {
-    const canvas = document.createElement('canvas');
-    let width = img.width;
-    let height = img.height;
-
-    // 縮小圖片到 2000px 以內
-    const maxDim = 2000;
-    if (width > maxDim || height > maxDim) {
-      const ratio = Math.min(maxDim / width, maxDim / height);
-      width *= ratio;
-      height *= ratio;
+  function compressImage(file, callback) {
+    const MAX_SIZE = 2 * 1024 * 1024; // 2MB
+    
+    if (file.size <= MAX_SIZE) {
+      callback(file);
+      return;
     }
 
-    canvas.width = width;
-    canvas.height = height;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(img, 0, 0, width, height);
+    setStatus('📸 正在壓縮圖片...', '');
 
-    // 逐步降低品質直到 < 2MB
-    let quality = 0.85;
-    const tryCompress = () => {
-      canvas.toBlob((blob) => {
-        if (blob.size > MAX_SIZE && quality > 0.3) {
-          quality -= 0.05;
-          tryCompress();
-        } else {
-          callback(new File([blob], file.name, { type: 'image/jpeg' }));
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+
+        // 縮小到 2000px 以內
+        const maxDim = 2000;
+        if (width > maxDim || height > maxDim) {
+          const ratio = Math.min(maxDim / width, maxDim / height);
+          width *= ratio;
+          height *= ratio;
         }
-      }, 'image/jpeg', quality);
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        // 逐步降低品質
+        let quality = 0.85;
+        const tryCompress = () => {
+          canvas.toBlob((blob) => {
+            if (blob.size > MAX_SIZE && quality > 0.3) {
+              quality -= 0.05;
+              tryCompress();
+            } else {
+              callback(new File([blob], file.name, { type: 'image/jpeg' }));
+            }
+          }, 'image/jpeg', quality);
+        };
+        tryCompress();
+      };
+      img.src = e.target.result;
     };
-    tryCompress();
-  };
-  img.src = e.target.result;
-};
-reader.readAsDataURL(file);
-```
+    reader.readAsDataURL(file);
+  }
 
-}
+  function readImage(file) {
+    imageMime = file.type || 'image/jpeg';
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataUrl = e.target.result;
+      base64Image = dataUrl.split(',')[1];
+      const img = document.getElementById('previewImg');
+      img.src = dataUrl;
+      img.classList.add('show');
+      document.getElementById('previewPlaceholder').style.display = 'none';
+      document.getElementById('analyzeBtn').disabled = false;
+      const sizeMB = (file.size / 1024 / 1024).toFixed(2);
+      setStatus(`✅ 照片已載入（${sizeMB}MB），可按分析。`, 'ok');
+    };
+    reader.readAsDataURL(file);
+  }
 
-function setStatus(msg, type) {
-const el = document.getElementById(‘statusText’);
-el.textContent = msg;
-el.className = ’status-text ’ + (type || ‘’);
-}
+  function setStatus(msg, type) {
+    const el = document.getElementById('statusText');
+    el.textContent = msg;
+    el.className = 'status-text ' + (type || '');
+  }
 
-function setLoading(on, model) {
-document.getElementById(‘loadingCard’).classList.toggle(‘show’, on);
-document.getElementById(‘analyzeBtn’).disabled = on;
-if (on) document.getElementById(‘loadingText’).textContent = `使用 ${model} 分析中⋯`;
-}
+  function setLoading(on, msg) {
+    document.getElementById('loadingCard').classList.toggle('show', on);
+    document.getElementById('analyzeBtn').disabled = on;
+    if (on) document.getElementById('loadingText').textContent = msg;
+  }
 
-// ── Analyze ──
-async function analyze() {
-const engine  = document.getElementById(‘engineSelect’).value;
-const model   = document.getElementById(‘modelSelect’).value;
-const geminiKey = document.getElementById(‘geminiKey’).value.trim()
-|| localStorage.getItem(ENGINE_CONFIG.gemini.storageKey) || ‘’;
-const claudeKey = document.getElementById(‘claudeKey’).value.trim()
-|| localStorage.getItem(ENGINE_CONFIG.claude.storageKey) || ‘’;
+  async function analyze() {
+    const geminiKey = localStorage.getItem('product-gemini-key') || '';
+    const claudeKey = localStorage.getItem('product-claude-key') || '';
 
-```
-// 檢查對應的 API Key
-if (engine === 'gemini' && !geminiKey) { 
-  setStatus('⚠️ 請先在設定中填入 Gemini API Key', 'err'); 
-  toggleSettings(); 
-  return; 
-}
-if (engine === 'claude' && !claudeKey) { 
-  setStatus('⚠️ 請先在設定中填入 Claude API Key', 'err'); 
-  toggleSettings(); 
-  return; 
-}
-if (!base64Image) { setStatus('⚠️ 請先選取商品照片', 'err'); return; }
+    if (!geminiKey && !claudeKey) { 
+      setStatus('⚠️ 請先在設定中填入 API Key', 'err'); 
+      toggleSettings(); 
+      return; 
+    }
+    if (!base64Image) { setStatus('⚠️ 請先選取商品照片', 'err'); return; }
 
-setLoading(true, model);
-setStatus('', '');
+    setLoading(true, '識別中⋯');
+    setStatus('', '');
 
-const prompt = `你是商品識別專家。分析這個商品圖片，識別出商品的確切名稱和品牌。
-```
-
+    const prompt = `你是商品識別和比價專家。分析這個商品圖片，根據你的知識提供價格估計。
 只返回有效的 JSON（不要 markdown，不要註解）：
 {
-“name”: “商品確切名稱（例如：Sony WH-CH720N，不要加「藍色」等顏色）”,
-“brand”: “品牌”,
-“features”: “主要特色（3-5 點，換行分隔）”
+  "name": "商品名稱",
+  "brand": "品牌",
+  "features": "主要特色（3-5 點，換行分隔）",
+  "tw_price": "台灣約售價（必須是 NT$XXXX 的格式）",
+  "jp_price": "日本約售價（必須是 ¥XXXX 的格式）",
+  "verdict": "根據兩個價格，評估在日本買或台灣買哪個划算"
 }`;
 
-```
-try {
-  let parsedData;
+    try {
+      let parsedData;
+      let engine = 'gemini';
 
-  if (engine === 'gemini') {
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [
-          { text: prompt },
-          { inline_data: { mime_type: imageMime, data: base64Image } }
-        ]}]
-      })
-    });
-    const data = await res.json();
-    if (data.error) throw new Error(data.error.message);
-    let raw = data.candidates[0].content.parts[0].text;
-    parsedData = JSON.parse(raw.replace(/```json|```/g, '').trim());
+      if (geminiKey) {
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [
+              { text: prompt },
+              { inline_data: { mime_type: imageMime, data: base64Image } }
+            ]}]
+          })
+        });
+        const data = await res.json();
+        if (data.error) {
+          if (data.error.message.includes('quota') || data.error.message.includes('RESOURCE_EXHAUSTED')) {
+            throw new Error('🔴 Gemini 配額已滿，試試用 Claude');
+          }
+          throw new Error(data.error.message);
+        }
+        let raw = data.candidates[0].content.parts[0].text;
+        parsedData = JSON.parse(raw.replace(/```json|```/g, '').trim());
+      } else if (claudeKey) {
+        engine = 'claude';
+        const res = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': claudeKey,
+            'anthropic-version': '2023-06-01',
+            'anthropic-dangerous-direct-browser-access': 'true'
+          },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-20250514',
+            max_tokens: 1500,
+            messages: [{ role: 'user', content: [
+              { type: 'image', source: { type: 'base64', media_type: imageMime, data: base64Image } },
+              { type: 'text', text: prompt }
+            ]}]
+          })
+        });
+        const data = await res.json();
+        if (data.error) throw new Error(data.error.message);
+        let raw = data.content[0].text;
+        parsedData = JSON.parse(raw.replace(/```json|```/g, '').trim());
+      }
 
-  } else {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': claudeKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model, max_tokens: 1500,
-        messages: [{ role: 'user', content: [
-          { type: 'image', source: { type: 'base64', media_type: imageMime, data: base64Image } },
-          { type: 'text', text: prompt }
-        ]}]
-      })
-    });
-    const data = await res.json();
-    if (data.error) throw new Error(data.error.message);
-    let raw = data.content[0].text;
-    parsedData = JSON.parse(raw.replace(/```json|```/g, '').trim());
-  }
+      // 計算日幣轉台幣
+      const jpAmount = parseInt(parsedData.jp_price.replace(/¥|,/g, '')) || 0;
+      const jpEquiv = `≈ NT$${Math.round(jpAmount * 0.2)}`;
 
-  // 轉換日幣為等值台幣
-  let tw_equiv = '';
-  if (parsedData.jp_price && parsedData.jp_price.includes('¥')) {
-    const jpAmount = parseInt(parsedData.jp_price.replace(/[^0-9]/g, ''));
-    if (!isNaN(jpAmount)) {
-      const twEquivalent = Math.round(jpAmount * 0.2);
-      tw_equiv = `（約 NT$${twEquivalent}）`;
+      const record = {
+        timestamp: Date.now(),
+        engine,
+        model: engine === 'gemini' ? 'gemini-2.0-flash' : 'claude-sonnet-4-20250514',
+        data: { ...parsedData, jp_equiv: jpEquiv }
+      };
+
+      productHistory.unshift(record);
+      localStorage.setItem(HIS_KEY, JSON.stringify(productHistory));
+      renderHistory();
+
+      document.getElementById('galleryInput').value = '';
+      document.getElementById('previewImg').classList.remove('show');
+      document.getElementById('previewPlaceholder').style.display = '';
+      base64Image = '';
+      document.getElementById('analyzeBtn').disabled = true;
+      setStatus('✅ 分析完成！', 'ok');
+
+    } catch(err) {
+      setStatus('❌ ' + err.message, 'err');
     }
+
+    setLoading(false);
   }
-  parsedData.jp_equiv = tw_equiv;
 
-  productHistory.unshift({ timestamp: Date.now(), engine, model, data: parsedData, thumb: document.getElementById('previewImg').src });
-  localStorage.setItem(HIS_KEY, JSON.stringify(productHistory));
-  renderHistory();
+  function renderHistory() {
+    const el = document.getElementById('historyContainer');
 
-  // 清空
-  document.getElementById('galleryInput').value = '';
-  document.getElementById('cameraInput').value = '';
-  document.getElementById('previewImg').classList.remove('show');
-  document.getElementById('previewPlaceholder').style.display = '';
-  base64Image = '';
-  document.getElementById('analyzeBtn').disabled = true;
-  setStatus('✅ 分析完成！', 'ok');
+    if (!productHistory.length) {
+      el.innerHTML = '<div class="empty"><div class="empty-icon">🛍️</div>目前沒有任何紀錄</div>';
+      return;
+    }
 
-} catch(err) {
-  setStatus('❌ 出錯了：' + err.message, 'err');
-}
+    el.innerHTML = '';
+    productHistory.forEach((record, index) => {
+      const timeStr = new Date(record.timestamp).toLocaleString('zh-TW', { hour12: false });
+      const data = record.data;
+      const badgeClass = record.engine === 'gemini' ? 'gemini' : 'claude';
 
-setLoading(false);
-```
+      const card = document.createElement('div');
+      card.className = 'result-card';
+      card.innerHTML = `
+        <div class="result-header">
+          <div>
+            <div class="result-meta">🕐 ${timeStr}</div>
+            <div class="result-badge ${badgeClass}">${record.engine === 'gemini' ? '🔵 Gemini' : '🟣 Claude'}</div>
+          </div>
+          <button class="del-btn" onclick="deleteRecord(${index})">✕ 刪除</button>
+        </div>
+        
+        <div class="product-name">${data.name || '未知商品'}</div>
+        
+        <div class="section-label">🏷️ 品牌與特色</div>
+        <div style="font-size: 12px; margin-bottom: 12px; color: var(--text);">
+          <strong>${data.brand || '—'}</strong>
+        </div>
+        <div class="feature-text">${(data.features || '').replace(/\n/g, '<br>')}</div>
 
-}
+        <div class="section-label">💰 價格比較</div>
+        <div class="price-row">
+          <div class="price-box jp">
+            <div class="flag">🇯🇵</div>
+            <div class="country">日本價格</div>
+            <div class="amount">${data.jp_price || '—'}<br><span style="font-size: 10px; color: var(--muted);">${data.jp_equiv || ''}</span></div>
+            <button class="source-btn" onclick="showSource(${index}, 'jp')">ℹ︎</button>
+          </div>
+          <div class="price-box tw">
+            <div class="flag">🇹🇼</div>
+            <div class="country">台灣價格</div>
+            <div class="amount">${data.tw_price || '—'}</div>
+            <button class="source-btn" onclick="showSource(${index}, 'tw')">ℹ︎</button>
+          </div>
+        </div>
 
-// ── History ──
-function renderHistory() {
-const el = document.getElementById(‘historyContainer’);
+        <div class="section-label">📊 購買建議</div>
+        <div class="verdict-box">${data.verdict || '—'}</div>
+      `;
+      el.appendChild(card);
+    });
+  }
 
-```
-if (!productHistory.length) {
-  el.innerHTML = '<div class="empty"><div class="empty-icon">🛍️</div>目前沒有任何紀錄</div>';
-  return;
-}
+  window.deleteRecord = (index) => {
+    if (!confirm('確定要刪除這筆紀錄嗎？')) return;
+    productHistory.splice(index, 1);
+    localStorage.setItem(HIS_KEY, JSON.stringify(productHistory));
+    renderHistory();
+  };
 
-el.innerHTML = '';
-productHistory.forEach((record, index) => {
-  const timeStr = new Date(record.timestamp).toLocaleString('zh-TW', { hour12: false });
-  const isGemini = record.engine !== 'claude';
-  const badgeClass = isGemini ? 'gemini' : 'claude';
-  const badgeLabel = isGemini ? '🔵 Gemini' : '🟣 Claude';
-  const data = record.data;
+  window.showSource = (index, type) => {
+    const record = productHistory[index];
+    const engineName = record.engine === 'gemini' ? '🔵 Gemini' : '🟣 Claude';
+    const model = record.model || '不詳';
+    alert(`${type === 'jp' ? '日本' : '台灣'}價格來源：\n\n${engineName}\nModel: ${model}\n\n基於 AI 知識估計`);
+  };
 
-  const card = document.createElement('div');
-  card.className = 'result-card';
-  card.innerHTML = `
-    <div class="result-header">
-      <div>
-        <div class="result-meta">🕐 ${timeStr}</div>
-        ${record.model ? `<span class="result-badge ${badgeClass}">${badgeLabel} · ${record.model}</span>` : ''}
-      </div>
-      <button class="del-btn" onclick="deleteRecord(${index})">✕ 刪除</button>
-    </div>
-    
-    <div class="product-name">${data.name || '未知商品'}</div>
-    
-    <div class="price-row">
-      <div class="price-box jp">
-        <div class="flag">🇯🇵</div>
-        <div class="country">日本價格</div>
-        <div class="amount">${data.jp_price || '—'}<br><span style="font-size: 10px; color: var(--muted);">${data.jp_equiv || ''}</span></div>
-        <button class="source-btn" onclick="showSource(${index}, 'jp')">ℹ︎</button>
-      </div>
-      <div class="price-box tw">
-        <div class="flag">🇹🇼</div>
-        <div class="country">台灣價格</div>
-        <div class="amount">${data.tw_price || '—'}</div>
-        <button class="source-btn" onclick="showSource(${index}, 'tw')">ℹ︎</button>
-      </div>
-    </div>
-    
-    <hr class="divider-small">
-    
-    <div class="section-label">特色與規格</div>
-    <div class="feature-text">${data.features || ''}</div>
-    
-    <div class="verdict-box">${data.verdict || ''}</div>
-  `;
-  el.appendChild(card);
-});
-```
-
-}
-
-window.deleteRecord = (index) => {
-if (!confirm(‘確定要刪除這筆紀錄嗎？’)) return;
-productHistory.splice(index, 1);
-localStorage.setItem(HIS_KEY, JSON.stringify(productHistory));
-renderHistory();
-};
-
-window.showSource = (index, type) => {
-const record = productHistory[index];
-const engineName = record.engine === ‘gemini’ ? ‘🔵 Gemini’ : ‘🟣 Claude’;
-const model = record.model || ‘不詳’;
-alert(`${type === 'jp' ? '日本' : '台灣'}價格來源：\n\n${engineName}\nModel: ${model}`);
-};
+  init();
 </script>
-
 </body>
 </html>
