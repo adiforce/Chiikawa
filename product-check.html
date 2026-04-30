@@ -637,7 +637,7 @@
   window.searchGoogle = (productName) => {
     if (!productName) return;
     const query = encodeURIComponent(`${productName} 日本與台灣售價比較`);
-    window.open(`https://www.google.com/search?q=${query}`, '_blank');
+    window.location.href = `https://www.google.com/search?q=${query}`;
   };
 
   init();
