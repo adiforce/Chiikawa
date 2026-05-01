@@ -87,13 +87,7 @@
   input:focus { border-color: var(--pink-dark); background: white; }
   input::placeholder { color: #d0b8a8; }
 
-  input[type="date"] {
-    max-width: 100%;
-    width: 100%;
-    font-size: 13px;
-    padding: 10px 8px;
-    overflow: hidden;
-  }
+
 
   select {
     border: 1.5px solid var(--border);
@@ -119,6 +113,22 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px;
+  }
+
+  .date-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .date-row input {
+    flex: 1;
+    text-align: center;
+  }
+  .date-sep {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--light-brown);
+    flex-shrink: 0;
   }
 
   .submit-btn {
@@ -325,7 +335,11 @@
 
       <div class="form-group">
         <label>日期</label>
-        <input type="date" id="inp-date">
+        <div class="date-row">
+          <input type="number" id="inp-month" placeholder="月" inputmode="numeric" min="1" max="12">
+          <span class="date-sep">/</span>
+          <input type="number" id="inp-day" placeholder="日" inputmode="numeric" min="1" max="31">
+        </div>
       </div>
 
       <div class="form-group">
@@ -405,7 +419,9 @@
     const dd = String(now.getDate()).padStart(2, '0');
     return `${yyyy}-${mm}-${dd}`;
   }
-  document.getElementById('inp-date').value = getTodayLocal();
+  const _today = new Date();
+  document.getElementById('inp-month').value = _today.getMonth() + 1;
+  document.getElementById('inp-day').value = _today.getDate();
 
   let records = [];
 
@@ -505,7 +521,7 @@
     const category = document.getElementById('inp-category').value;
     const payment  = document.getElementById('inp-payment').value;
 
-    if (!date || !jpy || !chinese || !category) {
+    if (!month || !day || !jpy || !chinese || !category) {
       showToast('⚠️ 請填寫日期、金額、中文項目和類別');
       return;
     }
@@ -514,9 +530,8 @@
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner"></span> 送出中…';
 
-    // 轉成 MM/DD 字串，避免 Sheets 自動解析日期
-    const parts = date.split('-');
-    const dateFormatted = `${parts[1]}/${parts[2]}`;
+    // 直接用 MM/DD 格式
+    const dateFormatted = `${String(month).padStart(2,'0')}/${String(day).padStart(2,'0')}`;
 
     try {
       const params = new URLSearchParams({
