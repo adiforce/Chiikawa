@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>發票解析</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif;
+background: #fdf6ee;
+color: #3d2b1f;
+min-height: 100vh;
+}
+
+body::before {
+content: ‘’;
+position: fixed; inset: 0;
+background-image: radial-gradient(circle, #e8d5c4 1px, transparent 1px);
+background-size: 24px 24px;
+opacity: 0.45;
+pointer-events: none;
+z-index: 0;
+}
+
+.container {
+position: relative; z-index: 1;
+max-width: 480px;
+margin: 0 auto;
+padding: 20px 16px 48px;
+}
+
+.header { text-align: center; padding: 20px 0 18px; }
+.header h1 { font-size: 22px; font-weight: 900; color: #7a4f3a; }
+.header-sub { font-size: 12px; color: #a07060; margin-top: 4px; }
+
+.card {
+background: #ffffff;
+border-radius: 18px;
+padding: 16px 18px;
+margin-bottom: 14px;
+box-shadow: 0 3px 12px rgba(100,60,40,0.08);
+border: 2px solid #ead8c8;
+}
+
+.settings-toggle {
+display: flex; align-items: center; justify-content: space-between;
+cursor: pointer; user-select: none;
+}
+.settings-toggle-label {
+font-size: 13px; font-weight: 700; color: #7a4f3a;
+display: flex; align-items: center; gap: 6px;
+}
+.settings-arrow { color: #a07060; font-size: 12px; transition: transform 0.2s; }
+.settings-body { display: none; margin-top: 14px; }
+.settings-body.open { display: block; }
+
+.field { margin-bottom: 12px; }
+.field label {
+font-size: 11px; font-weight: 700; color: #a07060;
+display: block; margin-bottom: 4px; letter-spacing: 0.5px;
+}
+.field select, .field input[type=“password”], .field input[type=“text”] {
+width: 100%; padding: 10px 12px;
+border: 1.5px solid #ead8c8; border-radius: 10px;
+font-size: 13px; font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif;
+background: #fdf6ee; color: #3d2b1f;
+outline: none; transition: border-color 0.15s;
+-webkit-appearance: none; appearance: none;
+}
+.field select {
+background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘12’ viewBox=‘0 0 12 12’%3E%3Cpath fill=’%23a07060’ d=‘M6 8L1 3h10z’/%3E%3C/svg%3E”);
+background-repeat: no-repeat;
+background-position: right 12px center;
+background-color: #fdf6ee;
+padding-right: 32px;
+cursor: pointer;
+}
+.field input[type=“password”] { font-family: monospace; letter-spacing: 2px; }
+.field select:focus, .field input:focus { border-color: #e8849a; }
+
+.save-btn {
+width: 100%; padding: 10px;
+background: #e8849a; color: white;
+border: none; border-radius: 10px;
+font-size: 13px; font-weight: 700;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif;
+cursor: pointer; transition: opacity 0.15s;
+margin-top: 4px;
+}
+.save-btn:hover { opacity: 0.88; }
+
+.api-status { font-size: 11px; margin-top: 8px; text-align: center; }
+.api-status.ok  { color: #5abf9a; }
+.api-status.err { color: #e05050; }
+
+input[type=“file”] {
+display: none !important;
+position: absolute !important;
+width: 0 !important;
+height: 0 !important;
+opacity: 0 !important;
+overflow: hidden !important;
+}
+
+.preview-area {
+width: 100%; aspect-ratio: 4/3;
+border-radius: 12px; overflow: hidden;
+background: #f5ede4;
+display: flex; align-items: center; justify-content: center;
+margin-bottom: 12px; position: relative;
+border: 2px dashed #ead8c8;
+transition: border-color 0.15s;
+cursor: pointer;
+}
+.preview-area:hover { border-color: #e8849a; }
+.preview-area img { width: 100%; height: 100%; object-fit: cover; display: none; border-radius: 10px; }
+.preview-area img.show { display: block; }
+.preview-placeholder { display: flex; flex-direction: column; align-items: center; gap: 8px; color: #a07060; }
+.preview-placeholder .big-icon { font-size: 40px; }
+.preview-placeholder .hint { font-size: 12px; }
+
+.cam-btns { display: flex; gap: 10px; }
+.cam-btn {
+flex: 1; padding: 11px;
+border: 2px solid #f5b8c8;
+background: white; border-radius: 12px;
+font-size: 13px; font-weight: 700;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif;
+color: #e8849a; cursor: pointer;
+transition: all 0.15s;
+display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.cam-btn:hover { background: #f5b8c8; color: white; }
+.cam-btn.primary { background: #e8849a; color: white; border-color: #e8849a; }
+.cam-btn.primary:hover { opacity: 0.88; }
+.cam-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.status-text {
+font-size: 13px; color: #a07060;
+text-align: center; min-height: 18px;
+padding: 4px 0; margin-bottom: 4px;
+}
+.status-text.ok  { color: #5abf9a; }
+.status-text.err { color: #e05050; }
+
+.loading-card {
+background: #ffffff; border-radius: 18px;
+padding: 32px; margin-bottom: 14px;
+box-shadow: 0 3px 12px rgba(100,60,40,0.08);
+border: 2px solid #ead8c8;
+text-align: center; display: none;
+}
+.loading-card.show { display: block; }
+.spinner {
+width: 36px; height: 36px;
+border: 3px solid #f5b8c8;
+border-top-color: #e8849a;
+border-radius: 50%;
+animation: spin 0.8s linear infinite;
+margin: 0 auto 12px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { font-size: 14px; color: #7a4f3a; }
+
+.divider {
+display: flex; align-items: center; gap: 12px;
+margin: 20px 0 14px; color: #a07060;
+font-size: 11px; letter-spacing: 2px;
+}
+.divider::before, .divider::after { content: ‘’; flex: 1; height: 1.5px; background: #ead8c8; }
+
+.invoice-card {
+background: #ffffff;
+border-radius: 18px;
+padding: 16px;
+margin-bottom: 14px;
+box-shadow: 0 3px 12px rgba(100,60,40,0.08);
+border: 2px solid #b8e8d8;
+animation: slideIn 0.3s ease;
+}
+@keyframes slideIn {
+from { opacity: 0; transform: translateY(-8px); }
+to   { opacity: 1; transform: translateY(0); }
+}
+
+.inv-header {
+display: flex; justify-content: space-between; align-items: flex-start;
+margin-bottom: 12px;
+}
+.inv-meta { font-size: 11px; color: #a07060; line-height: 1.6; }
+.inv-badge {
+display: inline-block;
+font-size: 10px; font-weight: 700;
+padding: 2px 8px; border-radius: 99px;
+margin-top: 3px;
+font-family: monospace;
+}
+.inv-badge.gemini { background: #dbeafe; color: #1d4ed8; }
+.inv-badge.claude { background: #d4c8f0; color: #4c1d95; }
+
+.del-btn {
+padding: 5px 12px;
+border: 1.5px solid #f5b8c8;
+background: white; border-radius: 8px;
+font-size: 11px; font-weight: 700; color: #e8849a;
+cursor: pointer; font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif;
+transition: all 0.15s; flex-shrink: 0;
+}
+.del-btn:hover { background: #e8849a; color: white; border-color: #e8849a; }
+
+.table-wrap {
+width: 100%; overflow-x: auto;
+border-radius: 10px; border: 1.5px solid #ead8c8;
+margin-bottom: 12px;
+}
+table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+th {
+background: #fff5f0; color: #e8849a;
+padding: 8px 10px; text-align: left;
+font-weight: 700; font-size: 11px;
+letter-spacing: 0.5px; white-space: nowrap;
+border-bottom: 1.5px solid #ead8c8;
+}
+td { padding: 8px 10px; border-bottom: 1px solid #f0e8e0; color: #3d2b1f; }
+tr:last-child td { border-bottom: none; background: #fffbee; font-weight: 700; }
+td:last-child {
+text-align: right;
+font-family: monospace;
+font-weight: 600; color: #7a4f3a;
+}
+
+.action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.act-btn {
+padding: 10px 8px;
+border-radius: 10px; border: none;
+font-size: 12px; font-weight: 700;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif;
+cursor: pointer; transition: all 0.15s;
+display: flex; align-items: center; justify-content: center; gap: 5px;
+}
+.act-btn:active { transform: scale(0.97); }
+.act-btn.green { background: #dcfce7; color: #15803d; border: 1.5px solid #86efac; }
+.act-btn.green:hover { background: #bbf7d0; }
+.act-btn.teal { background: #cffafe; color: #0e7490; border: 1.5px solid #67e8f9; grid-column: span 2; }
+.act-btn.teal:hover { background: #a5f3fc; }
+
+.empty { text-align: center; color: #a07060; font-size: 14px; padding: 32px 0; }
+.empty-icon { font-size: 36px; margin-bottom: 8px; }
+</style>
+
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>🧾 發票解析</h1>
+    <div class="header-sub">Gemini / Claude · 日本收據掃描</div>
+  </div>
+
+  <div class="card">
+    <div class="settings-toggle" onclick="toggleSettings()">
+      <span class="settings-toggle-label">⚙️ API 設定</span>
+      <span class="settings-arrow" id="settingsArrow">▾</span>
+    </div>
+    <div class="settings-body" id="settingsBody">
+      <div class="field" style="margin-top:14px">
+        <label>AI 引擎</label>
+        <select id="engineSelect" onchange="switchEngine(this.value)">
+          <option value="gemini">Google Gemini</option>
+          <option value="claude">Anthropic Claude</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>模型</label>
+        <select id="modelSelect"></select>
+      </div>
+      <div class="field">
+        <label>Google Gemini API Key</label>
+        <input type="password" id="geminiKey" placeholder="AIza...">
+      </div>
+      <div class="field">
+        <label>Anthropic Claude API Key</label>
+        <input type="password" id="claudeKey" placeholder="sk-ant-api03-...">
+      </div>
+      <button class="save-btn" onclick="saveSettings()">💾 儲存（自動記住）</button>
+      <div class="api-status" id="apiStatus"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="preview-area" id="previewArea" onclick="document.getElementById('galleryInput').click()">
+      <img id="previewImg" alt="發票預覽">
+      <div class="preview-placeholder" id="previewPlaceholder">
+        <div class="big-icon">📷</div>
+        <div class="hint">點擊從相簿選取</div>
+      </div>
+    </div>
+
+```
+<input type="file" id="galleryInput" accept="image/*" onchange="onFileChange(event)">
+<input type="file" id="cameraInput" accept="image/*" capture="environment" onchange="onFileChange(event)">
+
+<div class="cam-btns">
+  <button class="cam-btn" onclick="document.getElementById('galleryInput').click()">🖼️ 選圖</button>
+  <button class="cam-btn" onclick="document.getElementById('cameraInput').click()">📷 拍照</button>
+  <button class="cam-btn primary" id="analyzeBtn" onclick="analyze()" disabled>🔍 解析</button>
+</div>
+```
+
+  </div>
+
+  <div class="status-text" id="statusText"></div>
+  <div class="loading-card" id="loadingCard">
+    <div class="spinner"></div>
+    <div class="loading-text" id="loadingText">AI 解析中，請稍候⋯</div>
+  </div>
+
+  <div class="divider">解析紀錄（存在本機）</div>
+  <div id="historyContainer"></div>
+
+</div>
+<script>
+const ENGINE_CONFIG = {
+  gemini: {
+    storageKey: 'receipt-gemini-key',
+    models: [
+      { value: 'gemini-2.0-flash',  label: 'gemini-2.0-flash（推薦）' },
+      { value: 'gemini-1.5-flash',  label: 'gemini-1.5-flash' },
+      { value: 'gemini-1.5-pro',    label: 'gemini-1.5-pro' },
+    ]
+  },
+  claude: {
+    storageKey: 'receipt-claude-key',
+    models: [
+      { value: 'claude-haiku-4-5-20251001', label: 'claude-haiku-4-5（推薦，省額度）' },
+      { value: 'claude-sonnet-4-20250514',  label: 'claude-sonnet-4（高品質）' },
+    ]
+  }
+};
+
+const HIS_KEY = ‘invoice_history_v2’;
+let base64Image = ‘’;
+let imageMime   = ‘image/jpeg’;
+let settingsOpen = false;
+let invoiceHistory = [];
+window.tempActionData = {};
+
+try { invoiceHistory = JSON.parse(localStorage.getItem(HIS_KEY)) || []; } catch(e) {}
+
+(function init() {
+const engine = localStorage.getItem(‘receipt-engine’) || ‘gemini’;
+document.getElementById(‘engineSelect’).value = engine;
+switchEngine(engine, true);
+renderHistory();
+})();
+
+function toggleSettings() {
+settingsOpen = !settingsOpen;
+document.getElementById(‘settingsBody’).classList.toggle(‘open’, settingsOpen);
+document.getElementById(‘settingsArrow’).textContent = settingsOpen ? ‘▴’ : ‘▾’;
+}
+
+function switchEngine(engine, silent) {
+const cfg = ENGINE_CONFIG[engine];
+const sel = document.getElementById(‘modelSelect’);
+sel.innerHTML = cfg.models.map(m => `<option value="${m.value}">${m.label}</option>`).join(’’);
+const savedModel = localStorage.getItem(‘receipt-model-’ + engine);
+if (savedModel) sel.value = savedModel;
+
+const geminiKey = localStorage.getItem(ENGINE_CONFIG.gemini.storageKey) || ‘’;
+const claudeKey = localStorage.getItem(ENGINE_CONFIG.claude.storageKey) || ‘’;
+document.getElementById(‘geminiKey’).value = geminiKey;
+document.getElementById(‘claudeKey’).value = claudeKey;
+
+if (!silent) localStorage.setItem(‘receipt-engine’, engine);
+if ((engine === ‘gemini’ && geminiKey) || (engine === ‘claude’ && claudeKey)) {
+showApiStatus(‘✅ API Key 已儲存’, ‘ok’);
+}
+}
+
+function saveSettings() {
+const engine    = document.getElementById(‘engineSelect’).value;
+const geminiKey = document.getElementById(‘geminiKey’).value.trim();
+const claudeKey = document.getElementById(‘claudeKey’).value.trim();
+const model     = document.getElementById(‘modelSelect’).value;
+
+if (!geminiKey && !claudeKey) {
+showApiStatus(‘⚠️ 請至少輸入一個 API Key’, ‘err’);
+return;
+}
+localStorage.setItem(ENGINE_CONFIG.gemini.storageKey, geminiKey);
+localStorage.setItem(ENGINE_CONFIG.claude.storageKey, claudeKey);
+localStorage.setItem(‘receipt-engine’, engine);
+localStorage.setItem(‘receipt-model-’ + engine, model);
+showApiStatus(‘✅ 設定已儲存！’, ‘ok’);
+setTimeout(() => toggleSettings(), 500);
+}
+
+function showApiStatus(msg, type) {
+const el = document.getElementById(‘apiStatus’);
+el.textContent = msg;
+el.className = ’api-status ’ + type;
+}
+
+function onFileChange(e) {
+const file = e.target.files[0];
+if (!file) return;
+e.target.value = ‘’;
+readImage(file);
+}
+
+function readImage(file) {
+imageMime = file.type || ‘image/jpeg’;
+const reader = new FileReader();
+reader.onload = (e) => {
+const dataUrl = e.target.result;
+base64Image = dataUrl.split(’,’)[1];
+const img = document.getElementById(‘previewImg’);
+img.src = dataUrl;
+img.classList.add(‘show’);
+document.getElementById(‘previewPlaceholder’).style.display = ‘none’;
+document.getElementById(‘analyzeBtn’).disabled = false;
+setStatus(‘照片已載入，可按解析。’, ‘’);
+};
+reader.readAsDataURL(file);
+}
+
+function setStatus(msg, type) {
+const el = document.getElementById(‘statusText’);
+el.textContent = msg;
+el.className = ’status-text ’ + (type || ‘’);
+}
+
+function setLoading(on, model) {
+document.getElementById(‘loadingCard’).classList.toggle(‘show’, on);
+document.getElementById(‘analyzeBtn’).disabled = on;
+if (on) document.getElementById(‘loadingText’).textContent = `使用 ${model} 解析中⋯`;
+}
+
+async function analyze() {
+const engine    = document.getElementById(‘engineSelect’).value;
+const model     = document.getElementById(‘modelSelect’).value;
+const geminiKey = document.getElementById(‘geminiKey’).value.trim()
+|| localStorage.getItem(ENGINE_CONFIG.gemini.storageKey) || ‘’;
+const claudeKey = document.getElementById(‘claudeKey’).value.trim()
+|| localStorage.getItem(ENGINE_CONFIG.claude.storageKey) || ‘’;
+
+if (engine === ‘gemini’ && !geminiKey) { setStatus(‘⚠️ 請先在設定中填入 Gemini API Key’, ‘err’); toggleSettings(); return; }
+if (engine === ‘claude’ && !claudeKey) { setStatus(‘⚠️ 請先在設定中填入 Claude API Key’, ‘err’); toggleSettings(); return; }
+if (!base64Image) { setStatus(‘⚠️ 請先選取發票照片’, ‘err’); return; }
+
+setLoading(true, model);
+setStatus(’’, ‘’);
+
+const prompt = `請解析這張日本發票或收據。 請嚴格輸出純 JSON 陣列，不要加 \```json 標籤，不要說任何其他文字。
+將日文商品名稱翻譯成通順的台灣繁體中文，避免生硬機翻。
+格式規則：
+
+1. 每筆品項：{“date”: “MM/DD”, “item”: “店名 - 日文原文”, “translation”: “繁體中文翻譯”, “price”: 數字}
+1. 最後一筆為加總：{“date”: “”, “item”: “店名（總計）”, “translation”: “”, “price”: 總金額數字}
+1. price 只填數字，不含貨幣符號`;
+
+try {
+let parsedData;
+
+```
+if (engine === 'gemini') {
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiKey}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ contents: [{ parts: [
+      { text: prompt },
+      { inline_data: { mime_type: imageMime, data: base64Image } }
+    ]}]})
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  let raw = data.candidates[0].content.parts[0].text;
+  parsedData = JSON.parse(raw.replace(/```json|```/g, '').trim());
+
+} else {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': claudeKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model, max_tokens: 1500,
+      messages: [{ role: 'user', content: [
+        { type: 'image', source: { type: 'base64', media_type: imageMime, data: base64Image } },
+        { type: 'text', text: prompt }
+      ]}]
+    })
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  let raw = data.content[0].text;
+  parsedData = JSON.parse(raw.replace(/```json|```/g, '').trim());
+}
+
+// 整理加總列
+if (parsedData.length > 1) {
+  const items = parsedData.slice(0, -1);
+  const storeName = items[0].item.includes(' - ')
+    ? items[0].item.split(' - ')[0].trim() : '店家';
+  const summaryNames = items.slice(0, 3).map(r => {
+    const name = r.translation || (r.item.includes(' - ') ? r.item.split(' - ')[1].trim() : r.item);
+    return name.substring(0, 4);
+  });
+  const totalRow = parsedData[parsedData.length - 1];
+  totalRow.date = items[0].date;
+  totalRow.item = `加總：${storeName}（${summaryNames.join('、')}${items.length > 3 ? '...' : ''}）`;
+}
+
+invoiceHistory.unshift({ timestamp: Date.now(), engine, model, data: parsedData });
+localStorage.setItem(HIS_KEY, JSON.stringify(invoiceHistory));
+renderHistory();
+
+document.getElementById('galleryInput').value = '';
+document.getElementById('cameraInput').value = '';
+document.getElementById('previewImg').classList.remove('show');
+document.getElementById('previewPlaceholder').style.display = '';
+base64Image = '';
+document.getElementById('analyzeBtn').disabled = true;
+setStatus('✅ 解析完成！', 'ok');
+```
+
+} catch(err) {
+setStatus(‘❌ 出錯了：’ + err.message, ‘err’);
+}
+
+setLoading(false);
+}
+
+function renderHistory() {
+const el = document.getElementById(‘historyContainer’);
+window.tempActionData = {};
+
+if (!invoiceHistory.length) {
+el.innerHTML = ‘<div class="empty"><div class="empty-icon">🗂️</div>目前沒有任何紀錄</div>’;
+return;
+}
+
+el.innerHTML = ‘’;
+invoiceHistory.forEach((record, index) => {
+let detailsTsv = ‘’, totalTsv = ‘’, shareText = ‘【發票解析明細】\n\n’;
+let trs = ‘’;
+
+```
+record.data.forEach((row, rIndex) => {
+  const isLast = rIndex === record.data.length - 1;
+  trs += `<tr>
+    <td>${row.date || ''}</td>
+    <td>${row.item}</td>
+    <td>${row.translation || ''}</td>
+    <td>${Number(row.price).toLocaleString()}</td>
+  </tr>`;
+
+  if (isLast) {
+    totalTsv = `${row.date || ''}\t${row.item}\t${row.price}`;
+  } else {
+    const itemRaw = row.item.includes(' - ') ? row.item.split(' - ').slice(1).join(' - ').trim() : row.item;
+    if (detailsTsv) detailsTsv += '\n';
+    detailsTsv += `${row.date || ''}\t${itemRaw}\t${row.translation || ''}\t${row.price}`;
+  }
+  shareText += row.translation
+    ? `${row.date || '      '} | ${row.item} | ${row.translation} | ${Number(row.price).toLocaleString()}\n`
+    : `${row.date || '      '} | ${row.item} | ${Number(row.price).toLocaleString()}\n`;
+});
+
+window.tempActionData[index] = { detailsTsv, totalTsv, shareText };
+
+const timeStr = new Date(record.timestamp).toLocaleString('zh-TW', { hour12: false });
+const isGemini = record.engine !== 'claude';
+const badgeClass = isGemini ? 'gemini' : 'claude';
+const badgeLabel = isGemini ? '🔵 Gemini' : '🟣 Claude';
+
+const card = document.createElement('div');
+card.className = 'invoice-card';
+card.innerHTML = `
+  <div class="inv-header">
+    <div>
+      <div class="inv-meta">🕐 ${timeStr}</div>
+      ${record.model ? `<span class="inv-badge ${badgeClass}">${badgeLabel} · ${record.model}</span>` : ''}
+    </div>
+    <button class="del-btn" onclick="deleteRecord(${index})">✕ 刪除</button>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>日期</th><th>項目（原文）</th><th>中文翻譯</th><th>日幣</th></tr></thead>
+      <tbody>${trs}</tbody>
+    </table>
+  </div>
+  <div class="action-grid">
+    <button class="act-btn green" onclick="handleCopy(this,${index},'details')">📋 複製明細</button>
+    <button class="act-btn green" onclick="handleCopy(this,${index},'total')">📋 複製加總</button>
+    <button class="act-btn teal" onclick="handleShare(this,${index})">📤 分享 / 複製全部</button>
+  </div>
+`;
+el.appendChild(card);
+```
+
+});
+}
+
+window.deleteRecord = (index) => {
+if (!confirm(‘確定要刪除這筆紀錄嗎？’)) return;
+invoiceHistory.splice(index, 1);
+localStorage.setItem(HIS_KEY, JSON.stringify(invoiceHistory));
+renderHistory();
+};
+
+window.handleCopy = (btn, index, type) => {
+const text = type === ‘details’
+? window.tempActionData[index].detailsTsv
+: window.tempActionData[index].totalTsv;
+if (!text) return;
+navigator.clipboard.writeText(text).then(() => {
+const orig = btn.textContent;
+btn.textContent = ‘✅ 已複製’;
+setTimeout(() => btn.textContent = orig, 2000);
+});
+};
+
+window.handleShare = async (btn, index) => {
+const text = window.tempActionData[index].shareText;
+const shareData = { title: ‘發票解析結果’, text };
+if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+try { await navigator.share(shareData); return; } catch {}
+}
+navigator.clipboard.writeText(text).then(() => {
+const orig = btn.textContent;
+btn.textContent = ‘✅ 已複製完整文字’;
+setTimeout(() => btn.textContent = orig, 2000);
+});
+};
+</script>
+
+</body>
+</html>
