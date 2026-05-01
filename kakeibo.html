@@ -283,15 +283,14 @@
     <div class="section-title">✏️ 新增花費</div>
     <div class="form-card">
 
-      <div class="form-row">
-        <div class="form-group half">
-          <label>日期</label>
-          <input type="date" id="inp-date">
-        </div>
-        <div class="form-group half">
-          <label>日幣金額 ¥</label>
-          <input type="number" id="inp-jpy" placeholder="0" inputmode="numeric">
-        </div>
+      <div class="form-group">
+        <label>日期</label>
+        <input type="date" id="inp-date">
+      </div>
+
+      <div class="form-group">
+        <label>日幣金額 ¥</label>
+        <input type="number" id="inp-jpy" placeholder="0" inputmode="numeric">
       </div>
 
       <div class="form-group">
@@ -330,12 +329,15 @@
 <script>
   const GAS_URL = "https://script.google.com/macros/s/AKfycbwiDBMaW_iEgPia8GKpU5-j8mgEW474uQjmdD9LsemX0ezZRCqJWZ-p69HY3e1ZWC-k/exec";
 
-  // 設定今天日期
-  const today = new Date();
-  const yyyy = today.getFullYear();
-  const mm = String(today.getMonth() + 1).padStart(2, '0');
-  const dd = String(today.getDate()).padStart(2, '0');
-  document.getElementById('inp-date').value = `${yyyy}-${mm}-${dd}`;
+  // 設定今天日期（本地時間，避免時區 -1 天）
+  function getTodayLocal() {
+    const now = new Date();
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const dd = String(now.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  }
+  document.getElementById('inp-date').value = getTodayLocal();
 
   let records = [];
 
@@ -430,25 +432,24 @@
     const dateFormatted = `${parseInt(parts[1])}/${parseInt(parts[2])}`;
 
     try {
-      const res = await fetch(GAS_URL, {
-        method: 'POST',
-        body: JSON.stringify({
-          date: dateFormatted,
-          original: original,
-          chinese: chinese,
-          jpy: Number(jpy)
-        })
+      // 用 GET + query string 避免 CORS preflight 問題
+      const params = new URLSearchParams({
+        action: 'write',
+        date: dateFormatted,
+        original: original,
+        chinese: chinese,
+        jpy: Number(jpy)
       });
+      const res = await fetch(`${GAS_URL}?${params}`);
       const data = await res.json();
       if (data.success) {
-        // 清空欄位
         document.getElementById('inp-jpy').value = '';
         document.getElementById('inp-chinese').value = '';
         document.getElementById('inp-original').value = '';
         showToast('✅ 已新增！');
         await loadRecords();
       } else {
-        showToast('❌ 寫入失敗');
+        showToast('❌ 寫入失敗：' + (data.error || ''));
       }
     } catch(e) {
       showToast('❌ 網路錯誤');
