@@ -86,6 +86,32 @@
   input:focus { border-color: var(--pink-dark); background: white; }
   input::placeholder { color: #d0b8a8; }
 
+  select {
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--brown);
+    background: var(--cream);
+    width: 100%;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c0a090' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    cursor: pointer;
+  }
+
+  select:focus { border-color: var(--pink-dark); background-color: white; }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
   .submit-btn {
     background: var(--pink-dark);
     color: white;
@@ -293,6 +319,36 @@
         <input type="text" id="inp-original" placeholder="例：ローソン">
       </div>
 
+      <div class="form-row">
+        <div class="form-group">
+          <label>類別 *</label>
+          <select id="inp-category">
+            <option value="">選擇類別</option>
+            <option value="餐">🍜 餐</option>
+            <option value="玩">🎡 玩</option>
+            <option value="交">🚃 交</option>
+            <option value="雜">🛍 雜</option>
+            <option value="紀">🎁 紀</option>
+            <option value="住">🏨 住</option>
+            <option value="藥">💊 藥</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>支付方式</label>
+          <select id="inp-payment">
+            <option value="">不填</option>
+            <option value="現金">現金</option>
+            <option value="SUICA">SUICA</option>
+            <option value="吉鶴卡">吉鶴卡</option>
+            <option value="LINE(DAWAY)">LINE(DAWAY)</option>
+            <option value="街口(UBEAR)">街口(UBEAR)</option>
+            <option value="全支付(PayPay)">全支付(PayPay)</option>
+            <option value="FLYGO">FLYGO</option>
+            <option value="國泰CUBE卡">國泰CUBE卡</option>
+          </select>
+        </div>
+      </div>
+
       <button class="submit-btn" id="submit-btn" onclick="submitRecord()">
         <span>➕</span> 新增
       </button>
@@ -366,6 +422,14 @@
       return `${parts[1]}/${parts[2]}`;
     }
 
+    // "Fri May 01 2026 ..." 完整日期字串，用本地時間解析
+    const d = new Date(str);
+    if (!isNaN(d.getTime())) {
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${m}/${day}`;
+    }
+
     return str;
   }
 
@@ -413,8 +477,11 @@
     const chinese  = document.getElementById('inp-chinese').value.trim();
     const original = document.getElementById('inp-original').value.trim();
 
-    if (!date || !jpy || !chinese) {
-      showToast('⚠️ 請填寫日期、金額和中文項目');
+    const category = document.getElementById('inp-category').value;
+    const payment  = document.getElementById('inp-payment').value;
+
+    if (!date || !jpy || !chinese || !category) {
+      showToast('⚠️ 請填寫日期、金額、中文項目和類別');
       return;
     }
 
@@ -432,7 +499,9 @@
         date:     dateFormatted,
         original: original,
         chinese:  chinese,
-        jpy:      Number(jpy)
+        jpy:      Number(jpy),
+        payment:  payment,
+        category: category
       });
       const res = await fetch(`${GAS_URL}?${params}`);
       const data = await res.json();
@@ -440,6 +509,8 @@
         document.getElementById('inp-jpy').value = '';
         document.getElementById('inp-chinese').value = '';
         document.getElementById('inp-original').value = '';
+        document.getElementById('inp-category').value = '';
+        document.getElementById('inp-payment').value = '';
         showToast('✅ 已新增！');
         await loadRecords();
       } else {
