@@ -549,18 +549,18 @@
 
   async function deleteRecord(rowNum) {
     if (!confirm('確定刪除這筆紀錄？')) return;
+
+    // 樂觀更新：立刻從畫面移除
+    records = records.filter(r => r.row !== rowNum);
+    renderList();
+    showToast('🗑 已刪除');
+
+    // 背景送出刪除請求
     try {
       const params = new URLSearchParams({ action: 'delete', row: rowNum });
-      const res = await fetch(`${GAS_URL}?${params}`);
-      const data = await res.json();
-      if (data.success) {
-        showToast('🗑 已刪除');
-        await loadRecords();
-      } else {
-        showToast('❌ 刪除失敗');
-      }
+      await fetch(`${GAS_URL}?${params}`);
     } catch(e) {
-      showToast('❌ 網路錯誤');
+      // 靜默失敗，不干擾使用者
     }
   }
 
