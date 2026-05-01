@@ -96,7 +96,6 @@ margin-top: 4px;
 .api-status.ok  { color: #5abf9a; }
 .api-status.err { color: #e05050; }
 
-/* 關鍵：file input 完全隱藏 */
 input[type=“file”] {
 display: none !important;
 position: absolute !important;
@@ -301,7 +300,6 @@ display: flex; align-items: center; justify-content: center; gap: 5px;
     </div>
 
 ```
-<!-- 完全隱藏的 file inputs -->
 <input type="file" id="galleryInput" accept="image/*" onchange="onFileChange(event)">
 <input type="file" id="cameraInput" accept="image/*" capture="environment" onchange="onFileChange(event)">
 
