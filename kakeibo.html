@@ -7,21 +7,12 @@
 <title>記帳</title>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --pink-dark: #e8849a;
-    --pink: #f5b8c8;
-    --cream: #fdf6ee;
-    --brown: #7a4f3a;
-    --light-brown: #c0a090;
-    --border: #ead8c8;
-  }
-
-- { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 html, body {
 height: 100%;
 font-family: ‘Noto Sans TC’, sans-serif;
-background: var(–cream);
+background: #fdf6ee;
 overflow: hidden;
 }
 
@@ -33,7 +24,7 @@ overflow: hidden;
 }
 
 .top-section {
-background: var(–pink-dark);
+background: #e8849a;
 padding: 14px 16px 16px;
 flex-shrink: 0;
 overflow: hidden;
@@ -68,45 +59,50 @@ width: 100%;
 label {
 font-size: 10px;
 font-weight: 700;
-color: var(–light-brown);
+color: #c0a090;
 letter-spacing: 0.5px;
 }
 
-input {
-border: 1.5px solid var(–border);
+input[type=“text”],
+input[type=“number”] {
+border: 1.5px solid #ead8c8;
 border-radius: 10px;
 padding: 10px 12px;
 font-size: 15px;
 font-family: ‘Noto Sans TC’, sans-serif;
-color: var(–brown);
-background: var(–cream);
+color: #7a4f3a;
+background: #fdf6ee;
 width: 100%;
 outline: none;
 transition: border-color 0.15s;
+-webkit-appearance: none;
+appearance: none;
 }
 
-input:focus { border-color: var(–pink-dark); background: white; }
+input[type=“text”]:focus,
+input[type=“number”]:focus { border-color: #e8849a; background: white; }
 input::placeholder { color: #d0b8a8; }
 
 select {
-border: 1.5px solid var(–border);
+border: 1.5px solid #ead8c8;
 border-radius: 10px;
 padding: 10px 12px;
 font-size: 14px;
 font-family: ‘Noto Sans TC’, sans-serif;
-color: var(–brown);
-background: var(–cream);
+color: #7a4f3a;
+background: #fdf6ee;
 width: 100%;
 outline: none;
-appearance: none;
 -webkit-appearance: none;
+appearance: none;
 background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath d=‘M1 1l5 5 5-5’ stroke=’%23c0a090’ stroke-width=‘1.5’ fill=‘none’ stroke-linecap=‘round’/%3E%3C/svg%3E”);
 background-repeat: no-repeat;
 background-position: right 12px center;
+background-color: #fdf6ee;
 cursor: pointer;
 }
 
-select:focus { border-color: var(–pink-dark); background-color: white; }
+select:focus { border-color: #e8849a; background-color: white; }
 
 .form-row {
 display: grid;
@@ -119,14 +115,15 @@ display: flex;
 align-items: center;
 gap: 6px;
 }
+
 .jpy-op-btn {
 flex-shrink: 0;
 width: 40px;
 height: 40px;
 border-radius: 10px;
-border: 1.5px solid var(–pink);
+border: 1.5px solid #f5b8c8;
 background: #fde8f0;
-color: var(–pink-dark);
+color: #e8849a;
 font-size: 18px;
 font-weight: 700;
 cursor: pointer;
@@ -134,7 +131,7 @@ display: flex;
 align-items: center;
 justify-content: center;
 }
-.jpy-op-btn:active { background: var(–pink); }
+.jpy-op-btn:active { background: #f5b8c8; }
 
 #jpy-items {
 display: flex;
@@ -143,23 +140,25 @@ gap: 4px;
 min-height: 0;
 margin-top: 4px;
 }
+
 .jpy-tag {
 background: #fde8f0;
-border: 1px solid var(–pink);
+border: 1px solid #f5b8c8;
 border-radius: 20px;
 padding: 2px 10px;
 font-size: 12px;
 font-weight: 700;
-color: var(–pink-dark);
+color: #e8849a;
 }
 .jpy-tag.neg {
-background: var(–cream);
-border-color: var(–border);
-color: var(–light-brown);
+background: #fdf6ee;
+border-color: #ead8c8;
+color: #c0a090;
 }
+
 #jpy-preview {
 font-size: 12px;
-color: var(–pink-dark);
+color: #e8849a;
 font-weight: 700;
 min-height: 0;
 padding-left: 2px;
@@ -171,19 +170,16 @@ display: flex;
 align-items: center;
 gap: 6px;
 }
-.date-row input {
-flex: 1;
-text-align: center;
-}
+.date-row input { flex: 1; text-align: center; }
 .date-sep {
 font-size: 18px;
 font-weight: 700;
-color: var(–light-brown);
+color: #c0a090;
 flex-shrink: 0;
 }
 
 .submit-btn {
-background: var(–pink-dark);
+background: #e8849a;
 color: white;
 border: none;
 border-radius: 12px;
@@ -200,7 +196,6 @@ justify-content: center;
 gap: 6px;
 width: 100%;
 }
-
 .submit-btn:active { opacity: 0.85; transform: scale(0.98); }
 .submit-btn:disabled { opacity: 0.55; }
 
@@ -222,25 +217,25 @@ margin-bottom: 10px;
 font-family: ‘Zen Maru Gothic’, sans-serif;
 font-size: 13px;
 font-weight: 700;
-color: var(–brown);
+color: #7a4f3a;
 letter-spacing: 1px;
 }
 
 .total-badge {
 background: #fde8f0;
-border: 1.5px solid var(–pink);
+border: 1.5px solid #f5b8c8;
 border-radius: 20px;
 padding: 3px 10px;
 font-size: 12px;
 font-weight: 700;
-color: var(–pink-dark);
+color: #e8849a;
 font-family: ‘Zen Maru Gothic’, sans-serif;
 }
 
 .record-item {
 background: white;
 border-radius: 14px;
-border: 1.5px solid var(–border);
+border: 1.5px solid #ead8c8;
 padding: 11px 14px;
 margin-bottom: 8px;
 display: flex;
@@ -251,13 +246,13 @@ animation: fadeIn 0.2s ease;
 
 @keyframes fadeIn {
 from { opacity: 0; transform: translateY(6px); }
-to { opacity: 1; transform: translateY(0); }
+to   { opacity: 1; transform: translateY(0); }
 }
 
 .record-date {
 font-size: 12px;
 font-weight: 700;
-color: var(–light-brown);
+color: #c0a090;
 flex-shrink: 0;
 width: 34px;
 text-align: center;
@@ -267,7 +262,7 @@ line-height: 1.4;
 .record-divider {
 width: 1.5px;
 height: 36px;
-background: var(–border);
+background: #ead8c8;
 flex-shrink: 0;
 }
 
@@ -279,7 +274,7 @@ min-width: 0;
 .record-chinese {
 font-size: 13px;
 font-weight: 700;
-color: var(–brown);
+color: #7a4f3a;
 white-space: nowrap;
 overflow: hidden;
 text-overflow: ellipsis;
@@ -287,7 +282,7 @@ text-overflow: ellipsis;
 
 .record-original {
 font-size: 11px;
-color: var(–light-brown);
+color: #c0a090;
 white-space: nowrap;
 overflow: hidden;
 text-overflow: ellipsis;
@@ -303,12 +298,12 @@ text-align: right;
 font-family: ‘Zen Maru Gothic’, sans-serif;
 font-size: 15px;
 font-weight: 900;
-color: var(–pink-dark);
+color: #e8849a;
 }
 
 .record-twd {
 font-size: 11px;
-color: var(–light-brown);
+color: #c0a090;
 margin-top: 1px;
 }
 
@@ -330,10 +325,9 @@ transition: background 0.15s;
 .empty-state {
 text-align: center;
 padding: 32px 0;
-color: var(–light-brown);
+color: #c0a090;
 font-size: 13px;
 }
-
 .empty-state .empty-icon { font-size: 36px; margin-bottom: 8px; }
 
 .toast {
@@ -341,7 +335,7 @@ position: fixed;
 bottom: 24px;
 left: 50%;
 transform: translateX(-50%) translateY(80px);
-background: var(–brown);
+background: #7a4f3a;
 color: white;
 padding: 10px 20px;
 border-radius: 20px;
@@ -352,28 +346,34 @@ z-index: 999;
 transition: transform 0.25s ease;
 white-space: nowrap;
 }
-
 .toast.show { transform: translateX(-50%) translateY(0); }
 
 .loading-row {
 text-align: center;
 padding: 20px;
-color: var(–light-brown);
+color: #c0a090;
 font-size: 13px;
 }
 
 .spinner {
 display: inline-block;
 width: 18px; height: 18px;
-border: 2px solid var(–border);
-border-top-color: var(–pink-dark);
+border: 2px solid #ead8c8;
+border-top-color: #e8849a;
 border-radius: 50%;
 animation: spin 0.7s linear infinite;
 vertical-align: middle;
 margin-right: 6px;
 }
-
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* file input 完全隱藏 */
+input[type=“file”] {
+display: none !important;
+position: absolute !important;
+width: 0 !important; height: 0 !important;
+opacity: 0 !important;
+}
 </style>
 
 </head>
@@ -470,244 +470,208 @@ margin-right: 6px;
 <div class="toast" id="toast"></div>
 
 <script>
-  const GAS_URL = "https://script.google.com/macros/s/AKfycbwiDBMaW_iEgPia8GKpU5-j8mgEW474uQjmdD9LsemX0ezZRCqJWZ-p69HY3e1ZWC-k/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbwiDBMaW_iEgPia8GKpU5-j8mgEW474uQjmdD9LsemX0ezZRCqJWZ-p69HY3e1ZWC-k/exec";
 
-  // 今天日期（本地時間）
-  function getTodayLocal() {
-    const now = new Date();
-    const yyyy = now.getFullYear();
-    const mm = String(now.getMonth() + 1).padStart(2, '0');
-    const dd = String(now.getDate()).padStart(2, '0');
-    return `${yyyy}-${mm}-${dd}`;
-  }
-  const _today = new Date();
-  document.getElementById('inp-month').value = _today.getMonth() + 1;
-  document.getElementById('inp-day').value = _today.getDate();
+const _today = new Date();
+document.getElementById('inp-month').value = _today.getMonth() + 1;
+document.getElementById('inp-day').value   = _today.getDate();
 
-  let records = [];
+let records  = [];
+let jpyParts = [];
 
-  // 累加金額暫存
-  let jpyParts = []; // [{val, sign}]
+function addItem(sign) {
+  const inp = document.getElementById('inp-jpy');
+  const val = Number(inp.value);
+  if (!val || isNaN(val) || val <= 0) return;
+  jpyParts.push({ val, sign });
+  inp.value = '';
+  inp.focus();
+  renderJpyItems();
+  updatePreview();
+}
 
-  function addItem(sign) {
-    const inp = document.getElementById('inp-jpy');
-    const val = Number(inp.value);
-    if (!val || isNaN(val) || val <= 0) return;
-    jpyParts.push({ val, sign });
-    inp.value = '';
-    inp.focus();
+function renderJpyItems() {
+  const container = document.getElementById('jpy-items');
+  if (jpyParts.length === 0) { container.innerHTML = ''; return; }
+  container.innerHTML = jpyParts.map((p, i) =>
+    `<span class="jpy-tag${p.sign < 0 ? ' neg' : ''}" onclick="removeJpyItem(${i})">${p.sign > 0 ? '+' : '－'}¥${p.val.toLocaleString()} ×</span>`
+  ).join('');
+}
+
+function removeJpyItem(idx) {
+  jpyParts.splice(idx, 1);
+  renderJpyItems();
+  updatePreview();
+}
+
+function updatePreview() {
+  const preview    = document.getElementById('jpy-preview');
+  const inp        = document.getElementById('inp-jpy');
+  const current    = Number(inp.value) || 0;
+  const total      = jpyParts.reduce((a, p) => a + p.val * p.sign, 0) + current;
+  if (jpyParts.length === 0 && !current) { preview.textContent = ''; return; }
+  preview.textContent = `合計 ¥${total.toLocaleString()}`;
+}
+
+document.getElementById('inp-jpy').addEventListener('input', updatePreview);
+document.getElementById('inp-jpy').addEventListener('blur', function() {
+  const val = Number(this.value);
+  if (val > 0 && jpyParts.length > 0) {
+    jpyParts.push({ val, sign: 1 });
+    this.value = '';
     renderJpyItems();
     updatePreview();
   }
+});
 
-  function renderJpyItems() {
-    const container = document.getElementById('jpy-items');
-    if (jpyParts.length === 0) { container.innerHTML = ''; return; }
-    container.innerHTML = jpyParts.map((p, i) =>
-      `<span class="jpy-tag${p.sign < 0 ? ' neg' : ''}" onclick="removeJpyItem(${i})">${p.sign > 0 ? '+' : '－'}¥${p.val.toLocaleString()} ×</span>`
-    ).join('');
-  }
-
-  function removeJpyItem(idx) {
-    jpyParts.splice(idx, 1);
-    renderJpyItems();
-    updatePreview();
-  }
-
-  function updatePreview() {
-    const preview = document.getElementById('jpy-preview');
-    const inp = document.getElementById('inp-jpy');
-    const current = Number(inp.value) || 0;
-    const total = jpyParts.reduce((a, p) => a + p.val * p.sign, 0) + current;
-    if (jpyParts.length === 0 && !current) { preview.textContent = ''; return; }
-    preview.textContent = `合計 ¥${total.toLocaleString()}`;
-  }
-
-  document.getElementById('inp-jpy').addEventListener('input', updatePreview);
-  document.getElementById('inp-jpy').addEventListener('blur', function() {
-    // 離開輸入框：如果有暫存項目，把當前值自動加進去
-    const val = Number(this.value);
-    if (val > 0 && jpyParts.length > 0) {
-      jpyParts.push({ val, sign: 1 });
-      this.value = '';
-      renderJpyItems();
-      updatePreview();
-    }
-  });
-
-  async function loadRecords() {
-    try {
-      const res = await fetch(GAS_URL);
-      const data = await res.json();
-      if (data.success) {
-        records = data.data.reverse();
-        renderList();
-      } else {
-        showError();
-      }
-    } catch(e) {
+async function loadRecords() {
+  try {
+    const res  = await fetch(GAS_URL);
+    const data = await res.json();
+    if (data.success) {
+      records = data.data.reverse();
+      renderList();
+    } else {
       showError();
     }
+  } catch(e) {
+    showError();
   }
+}
 
-  function showError() {
-    document.getElementById('record-list').innerHTML =
-      `<div class="empty-state"><div class="empty-icon">⚠️</div>載入失敗，請檢查網路</div>`;
+function showError() {
+  document.getElementById('record-list').innerHTML =
+    `<div class="empty-state"><div class="empty-icon">⚠️</div>載入失敗，請檢查網路</div>`;
+}
+
+function formatDate(raw) {
+  if (!raw) return '—';
+  const str = String(raw).trim();
+  if (/^\d{1,2}\/\d{1,2}$/.test(str)) {
+    const [m, d] = str.split('/');
+    return `${m.padStart(2,'0')}/${d.padStart(2,'0')}`;
   }
-
-  // 統一把各種格式轉成 MM/DD
-  function formatDate(raw) {
-    if (!raw) return '—';
-    const str = String(raw).trim();
-
-    // 已經是 M/D 或 MM/DD
-    if (/^\d{1,2}\/\d{1,2}$/.test(str)) {
-      const [m, d] = str.split('/');
-      return `${m.padStart(2,'0')}/${d.padStart(2,'0')}`;
-    }
-
-    // YYYY-MM-DD
-    if (/^\d{4}-\d{2}-\d{2}/.test(str)) {
-      const parts = str.split('-');
-      return `${parts[1]}/${parts[2]}`;
-    }
-
-    // "Fri May 01 2026 ..." 完整日期字串，用本地時間解析
-    const d = new Date(str);
-    if (!isNaN(d.getTime())) {
-      const m = String(d.getMonth() + 1).padStart(2, '0');
-      const day = String(d.getDate()).padStart(2, '0');
-      return `${m}/${day}`;
-    }
-
-    return str;
+  if (/^\d{4}-\d{2}-\d{2}/.test(str)) {
+    const parts = str.split('-');
+    return `${parts[1]}/${parts[2]}`;
   }
+  const d = new Date(str);
+  if (!isNaN(d.getTime())) {
+    const m   = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${m}/${day}`;
+  }
+  return str;
+}
 
-  function renderList() {
-    const list = document.getElementById('record-list');
-    if (records.length === 0) {
-      list.innerHTML = `<div class="empty-state"><div class="empty-icon">🌸</div>還沒有紀錄哦</div>`;
-      document.getElementById('total-badge').textContent = '合計 ¥0';
-      return;
-    }
-
-    const total = records.reduce((s, r) => s + (Number(r.jpy) || 0), 0);
-    document.getElementById('total-badge').textContent = `合計 ¥${total.toLocaleString()}`;
-
-    list.innerHTML = records.map(r => {
-      const jpy = Number(r.jpy) || 0;
-      const twd = Number(r.twd) || 0;
-      return `
-        <div class="record-item" id="row-${r.row}">
-          <div class="record-date">${formatDate(r.date)}</div>
-          <div class="record-divider"></div>
-          <div class="record-info">
-            <div class="record-chinese">${escHtml(r.chinese || '—')}</div>
-            ${r.original ? `<div class="record-original">${escHtml(r.original)}</div>` : ''}
-          </div>
-          <div class="record-amounts">
-            <div class="record-jpy">¥${jpy.toLocaleString()}</div>
-            <div class="record-twd">NT$${twd.toLocaleString()}</div>
-          </div>
-          <button class="record-delete" onclick="deleteRecord(${r.row})">刪</button>
+function renderList() {
+  const list = document.getElementById('record-list');
+  if (records.length === 0) {
+    list.innerHTML = `<div class="empty-state"><div class="empty-icon">🌸</div>還沒有紀錄哦</div>`;
+    document.getElementById('total-badge').textContent = '合計 ¥0';
+    return;
+  }
+  const total = records.reduce((s, r) => s + (Number(r.jpy) || 0), 0);
+  document.getElementById('total-badge').textContent = `合計 ¥${total.toLocaleString()}`;
+  list.innerHTML = records.map(r => {
+    const jpy = Number(r.jpy) || 0;
+    const twd = Number(r.twd) || 0;
+    return `
+      <div class="record-item" id="row-${r.row}">
+        <div class="record-date">${formatDate(r.date)}</div>
+        <div class="record-divider"></div>
+        <div class="record-info">
+          <div class="record-chinese">${escHtml(r.chinese || '—')}</div>
+          ${r.original ? `<div class="record-original">${escHtml(r.original)}</div>` : ''}
         </div>
-      `;
-    }).join('');
-  }
+        <div class="record-amounts">
+          <div class="record-jpy">¥${jpy.toLocaleString()}</div>
+          <div class="record-twd">NT$${twd.toLocaleString()}</div>
+        </div>
+        <button class="record-delete" onclick="deleteRecord(${r.row})">刪</button>
+      </div>
+    `;
+  }).join('');
+}
 
-  function escHtml(s) {
-    return String(s)
-      .replace(/&/g,'&amp;')
-      .replace(/</g,'&lt;')
-      .replace(/>/g,'&gt;');
-  }
+function escHtml(s) {
+  return String(s)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;');
+}
 
-  async function submitRecord() {
-    const month    = document.getElementById('inp-month').value;
-    const day      = document.getElementById('inp-day').value;
-    const jpyRaw  = document.getElementById('inp-jpy').value.trim();
-    const jpyCurrent = Number(jpyRaw) || 0;
-    const jpy = jpyParts.reduce((a, b) => a + b, 0) + jpyCurrent;
-    if (jpy <= 0) {
-      showToast('⚠️ 請輸入日幣金額');
-      return;
+async function submitRecord() {
+  const month      = document.getElementById('inp-month').value;
+  const day        = document.getElementById('inp-day').value;
+  const jpyRaw     = document.getElementById('inp-jpy').value.trim();
+  const jpyCurrent = Number(jpyRaw) || 0;
+  const jpy        = jpyParts.reduce((a, b) => a + b.val * b.sign, 0) + jpyCurrent;
+
+  if (!month || !day || jpy <= 0) { showToast('⚠️ 請輸入日期和日幣金額'); return; }
+
+  const chinese  = document.getElementById('inp-chinese').value.trim();
+  const original = document.getElementById('inp-original').value.trim();
+  const category = document.getElementById('inp-category').value;
+  const payment  = document.getElementById('inp-payment').value;
+
+  if (!chinese || !category) { showToast('⚠️ 請填寫中文項目和類別'); return; }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> 送出中…';
+
+  const dateFormatted = `${String(month).padStart(2,'0')}/${String(day).padStart(2,'0')}`;
+
+  try {
+    const params = new URLSearchParams({
+      action: 'write', date: dateFormatted,
+      original, chinese, jpy: Number(jpy),
+      payment, category
+    });
+    const res  = await fetch(`${GAS_URL}?${params}`);
+    const data = await res.json();
+    if (data.success) {
+      document.getElementById('inp-jpy').value = '';
+      document.getElementById('jpy-preview').textContent = '';
+      document.getElementById('jpy-items').innerHTML = '';
+      jpyParts = [];
+      document.getElementById('inp-chinese').value  = '';
+      document.getElementById('inp-original').value = '';
+      document.getElementById('inp-category').value = '';
+      document.getElementById('inp-payment').value  = '';
+      showToast('✅ 已新增！');
+      await loadRecords();
+    } else {
+      showToast('❌ 寫入失敗：' + (data.error || ''));
     }
-    const chinese  = document.getElementById('inp-chinese').value.trim();
-    const original = document.getElementById('inp-original').value.trim();
-    const category = document.getElementById('inp-category').value;
-    const payment  = document.getElementById('inp-payment').value;
-
-    if (!month || !day || jpy <= 0 || !chinese || !category) {
-      showToast('⚠️ 請填寫日期、金額、中文項目和類別');
-      return;
-    }
-
-    const btn = document.getElementById('submit-btn');
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span> 送出中…';
-
-    // 直接用 MM/DD 格式
-    const dateFormatted = `${String(month).padStart(2,'0')}/${String(day).padStart(2,'0')}`;
-
-    try {
-      const params = new URLSearchParams({
-        action:   'write',
-        date:     dateFormatted,
-        original: original,
-        chinese:  chinese,
-        jpy:      Number(jpy),
-        payment:  payment,
-        category: category
-      });
-      const res = await fetch(`${GAS_URL}?${params}`);
-      const data = await res.json();
-      if (data.success) {
-        document.getElementById('inp-jpy').value = '';
-        document.getElementById('jpy-preview').textContent = '';
-        document.getElementById('jpy-items').innerHTML = '';
-        jpyParts = [];
-        document.getElementById('inp-chinese').value = '';
-        document.getElementById('inp-original').value = '';
-        document.getElementById('inp-category').value = '';
-        document.getElementById('inp-payment').value = '';
-        showToast('✅ 已新增！');
-        await loadRecords();
-      } else {
-        showToast('❌ 寫入失敗：' + (data.error || ''));
-      }
-    } catch(e) {
-      showToast('❌ 網路錯誤');
-    }
-
-    btn.disabled = false;
-    btn.innerHTML = '<span>➕</span> 新增';
+  } catch(e) {
+    showToast('❌ 網路錯誤');
   }
 
-  async function deleteRecord(rowNum) {
-    if (!confirm('確定刪除這筆紀錄？')) return;
+  btn.disabled = false;
+  btn.innerHTML = '<span>➕</span> 新增';
+}
 
-    // 樂觀更新：立刻從畫面移除
-    records = records.filter(r => r.row !== rowNum);
-    renderList();
-    showToast('🗑 已刪除');
+async function deleteRecord(rowNum) {
+  if (!confirm('確定刪除這筆紀錄？')) return;
+  records = records.filter(r => r.row !== rowNum);
+  renderList();
+  showToast('🗑 已刪除');
+  try {
+    const params = new URLSearchParams({ action: 'delete', row: rowNum });
+    await fetch(`${GAS_URL}?${params}`);
+  } catch(e) {}
+}
 
-    // 背景送出刪除請求
-    try {
-      const params = new URLSearchParams({ action: 'delete', row: rowNum });
-      await fetch(`${GAS_URL}?${params}`);
-    } catch(e) {
-      // 靜默失敗，不干擾使用者
-    }
-  }
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
 
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2200);
-  }
-
-  loadRecords();
+loadRecords();
 </script>
 
 </body>
