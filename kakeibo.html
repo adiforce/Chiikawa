@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -43,6 +44,7 @@
     </style>
 </head>
 <body>
+
 <div class="page">
     <div class="top-section">
         <div class="section-title">✏️ 新增花費</div>
@@ -72,7 +74,7 @@
                 <label>金額 ¥（可多次累加）</label>
                 <div class="jpy-row">
                     <input type="number" id="inp-jpy" placeholder="0" inputmode="numeric" min="0">
-                    <button type="button" class="jpy-op-btn" onclick="addItem()">＋</button>
+                    <button type="button" class="jpy-op-btn" id="add-btn" onclick="addItem()">＋</button>
                 </div>
                 <div class="jpy-tags-wrap" id="jpy-items"></div>
             </div>
@@ -83,37 +85,55 @@
             <button class="submit-btn" id="submit-btn" onclick="submitRecord()">➕ 新增紀錄</button>
         </div>
     </div>
-    <div class="list-section">
-        <div class="list-header">
-            <span style="font-size:13px;font-weight:700;color:#7a4f3a;">📋 最近紀錄</span>
-            <div class="total-badge" id="total-badge">合計 ¥0</div>
-        </div>
-        <div id="record-list"><div class="loading-hint">讀取中…</div></div>
+
+```
+<div class="list-section">
+    <div class="list-header">
+        <span style="font-size:13px;font-weight:700;color:#7a4f3a;">📋 最近紀錄</span>
+        <div class="total-badge" id="total-badge">合計 ¥0</div>
     </div>
+    <div id="record-list"><div class="loading-hint">讀取中…</div></div>
 </div>
+```
+
+</div>
+
 <div class="toast" id="toast"></div>
+
 <script>
     const GAS_URL = "https://script.google.com/macros/s/AKfycbwiDBMaW_iEgPia8GKpU5-j8mgEW474uQjmdD9LsemX0ezZRCqJWZ-p69HY3e1ZWC-k/exec";
     let jpyParts = [];
+
+    // 預設今天日期
     const d = new Date();
     document.getElementById('inp-month').value = d.getMonth() + 1;
     document.getElementById('inp-day').value = d.getDate();
+
+    // 按 Enter 也能累加金額
     document.getElementById('inp-jpy').addEventListener('keydown', function(e) {
         if (e.key === 'Enter') { e.preventDefault(); addItem(); }
     });
+
     function addItem() {
         const inp = document.getElementById('inp-jpy');
         const val = parseInt(inp.value);
-        if (val > 0) { jpyParts.push(val); inp.value = ''; inp.focus(); renderTags(); }
+        if (val > 0) {
+            jpyParts.push(val);
+            inp.value = '';
+            inp.focus();
+            renderTags();
+        }
     }
+
     function renderTags() {
         const div = document.getElementById('jpy-items');
         if (jpyParts.length === 0) { div.innerHTML = ''; return; }
         const sum = jpyParts.reduce((a, b) => a + b, 0);
         div.innerHTML = jpyParts.map((v, i) =>
-            '<span class="jpy-tag" onclick="jpyParts.splice(' + i + ',1);renderTags();">¥' + v.toLocaleString() + ' ×</span>'
-        ).join('') + '<span class="jpy-tag" style="background:#fff0f5;font-weight:700;">小計 ¥' + sum.toLocaleString() + '</span>';
+            `<span class="jpy-tag" onclick="jpyParts.splice(${i},1);renderTags();">¥${v.toLocaleString()} ×</span>`
+        ).join('') + `<span class="jpy-tag" style="background:#fff0f5;font-weight:700;">小計 ¥${sum.toLocaleString()}</span>`;
     }
+
     async function loadRecords() {
         const list = document.getElementById('record-list');
         list.innerHTML = '<div class="loading-hint">讀取中…</div>';
@@ -124,50 +144,89 @@
                 let total = 0;
                 list.innerHTML = json.data.slice().reverse().map(r => {
                     total += Number(r.jpy || 0);
-                    const dp = String(r.date).split(/[-\/]/);
-                    const dateLabel = dp.length >= 3 ? dp[1] + '/' + dp[2] : r.date;
-                    return '<div class="record-item"><div class="record-date">' + dateLabel + '</div><div class="record-cat">' + (r.category || '') + '</div><div class="record-info"><div class="record-chinese">' + r.chinese + '</div></div><div class="record-jpy">¥' + Number(r.jpy).toLocaleString() + '</div><button class="record-delete" onclick="deleteRec(' + r.row + ')">刪</button></div>';
+                    const dateParts = String(r.date).split(/[-\/]/);
+                    const dateLabel = dateParts.length >= 3
+                        ? `${dateParts[1]}/${dateParts[2]}`
+                        : r.date;
+                    return `<div class="record-item">
+                        <div class="record-date">${dateLabel}</div>
+                        <div class="record-cat">${r.category || ''}</div>
+                        <div class="record-info"><div class="record-chinese">${r.chinese}</div></div>
+                        <div class="record-jpy">¥${Number(r.jpy).toLocaleString()}</div>
+                        <button class="record-delete" onclick="deleteRec(${r.row})">刪</button>
+                    </div>`;
                 }).join('');
-                document.getElementById('total-badge').textContent = '合計 ¥' + total.toLocaleString();
+                document.getElementById('total-badge').textContent = `合計 ¥${total.toLocaleString()}`;
             } else if (json.success) {
                 list.innerHTML = '<div class="empty-hint">還沒有紀錄</div>';
                 document.getElementById('total-badge').textContent = '合計 ¥0';
             }
-        } catch (e) { list.innerHTML = '<div class="empty-hint">載入失敗，請檢查網路</div>'; }
+        } catch (e) {
+            list.innerHTML = '<div class="empty-hint">載入失敗，請檢查網路</div>';
+        }
     }
+
     async function submitRecord() {
         const currentJpy = parseInt(document.getElementById('inp-jpy').value) || 0;
         const total = jpyParts.reduce((a, b) => a + b, 0) + currentJpy;
         const chinese = document.getElementById('inp-chinese').value.trim();
         const month = document.getElementById('inp-month').value;
         const day = document.getElementById('inp-day').value;
+
         if (!total) return showToast("請輸入金額");
         if (!chinese) return showToast("請輸入項目名稱");
         if (!month || !day) return showToast("請輸入日期");
+
         const btn = document.getElementById('submit-btn');
-        btn.disabled = true; btn.textContent = "傳送中…";
+        btn.disabled = true;
+        btn.textContent = "傳送中…";
+
         try {
-            const params = new URLSearchParams({ action: 'write', date: month + '/' + day, chinese: chinese, jpy: total, category: document.getElementById('inp-category').value });
-            const res = await fetch(GAS_URL + '?' + params);
+            const params = new URLSearchParams({
+                action: 'write',
+                date: `${month}/${day}`,
+                chinese: chinese,
+                jpy: total,
+                category: document.getElementById('inp-category').value
+            });
+            const res = await fetch(`${GAS_URL}?${params}`);
             const data = await res.json();
             if (data.success) {
                 showToast("✅ 已儲存");
-                jpyParts = []; document.getElementById('inp-jpy').value = ''; document.getElementById('inp-chinese').value = '';
-                renderTags(); loadRecords();
-            } else { showToast("❌ 儲存失敗"); }
-        } catch (e) { showToast("❌ 網路錯誤"); }
-        btn.disabled = false; btn.textContent = "➕ 新增紀錄";
+                jpyParts = [];
+                document.getElementById('inp-jpy').value = '';
+                document.getElementById('inp-chinese').value = '';
+                renderTags();
+                loadRecords();
+            } else {
+                showToast("❌ 儲存失敗");
+            }
+        } catch (e) {
+            showToast("❌ 網路錯誤");
+        }
+        btn.disabled = false;
+        btn.textContent = "➕ 新增紀錄";
     }
+
     function showToast(m) {
-        const t = document.getElementById('toast'); t.textContent = m;
-        t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2200);
+        const t = document.getElementById('toast');
+        t.textContent = m;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2200);
     }
+
     async function deleteRec(row) {
         if (!confirm("確定刪除這筆紀錄？")) return;
-        try { await fetch(GAS_URL + '?action=delete&row=' + row); loadRecords(); }
-        catch (e) { showToast("❌ 刪除失敗"); }
+        try {
+            await fetch(`${GAS_URL}?action=delete&row=${row}`);
+            loadRecords();
+        } catch (e) {
+            showToast("❌ 刪除失敗");
+        }
     }
+
     loadRecords();
 </script>
+
 </body>
 </html>
