@@ -77,9 +77,24 @@
                 </div>
                 <div class="jpy-tags-wrap" id="jpy-items"></div>
             </div>
-            <div class="form-group">
-                <label>項目名稱</label>
-                <input type="text" id="inp-chinese" placeholder="例：藥妝店">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>支付工具</label>
+                    <select id="inp-paytool">
+                        <option value="吉鶴卡">吉鶴卡</option>
+                        <option value="LINE(DAWAY)">LINE(DAWAY)</option>
+                        <option value="現金">現金</option>
+                        <option value="街口(UBEAR)">街口(UBEAR)</option>
+                        <option value="全支付(PayPay)">全支付(PayPay)</option>
+                        <option value="SUICA">SUICA</option>
+                        <option value="GoGo">GoGo</option>
+                        <option value="CUBE">CUBE</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>項目名稱</label>
+                    <input type="text" id="inp-chinese" placeholder="例：藥妝店">
+                </div>
             </div>
             <button class="submit-btn" id="submit-btn" onclick="submitRecord()">➕ 新增紀錄</button>
         </div>
@@ -139,7 +154,6 @@
                 list.innerHTML = json.data.slice().reverse().map(r => {
                     total += Number(r.jpy || 0);
                     
-                    // 修正日期格式為 mm/dd
                     const dObj = new Date(r.date);
                     const dateLabel = !isNaN(dObj.getTime()) 
                         ? `${String(dObj.getMonth() + 1).padStart(2, '0')}/${String(dObj.getDate()).padStart(2, '0')}`
@@ -169,6 +183,7 @@
         const chinese = document.getElementById('inp-chinese').value.trim();
         const month = document.getElementById('inp-month').value;
         const day = document.getElementById('inp-day').value;
+        const paytool = document.getElementById('inp-paytool').value;
 
         if (!total) return showToast("請輸入金額");
         if (!chinese) return showToast("請輸入項目名稱");
@@ -184,7 +199,8 @@
                 date: `${month}/${day}`,
                 chinese: chinese,
                 jpy: total,
-                category: document.getElementById('inp-category').value
+                category: document.getElementById('inp-category').value,
+                paytool: paytool
             });
             const res = await fetch(`${GAS_URL}?${params}`);
             const data = await res.json();
