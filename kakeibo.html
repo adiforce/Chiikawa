@@ -80,7 +80,7 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>支付工具</label>
-                    <select id="inp-paytool">
+                    <select id="inp-payment">
                         <option value="吉鶴卡">吉鶴卡</option>
                         <option value="LINE(DAWAY)">LINE(DAWAY)</option>
                         <option value="現金">現金</option>
@@ -183,7 +183,7 @@
         const chinese = document.getElementById('inp-chinese').value.trim();
         const month = document.getElementById('inp-month').value;
         const day = document.getElementById('inp-day').value;
-        const paytool = document.getElementById('inp-paytool').value;
+        const payment = document.getElementById('inp-payment').value;
 
         if (!total) return showToast("請輸入金額");
         if (!chinese) return showToast("請輸入項目名稱");
@@ -200,7 +200,7 @@
                 chinese: chinese,
                 jpy: total,
                 category: document.getElementById('inp-category').value,
-                paytool: paytool
+                payment: payment // 這裡對應 GAS 的 e.parameter.payment
             });
             const res = await fetch(`${GAS_URL}?${params}`);
             const data = await res.json();
