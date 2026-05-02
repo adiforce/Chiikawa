@@ -1,32 +1,239 @@
-// 修正：防止重複觸發與強化數值檢查
-function addItem(sign) {
-  const inp = document.getElementById('inp-jpy');
-  const val = Number(inp.value);
-  if (!val || isNaN(val) || val <= 0) return;
-  
-  jpyParts.push({ val, sign });
-  inp.value = '';
-  // 移除 inp.focus() 避免在手機端造成鍵盤閃爍
-  renderJpyItems();
-  updatePreview();
-}
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>記帳</title>
+    <link href="[https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&family=Noto+Sans+TC:wght@400;700&display=swap](https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&family=Noto+Sans+TC:wght@400;700&display=swap)" rel="stylesheet">
+    <style>
+        /* 修正全形引號為半形 */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html, body { height: 100%; font-family: 'Noto Sans TC', sans-serif; background: #fdf6ee; overflow: hidden; }
+        .page { height: 100%; display: flex; flex-direction: column; }
+        
+        /* 調整頂部區塊，確保內容不被截斷 */
+        .top-section { background: #e8849a; padding: 12px 16px; flex-shrink: 0; z-index: 10; }
+        .section-title { font-family: 'Zen Maru Gothic', sans-serif; font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.85); margin-bottom: 8px; letter-spacing: 1px; }
+        
+        .form-card { background: white; border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 4px 12px rgba(100,40,40,0.12); }
+        .form-group { display: flex; flex-direction: column; gap: 4px; width: 100%; }
+        label { font-size: 10px; font-weight: 700; color: #c0a090; letter-spacing: 0.5px; }
 
-// 修正：blur 事件不應盲目 addItem，否則點擊「新增」按鈕時會觸發兩次加總
-document.getElementById('inp-jpy').addEventListener('blur', function() {
-  const val = Number(this.value);
-  if (val > 0) {
-    // 只有當 jpyParts 還是空的時候才自動加入，或者乾脆移除此自動邏輯
-    // 建議：手動點擊 ＋ 號最為精確
-  }
-});
+        input[type="text"], input[type="number"], select {
+            border: 1.5px solid #ead8c8; border-radius: 10px; padding: 8px 12px; font-size: 15px;
+            font-family: 'Noto Sans TC', sans-serif; color: #7a4f3a; background: #fdf6ee; width: 100%; outline: none;
+        }
+        input:focus, select:focus { border-color: #e8849a; background: white; }
+        
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .jpy-row { display: flex; align-items: center; gap: 6px; }
+        .jpy-op-btn { width: 40px; height: 38px; border-radius: 10px; border: 1.5px solid #f5b8c8; background: #fde8f0; color: #e8849a; font-size: 18px; font-weight: 700; cursor: pointer; }
+        
+        #jpy-items { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 2px; }
+        .jpy-tag { background: #fde8f0; border: 1px solid #f5b8c8; border-radius: 20px; padding: 2px 8px; font-size: 11px; color: #e8849a; }
+        #jpy-preview { font-size: 12px; color: #e8849a; font-weight: 700; margin-top: 2px; }
 
-// 強化：送出前強制同步當前輸入框數值
-async function submitRecord() {
-  const inpJpy = document.getElementById('inp-jpy');
-  const jpyCurrent = Number(inpJpy.value) || 0;
-  
-  // 計算最終總額
-  const jpy = jpyParts.reduce((a, b) => a + b.val * b.sign, 0) + jpyCurrent;
-  
-  // ...其餘邏輯不變...
-}
+        .submit-btn { background: #e8849a; color: white; border: none; border-radius: 12px; padding: 10px; font-size: 15px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .submit-btn:active { transform: scale(0.98); }
+
+        .list-section { flex: 1; overflow-y: auto; padding: 12px 16px; background: #fdf6ee; }
+        .list-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+        .total-badge { background: #fde8f0; border: 1.5px solid #f5b8c8; border-radius: 20px; padding: 3px 10px; font-size: 12px; color: #e8849a; font-weight: 700; }
+        
+        .record-item { background: white; border-radius: 14px; border: 1.5px solid #ead8c8; padding: 10px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .record-info { flex: 1; min-width: 0; }
+        .record-chinese { font-size: 13px; font-weight: 700; color: #7a4f3a; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .record-amounts { text-align: right; }
+        .record-jpy { color: #e8849a; font-weight: 900; font-size: 14px; }
+        .record-delete { background: none; border: 1.5px solid #f5b8c8; color: #e8849a; border-radius: 6px; padding: 2px 6px; font-size: 11px; }
+
+        .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: #7a4f3a; color: white; padding: 8px 16px; border-radius: 20px; transition: 0.3s; z-index: 1000; }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+        .spinner { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; display: inline-block; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<div class="page">
+    <div class="top-section">
+        <div class="section-title">✏️ 新增花費</div>
+        <div class="form-card">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>日期</label>
+                    <div class="jpy-row">
+                        <input type="number" id="inp-month" placeholder="月" inputmode="numeric">
+                        <input type="number" id="inp-day" placeholder="日" inputmode="numeric">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>類別 *</label>
+                    <select id="inp-category">
+                        <option value="">選擇</option>
+                        <option value="餐">🍜 餐</option><option value="玩">🎡 玩</option>
+                        <option value="交">🚃 交</option><option value="雜">🛍 雜</option>
+                        <option value="紀">🎁 紀</option><option value="住">🏨 住</option>
+                        <option value="藥">💊 藥</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>日幣金額 ¥</label>
+                <div class="jpy-row">
+                    <input type="number" id="inp-jpy" placeholder="0" inputmode="numeric">
+                    <button type="button" class="jpy-op-btn" onclick="addItem()">＋</button>
+                </div>
+                <div id="jpy-items"></div>
+                <div id="jpy-preview"></div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>項目</label>
+                    <input type="text" id="inp-chinese" placeholder="例：便利商店">
+                </div>
+                <div class="form-group">
+                    <label>支付方式</label>
+                    <select id="inp-payment">
+                        <option value="">不填</option>
+                        <option value="現金">現金</option><option value="SUICA">SUICA</option>
+                        <option value="吉鶴卡">吉鶴卡</option><option value="FLYGO">FLYGO</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="submit-btn" id="submit-btn" onclick="submitRecord()">➕ 新增</button>
+        </div>
+    </div>
+
+    <div class="list-section">
+        <div class="list-header">
+            <div class="list-title">📋 最近紀錄</div>
+            <div class="total-badge" id="total-badge">合計 ¥0</div>
+        </div>
+        <div id="record-list"></div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+    const GAS_URL = "[https://script.google.com/macros/s/AKfycbwiDBMaW_iEgPia8GKpU5-j8mgEW474uQjmdD9LsemX0ezZRCqJWZ-p69HY3e1ZWC-k/exec](https://script.google.com/macros/s/AKfycbwiDBMaW_iEgPia8GKpU5-j8mgEW474uQjmdD9LsemX0ezZRCqJWZ-p69HY3e1ZWC-k/exec)";
+    let jpyParts = [];
+
+    // 初始化日期
+    const now = new Date();
+    document.getElementById('inp-month').value = now.getMonth() + 1;
+    document.getElementById('inp-day').value = now.getDate();
+
+    function addItem() {
+        const inp = document.getElementById('inp-jpy');
+        const val = parseInt(inp.value);
+        if (!val || val <= 0) return;
+        jpyParts.push(val);
+        inp.value = '';
+        renderJpyItems();
+    }
+
+    function renderJpyItems() {
+        const container = document.getElementById('jpy-items');
+        container.innerHTML = jpyParts.map((v, i) => 
+            `<span class="jpy-tag" onclick="jpyParts.splice(${i},1);renderJpyItems();">¥${v} ×</span>`
+        ).join('');
+        updatePreview();
+    }
+
+    function updatePreview() {
+        const current = parseInt(document.getElementById('inp-jpy').value) || 0;
+        const total = jpyParts.reduce((a, b) => a + b, 0) + current;
+        document.getElementById('jpy-preview').textContent = total > 0 ? `合計 ¥${total.toLocaleString()}` : '';
+    }
+
+    document.getElementById('inp-jpy').addEventListener('input', updatePreview);
+
+    async function submitRecord() {
+        const m = document.getElementById('inp-month').value;
+        const d = document.getElementById('inp-day').value;
+        const currentJpy = parseInt(document.getElementById('inp-jpy').value) || 0;
+        const totalJpy = jpyParts.reduce((a, b) => a + b, 0) + currentJpy;
+        const chinese = document.getElementById('inp-chinese').value.trim();
+        const category = document.getElementById('inp-category').value;
+
+        if (!totalJpy || !chinese || !category) { showToast("⚠️ 請填寫金額、項目與類別"); return; }
+
+        const btn = document.getElementById('submit-btn');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span> 送出中...';
+
+        try {
+            const params = new URLSearchParams({
+                action: 'write',
+                date: `${m}/${d}`,
+                chinese,
+                jpy: totalJpy,
+                category,
+                payment: document.getElementById('inp-payment').value,
+                original: "" // 簡化欄位
+            });
+            const res = await fetch(`${GAS_URL}?${params}`);
+            const result = await res.json();
+            if(result.success) {
+                showToast("✅ 成功");
+                jpyParts = [];
+                document.getElementById('inp-jpy').value = '';
+                document.getElementById('inp-chinese').value = '';
+                renderJpyItems();
+                loadRecords();
+            }
+        } catch (e) { showToast("❌ 錯誤"); }
+        btn.disabled = false;
+        btn.innerHTML = "➕ 新增";
+    }
+
+    async function loadRecords() {
+        const listDiv = document.getElementById('record-list');
+        listDiv.innerHTML = '<div style="text-align:center; padding:20px;">載入中...</div>';
+        try {
+            const res = await fetch(GAS_URL);
+            const json = await res.json();
+            if (json.success) {
+                const data = json.data.reverse().slice(0, 20);
+                let total = 0;
+                listDiv.innerHTML = data.map(r => {
+                    total += Number(r.jpy || 0);
+                    return `
+                        <div class="record-item">
+                            <div style="font-size:11px; color:#c0a090;">${r.date}</div>
+                            <div class="record-info">
+                                <div class="record-chinese">[${r.category}] ${r.chinese}</div>
+                            </div>
+                            <div class="record-amounts">
+                                <div class="record-jpy">¥${Number(r.jpy).toLocaleString()}</div>
+                            </div>
+                            <button class="record-delete" onclick="deleteRecord(${r.row})">刪</button>
+                        </div>
+                    `;
+                }).join('');
+                document.getElementById('total-badge').textContent = `合計 ¥${total.toLocaleString()}`;
+            }
+        } catch (e) { listDiv.innerHTML = "載入失敗"; }
+    }
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg; t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2000);
+    }
+
+    async function deleteRecord(row) {
+        if(!confirm("確定刪除?")) return;
+        await fetch(`${GAS_URL}?action=delete&row=${row}`);
+        loadRecords();
+    }
+
+    loadRecords();
+</script>
+</body>
+</html>
