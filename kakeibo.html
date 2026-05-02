@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -31,7 +30,7 @@
         .list-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
         .total-badge { background: #fde8f0; border: 1.5px solid #f5b8c8; border-radius: 20px; padding: 3px 12px; font-size: 12px; color: #e8849a; font-weight: 700; }
         .record-item { background: white; border-radius: 14px; border: 1.5px solid #ead8c8; padding: 11px 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
-        .record-date { font-size: 12px; color: #c0a090; width: 36px; flex-shrink: 0; }
+        .record-date { font-size: 12px; color: #c0a090; width: 45px; flex-shrink: 0; }
         .record-cat { font-size: 12px; background: #fde8f0; border-radius: 8px; padding: 2px 6px; color: #e8849a; flex-shrink: 0; }
         .record-info { flex: 1; min-width: 0; }
         .record-chinese { font-size: 13px; font-weight: 700; color: #7a4f3a; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -86,16 +85,13 @@
         </div>
     </div>
 
-
-<div class="list-section">
-    <div class="list-header">
-        <span style="font-size:13px;font-weight:700;color:#7a4f3a;">📋 最近紀錄</span>
-        <div class="total-badge" id="total-badge">合計 ¥0</div>
+    <div class="list-section">
+        <div class="list-header">
+            <span style="font-size:13px;font-weight:700;color:#7a4f3a;">📋 最近紀錄</span>
+            <div class="total-badge" id="total-badge">合計 ¥0</div>
+        </div>
+        <div id="record-list"><div class="loading-hint">讀取中…</div></div>
     </div>
-    <div id="record-list"><div class="loading-hint">讀取中…</div></div>
-</div>
-
-
 </div>
 
 <div class="toast" id="toast"></div>
@@ -104,12 +100,10 @@
     const GAS_URL = "https://script.google.com/macros/s/AKfycbwiDBMaW_iEgPia8GKpU5-j8mgEW474uQjmdD9LsemX0ezZRCqJWZ-p69HY3e1ZWC-k/exec";
     let jpyParts = [];
 
-    // 預設今天日期
     const d = new Date();
     document.getElementById('inp-month').value = d.getMonth() + 1;
     document.getElementById('inp-day').value = d.getDate();
 
-    // 按 Enter 也能累加金額
     document.getElementById('inp-jpy').addEventListener('keydown', function(e) {
         if (e.key === 'Enter') { e.preventDefault(); addItem(); }
     });
@@ -144,12 +138,13 @@
                 let total = 0;
                 list.innerHTML = json.data.slice().reverse().map(r => {
                     total += Number(r.jpy || 0);
-                    const dateParts = String(r.date).split(/[-\/]/);
-                    const dateLabel = dateParts.length >= 3
-                        ? `${dateParts[1]}/${dateParts[2]}`
-                        : dateParts.length === 2
-                        ? `${dateParts[0]}/${dateParts[1]}`
+                    
+                    // 修正日期格式為 mm/dd
+                    const dObj = new Date(r.date);
+                    const dateLabel = !isNaN(dObj.getTime()) 
+                        ? `${String(dObj.getMonth() + 1).padStart(2, '0')}/${String(dObj.getDate()).padStart(2, '0')}`
                         : r.date;
+
                     return `<div class="record-item">
                         <div class="record-date">${dateLabel}</div>
                         <div class="record-cat">${r.category || ''}</div>
