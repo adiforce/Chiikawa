@@ -147,6 +147,8 @@
                     const dateParts = String(r.date).split(/[-\/]/);
                     const dateLabel = dateParts.length >= 3
                         ? `${dateParts[1]}/${dateParts[2]}`
+                        : dateParts.length === 2
+                        ? `${dateParts[0]}/${dateParts[1]}`
                         : r.date;
                     return `<div class="record-item">
                         <div class="record-date">${dateLabel}</div>
