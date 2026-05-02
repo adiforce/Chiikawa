@@ -188,7 +188,10 @@ async function analyze() {
                 body: JSON.stringify({ contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: imageMime, data: base64Image } }] }] })
             });
             const d = await res.json();
-            rawText = d.candidates[0].content.parts[0].text;
+if (!res.ok || d.error) throw new Error(d.error?.message || `HTTP ${res.status}`);
+rawText = d.content[0].text;
+
+            
         } else {
             const res = await fetch('https://api.anthropic.com/v1/messages', {
                 method: 'POST',
