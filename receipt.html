@@ -157,11 +157,44 @@ function onFileChange(e) {
     imageMime = file.type;
     const reader = new FileReader();
     reader.onload = (e) => {
-        base64Image = e.target.result.split(',')[1];
-        const img = document.getElementById('previewImg');
-        img.src = e.target.result; img.classList.add('show');
-        document.getElementById('previewPlaceholder').style.display = 'none';
-        document.getElementById('analyzeBtn').disabled = false;
+        const img = new Image();
+        img.onload = () => {
+            // 計算壓縮比例，目標 5MB
+            const MAX_BYTES = 5 * 1024 * 1024;
+            let quality = 0.85;
+            let { width, height } = img;
+
+            // 若尺寸過大先縮圖（長邊最大 2048）
+            const MAX_SIDE = 2048;
+            if (width > MAX_SIDE || height > MAX_SIDE) {
+                const ratio = MAX_SIDE / Math.max(width, height);
+                width = Math.round(width * ratio);
+                height = Math.round(height * ratio);
+            }
+
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // 逐步降低 quality 直到小於 5MB
+            let dataUrl;
+            do {
+                dataUrl = canvas.toDataURL('image/jpeg', quality);
+                quality -= 0.05;
+            } while (dataUrl.length * 0.75 > MAX_BYTES && quality > 0.1);
+
+            base64Image = dataUrl.split(',')[1];
+            imageMime = 'image/jpeg'; // canvas 輸出統一 jpeg
+
+            const previewImg = document.getElementById('previewImg');
+            previewImg.src = dataUrl;
+            previewImg.classList.add('show');
+            document.getElementById('previewPlaceholder').style.display = 'none';
+            document.getElementById('analyzeBtn').disabled = false;
+        };
+        img.src = e.target.result;
     };
     reader.readAsDataURL(file);
 }
