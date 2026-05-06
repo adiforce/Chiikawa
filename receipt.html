@@ -199,6 +199,7 @@ rawText = d.content[0].text;
                 body: JSON.stringify({ model, max_tokens: 1500, system: "You are a specialized JSON parser. Output only the raw JSON array. No preamble, no markdown blocks.", messages: [{ role: 'user', content: [{ type: 'image', source: { type: 'base64', media_type: imageMime, data: base64Image } }, { type: 'text', text: prompt }] }] })
             });
             const d = await res.json();
+            if (!res.ok || d.error) throw new Error(d.error?.message || `HTTP ${res.status}`);
             rawText = d.content[0].text;
         }
 
