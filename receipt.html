@@ -8,23 +8,23 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0f0e0d;
-            --surface: #1a1916;
-            --surface2: #222120;
-            --border: #2e2c2a;
-            --border2: #3d3b38;
-            --text: #e8e2d9;
-            --text2: #9a9490;
-            --text3: #5c5956;
-            --accent: #c8843c;
-            --accent2: #e09a4a;
-            --red: #c05858;
-            --green: #5a9a72;
+            --bg: #fdf6ee;
+            --surface: #ffffff;
+            --surface2: #fdf6ee;
+            --border: #ead8c8;
+            --border2: #d9c4b0;
+            --text: #3d2b1f;
+            --text2: #7a4f3a;
+            --text3: #a07060;
+            --accent: #e8849a;
+            --accent2: #d06070;
+            --red: #c05050;
+            --green: #4a8a60;
             --blue: #5880c0;
-            --tag-gemini-bg: #1a2235;
-            --tag-gemini: #6a9ae0;
-            --tag-claude-bg: #221a35;
-            --tag-claude: #9a7ad0;
+            --tag-gemini-bg: #dbeafe;
+            --tag-gemini: #1d4ed8;
+            --tag-claude-bg: #ede9fe;
+            --tag-claude: #6d28d9;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
@@ -34,15 +34,31 @@
             min-height: 100vh;
         }
 
+        /* 點點背景 */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: radial-gradient(circle, #e8d5c4 1px, transparent 1px);
+            background-size: 24px 24px;
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 0;
+        }
+
         /* 頂部裝飾線 */
         body::before {
             content: '';
             display: block;
-            height: 2px;
+            height: 3px;
             background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            position: relative;
+            z-index: 1;
         }
 
         .container {
+            position: relative;
+            z-index: 1;
             max-width: 480px;
             margin: 0 auto;
             padding: 24px 16px 64px;
@@ -147,7 +163,7 @@
             width: 100%;
             padding: 11px;
             background: var(--accent);
-            color: #0f0e0d;
+            color: #ffffff;
             border: none;
             border-radius: 10px;
             font-weight: 700;
@@ -204,7 +220,7 @@
         .cam-btn:active { transform: scale(0.97); }
         .cam-btn.primary {
             background: var(--accent);
-            color: #0f0e0d;
+            color: #ffffff;
             border-color: var(--accent);
             font-weight: 900;
         }
@@ -295,8 +311,8 @@
         }
         table { width: 100%; border-collapse: collapse; font-size: 12px; }
         th {
-            background: var(--surface2);
-            color: var(--text3);
+            background: #fff5f0;
+            color: var(--accent);
             padding: 8px 10px;
             text-align: left;
             font-size: 10px;
@@ -314,7 +330,7 @@
         tr:last-child td { border-bottom: none; }
         tr:last-child td {
             font-weight: 700;
-            color: var(--accent2);
+            color: var(--text2);
         }
 
         /* Action buttons */
