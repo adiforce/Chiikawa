@@ -112,7 +112,8 @@
 <script>
 const CONFIG = {
     gemini: { key: 'receipt-gemini-key', models: [{v:'gemini-2.0-flash', l:'Gemini 2.0 Flash'}, {v:'gemini-1.5-flash', l:'Gemini 1.5 Flash'}] },
-    claude: { key: 'receipt-claude-key', models: [{v:'claude-3-5-sonnet-20241022', l:'Claude 3.5 Sonnet'}, {v:'claude-3-haiku-20240307', l:'Claude 3 Haiku'}] }
+    claude: { key: 'receipt-claude-key', models: [{v:'claude-sonnet-4-5', l:'Claude Sonnet 4.5'}, {v:'claude-haiku-4-5-20251001', l:'Claude Haiku 4.5'}
+    ]}
 };
 const HIS_KEY = 'invoice_history_v2';
 let base64Image = '', imageMime = 'image/jpeg', invoiceHistory = [];
@@ -188,8 +189,8 @@ async function analyze() {
                 body: JSON.stringify({ contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: imageMime, data: base64Image } }] }] })
             });
             const d = await res.json();
-if (!res.ok || d.error) throw new Error(d.error?.message || `HTTP ${res.status}`);
-rawText = d.content[0].text;
+            if (!res.ok || d.error) throw new Error(d.error?.message || `HTTP ${res.status}`);
+            rawText = d.content[0].text;
 
             
         } else {
@@ -199,7 +200,7 @@ rawText = d.content[0].text;
                 body: JSON.stringify({ model, max_tokens: 1500, system: "You are a specialized JSON parser. Output only the raw JSON array. No preamble, no markdown blocks.", messages: [{ role: 'user', content: [{ type: 'image', source: { type: 'base64', media_type: imageMime, data: base64Image } }, { type: 'text', text: prompt }] }] })
             });
             const d = await res.json();
-            if (!res.ok || d.error) throw new Error(d.error?.message || `HTTP ${res.status}`);
+            if (!res.ok || d.error) throw new Error(JSON.stringify(d.error) || `HTTP ${res.status}`);
             rawText = d.content[0].text;
         }
 
