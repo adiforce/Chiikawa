@@ -548,9 +548,20 @@ async function analyze() {
     statusEl.textContent = '';
     statusEl.className = 'status-text';
 
-    const prompt = `解析此日本發票。嚴格輸出純 JSON 陣列，不准包含 markdown 標籤或任何前導文字。
-格式：[{"date":"MM/DD","store":"商家名稱","item":"日文原文","translation":"繁體中文翻譯","price":數字}]
-最後一筆為：{"date":"","store":"","item":"總計","translation":"","price":總金額}`;
+const prompt = `你是日本收據專業解析員。仔細觀察圖片中的收據，嚴格輸出純 JSON 陣列，不准包含 markdown 標籤或任何前導文字。
+
+格式：[{"date":"MM/DD","store":"商家名稱","item":"品項日文原文","translation":"繁體中文翻譯","price":數字}]
+最後一筆為：{"date":"","store":"","item":"總計","translation":"","price":總金額}
+
+解析規則：
+1. item 欄位：忠實抄寫發票上的日文原文，看不清楚的字用「？」代替，絕對不可猜測或捏造
+2. translation 欄位：根據 item 的日文原文直譯成繁體中文
+   - 日用品就翻日用品（例：歯ブラシ→牙刷、シャンプー→洗髮精）
+   - 食品就翻食品（例：おにぎり→飯糰、お茶→綠茶）
+   - 看不懂的保留日文原文，不可自行腦補
+3. store 欄位：填寫商家名稱日文原文，沒有則留空
+4. 同一張收據所有品項 date 相同
+5. price 只填數字，不含貨幣符號`;
 
     try {
         let rawText = '';
