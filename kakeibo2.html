@@ -219,6 +219,13 @@
       color: #fff;
     }
 
+    /* 額外支出（屁孩/EN） */
+    .extra-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
     /* 送出按鈕 */
     .submit-btn {
       width: 100%;
@@ -312,6 +319,19 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+    .rec-main {
+      flex: 1;
+      min-width: 0;
+    }
+    .rec-extra {
+      font-size: 10px;
+      color: var(--brown);
+      opacity: 0.5;
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .rec-amounts {
       text-align: right;
@@ -456,6 +476,21 @@
     <div class="pay-grid" id="payGrid"></div>
   </div>
 
+  <!-- 屁孩支出 / EN支出 -->
+  <div class="field-group">
+    <label>額外分攤（¥ 日圓，預設 0）</label>
+    <div class="extra-grid">
+      <div>
+        <label style="opacity:1;font-weight:700;color:var(--pink-dark)">屁孩支出</label>
+        <input type="number" id="inputKid" placeholder="0" inputmode="numeric" value="0" />
+      </div>
+      <div>
+        <label style="opacity:1;font-weight:700;color:var(--pink-dark)">EN支出</label>
+        <input type="number" id="inputEn" placeholder="0" inputmode="numeric" value="0" />
+      </div>
+    </div>
+  </div>
+
   <button class="submit-btn" id="submitBtn" onclick="submitRecord()">記帳 ✓</button>
 </div>
 </div><!-- end page-form -->
@@ -592,6 +627,8 @@ async function submitRecord() {
   const day = document.getElementById('inputDay').value;
   const name = document.getElementById('inputName').value.trim();
   const extraJpy = parseInt(document.getElementById('inputJpy').value) || 0;
+  const kid = parseInt(document.getElementById('inputKid').value) || 0;
+  const en = parseInt(document.getElementById('inputEn').value) || 0;
 
   const totalJpy = jpyParts.reduce((a, b) => a + b, 0) + extraJpy;
 
@@ -612,6 +649,8 @@ async function submitRecord() {
     jpy: totalJpy,
     category: selectedCat,
     payment: selectedPay,
+    kid: kid,
+    en: en,
   });
 
   try {
@@ -619,6 +658,8 @@ async function submitRecord() {
     // 清空
     document.getElementById('inputName').value = '';
     document.getElementById('inputJpy').value = '';
+    document.getElementById('inputKid').value = '0';
+    document.getElementById('inputEn').value = '0';
     jpyParts = [];
     renderChips();
     showToast('✓ 記帳成功！');
@@ -666,6 +707,8 @@ function renderRecords(data) {
   reversed.forEach(r => {
     const jpy = Number(r.jpy) || 0;
     const twd = Math.round(jpy * 0.2);
+    const kid = Number(r.kid) || 0;
+    const en = Number(r.en) || 0;
 
     // 日期格式化
     let dateStr = r.date;
@@ -674,12 +717,22 @@ function renderRecords(data) {
       if (!isNaN(d)) dateStr = `${d.getMonth()+1}/${d.getDate()}`;
     } catch {}
 
+    // 屁孩/EN 分攤小字（都是0就不顯示）
+    let extraStr = '';
+    const extraBits = [];
+    if (kid) extraBits.push(`屁孩¥${kid.toLocaleString()}`);
+    if (en) extraBits.push(`EN¥${en.toLocaleString()}`);
+    if (extraBits.length) extraStr = `<div class="rec-extra">${extraBits.join(' · ')}</div>`;
+
     const item = document.createElement('div');
     item.className = 'record-item';
     item.innerHTML = `
       <div class="rec-date">${dateStr}</div>
       <div class="rec-cat">${r.category || ''}</div>
-      <div class="rec-name">${r.chinese || ''}</div>
+      <div class="rec-main">
+        <div class="rec-name">${r.chinese || ''}</div>
+        ${extraStr}
+      </div>
       <div class="rec-amounts">
         <div class="rec-jpy">¥${jpy.toLocaleString()}</div>
         <div class="rec-twd">NT$${twd.toLocaleString()}</div>
