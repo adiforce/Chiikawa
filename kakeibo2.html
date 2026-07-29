@@ -18,9 +18,7 @@
       --shadow: rgba(122, 79, 58, 0.08);
       --green: #7bbf6a;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       background: var(--cream);
       font-family: 'Noto Sans TC', sans-serif;
@@ -28,7 +26,6 @@
       min-height: 100dvh;
       padding-bottom: 40px;
     }
-
     /* ── 頁首 ── */
     header {
       background: var(--white);
@@ -49,7 +46,56 @@
       letter-spacing: 0.04em;
     }
     header .logo span { color: var(--brown); font-size: 13px; margin-left: 6px; font-weight: 400; }
-
+    /* ── 密碼列 ── */
+    .lock-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--white);
+      border-bottom: 2px solid var(--border);
+      padding: 10px 14px;
+      position: sticky;
+      top: 52px;
+      z-index: 98;
+    }
+    .lock-bar input {
+      flex: 1;
+      min-width: 0;
+      padding: 9px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      background: var(--cream);
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 14px;
+      color: var(--brown);
+      outline: none;
+      transition: border-color 0.18s;
+    }
+    .lock-bar input:focus { border-color: var(--pink-dark); }
+    .lock-btn {
+      flex-shrink: 0;
+      border: none;
+      background: var(--pink-dark);
+      color: #fff;
+      font-family: 'Zen Maru Gothic', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 9px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      white-space: nowrap;
+    }
+    .lock-btn:active { background: var(--brown); transform: scale(0.96); }
+    .lock-status {
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      color: var(--brown);
+      opacity: 0.55;
+      flex-shrink: 0;
+    }
+    .lock-status.unlocked { color: var(--green); opacity: 1; }
     /* ── 卡片 ── */
     .card {
       background: var(--white);
@@ -68,11 +114,9 @@
       letter-spacing: 0.06em;
       text-transform: uppercase;
     }
-
     /* ── 表單 ── */
     .row { display: flex; gap: 8px; margin-bottom: 10px; }
     .row:last-child { margin-bottom: 0; }
-
     label {
       font-size: 11px;
       font-weight: 500;
@@ -82,7 +126,6 @@
       margin-bottom: 4px;
       letter-spacing: 0.04em;
     }
-
     input, select {
       width: 100%;
       padding: 10px 12px;
@@ -98,13 +141,11 @@
       transition: border-color 0.18s;
     }
     input:focus, select:focus { border-color: var(--pink-dark); }
-
     /* 日期 */
     .date-group { display: flex; gap: 6px; align-items: flex-end; }
     .date-sep { font-size: 18px; color: var(--pink-dark); padding-bottom: 8px; font-weight: 700; }
     .date-m input { width: 60px; text-align: center; }
     .date-d input { width: 60px; text-align: center; }
-
     /* JPY 累加器 */
     .jpy-row { display: flex; gap: 6px; }
     .jpy-row input { flex: 1; }
@@ -125,7 +166,6 @@
       line-height: 1;
     }
     .add-btn:active { background: var(--brown); transform: scale(0.95); }
-
     .chips {
       display: flex;
       flex-wrap: wrap;
@@ -148,7 +188,6 @@
     }
     .chip:active { background: var(--pink-dark); color: #fff; }
     .chip .x { font-size: 15px; opacity: 0.6; }
-
     .subtotal {
       font-size: 12px;
       color: var(--pink-dark);
@@ -156,7 +195,6 @@
       font-weight: 500;
       min-height: 18px;
     }
-
     /* 類別格子 */
     .cat-grid {
       display: grid;
@@ -187,7 +225,6 @@
       border-color: var(--pink-dark);
       color: #fff;
     }
-
     /* 付款 */
     .pay-grid {
       display: grid;
@@ -218,14 +255,12 @@
       border-color: var(--pink-dark);
       color: #fff;
     }
-
     /* 額外支出（屁孩/EN） */
     .extra-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 8px;
     }
-
     /* 送出按鈕 */
     .submit-btn {
       width: 100%;
@@ -242,8 +277,7 @@
       transition: background 0.15s, transform 0.1s;
     }
     .submit-btn:active { background: var(--brown); transform: scale(0.98); }
-    .submit-btn:disabled { opacity: 0.5; }
-
+    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
     /* Toast */
     #toast {
       position: fixed;
@@ -266,7 +300,6 @@
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
-
     /* ── 紀錄列表 ── */
     .list-header {
       display: flex;
@@ -281,7 +314,6 @@
       color: var(--pink-dark);
     }
     .list-total small { font-size: 11px; font-weight: 400; color: var(--brown); opacity: 0.6; margin-right: 2px; }
-
     .record-item {
       display: flex;
       align-items: center;
@@ -291,9 +323,7 @@
       animation: fadeIn 0.25s ease;
     }
     .record-item:last-child { border-bottom: none; }
-
     @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
-
     .rec-date {
       font-size: 11px;
       font-weight: 500;
@@ -364,9 +394,7 @@
       transition: background 0.15s;
     }
     .del-btn:active { background: var(--pink-dark); color: #fff; border-color: var(--pink-dark); }
-
     .loading-msg { text-align: center; font-size: 13px; color: var(--brown); opacity: 0.45; padding: 18px 0; }
-
     /* Select 箭頭 */
     .select-wrap { position: relative; }
     .select-wrap::after {
@@ -380,11 +408,9 @@
       font-size: 14px;
     }
     .select-wrap select { padding-right: 28px; }
-
     /* 分隔 */
     .field-group { margin-bottom: 10px; }
     .field-group:last-child { margin-bottom: 0; }
-
     /* ── 分頁 Tab ── */
     .tabs {
       display: flex;
@@ -415,28 +441,29 @@
       border-bottom-color: var(--pink-dark);
       color: var(--pink-dark);
     }
-
     /* ── 頁面區塊 ── */
     .page { display: none; padding-bottom: 40px; }
     .page.active { display: block; }
   </style>
 </head>
 <body>
-
 <header>
   <div class="logo">🇯🇵 家計簿<span>Japan Trip</span></div>
 </header>
-
 <div class="tabs">
   <button class="tab-btn active" onclick="switchTab('form')">✏️ 記帳</button>
   <button class="tab-btn" onclick="switchTab('list')">📋 紀錄</button>
 </div>
-
+<!-- ── 密碼解鎖列（存/刪都需要先解鎖） ── -->
+<div class="lock-bar">
+  <input type="text" id="inputPwd" placeholder="輸入今日密碼（MMDD）" inputmode="numeric" maxlength="4" />
+  <button class="lock-btn" onclick="tryUnlock()">解鎖</button>
+  <span class="lock-status" id="lockStatus">🔒 未解鎖</span>
+</div>
 <!-- ── 記帳表單頁 ── -->
 <div class="page active" id="page-form">
 <div class="card">
   <div class="card-title">✏️ 新增支出</div>
-
   <!-- 日期 -->
   <div class="field-group">
     <label>日期</label>
@@ -446,13 +473,11 @@
       <div class="date-d"><input type="number" id="inputDay" min="1" max="31" placeholder="日" /></div>
     </div>
   </div>
-
   <!-- 品項名稱 -->
   <div class="field-group">
     <label>品項名稱</label>
     <input type="text" id="inputName" placeholder="例：藥妝店、便利商店…" />
   </div>
-
   <!-- JPY 金額 -->
   <div class="field-group">
     <label>金額（¥ 日圓）</label>
@@ -463,19 +488,16 @@
     <div class="chips" id="chips"></div>
     <div class="subtotal" id="subtotal"></div>
   </div>
-
   <!-- 類別 -->
   <div class="field-group">
     <label>類別</label>
     <div class="cat-grid" id="catGrid"></div>
   </div>
-
   <!-- 付款工具 -->
   <div class="field-group">
     <label>付款工具</label>
     <div class="pay-grid" id="payGrid"></div>
   </div>
-
   <!-- 屁孩支出 / EN支出 -->
   <div class="field-group">
     <label>額外分攤（¥ 日圓，預設 0）</label>
@@ -490,11 +512,9 @@
       </div>
     </div>
   </div>
-
-  <button class="submit-btn" id="submitBtn" onclick="submitRecord()">記帳 ✓</button>
+  <button class="submit-btn" id="submitBtn" onclick="submitRecord()" disabled>記帳 ✓</button>
 </div>
 </div><!-- end page-form -->
-
 <!-- ── 紀錄列表頁 ── -->
 <div class="page" id="page-list">
 <div class="card">
@@ -505,9 +525,7 @@
   <div id="recordList"><div class="loading-msg">讀取中…</div></div>
 </div>
 </div><!-- end page-list -->
-
 <div id="toast"></div>
-
 <script>
 // ── 分頁切換 ──
 function switchTab(tab) {
@@ -518,9 +536,7 @@ function switchTab(tab) {
   document.getElementById('page-list').classList.toggle('active', tab === 'list');
   if (tab === 'list') loadRecords();
 }
-
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbzaiFZMPJJwkZuFsaJT6sM9KGyKSH9KhuSKUl_AtrS7RLjg8G1mH03fijiQHFgXsNMn5w/exec';
-
 const CATEGORIES = [
   { key: '餐', icon: '🍜' },
   { key: '玩', icon: '🎡' },
@@ -540,18 +556,46 @@ const PAYMENTS = [
   { key: 'GoGo',        icon: '🟡' },
   { key: 'CUBE',        icon: '🟦' },
 ];
-
 let selectedCat = '';
 let selectedPay = '';
 let jpyParts = [];
-
+// ── 密碼解鎖（固定為系統當天日期 MMDD，例如 8/25 → 0825） ──
+let unlocked = false;
+function todayPassword() {
+  const now = new Date();
+  const mm = String(now.getMonth() + 1).padStart(2, '0');
+  const dd = String(now.getDate()).padStart(2, '0');
+  return mm + dd;
+}
+function tryUnlock() {
+  const val = document.getElementById('inputPwd').value.trim();
+  if (val && val === todayPassword()) {
+    unlocked = true;
+    updateLockUI();
+    showToast('🔓 解鎖成功');
+  } else {
+    showToast('❌ 密碼錯誤');
+  }
+}
+function updateLockUI() {
+  const statusEl = document.getElementById('lockStatus');
+  const submitBtn = document.getElementById('submitBtn');
+  if (unlocked) {
+    statusEl.textContent = '🔓 已解鎖';
+    statusEl.classList.add('unlocked');
+    submitBtn.disabled = false;
+  } else {
+    statusEl.textContent = '🔒 未解鎖';
+    statusEl.classList.remove('unlocked');
+    submitBtn.disabled = true;
+  }
+}
 // ── 初始化 ──
 function init() {
   // 預設今天
   const now = new Date();
   document.getElementById('inputMonth').value = now.getMonth() + 1;
   document.getElementById('inputDay').value = now.getDate();
-
   // 類別格子
   const catGrid = document.getElementById('catGrid');
   CATEGORIES.forEach(c => {
@@ -562,7 +606,6 @@ function init() {
     btn.dataset.key = c.key;
     catGrid.appendChild(btn);
   });
-
   // 付款格子
   const payGrid = document.getElementById('payGrid');
   PAYMENTS.forEach(p => {
@@ -573,10 +616,9 @@ function init() {
     btn.dataset.key = p.key;
     payGrid.appendChild(btn);
   });
-
+  updateLockUI();
   loadRecords();
 }
-
 function selectCat(c) {
   selectedCat = c;
   document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.dataset.key === c));
@@ -585,7 +627,6 @@ function selectPay(p) {
   selectedPay = p;
   document.querySelectorAll('.pay-btn').forEach(b => b.classList.toggle('active', b.dataset.key === p));
 }
-
 // ── JPY 累加器 ──
 function addChip() {
   const input = document.getElementById('inputJpy');
@@ -596,12 +637,10 @@ function addChip() {
   renderChips();
   input.focus();
 }
-
 function removeChip(i) {
   jpyParts.splice(i, 1);
   renderChips();
 }
-
 function renderChips() {
   const container = document.getElementById('chips');
   const subtotal = document.getElementById('subtotal');
@@ -620,28 +659,24 @@ function renderChips() {
     subtotal.textContent = '';
   }
 }
-
 // ── 送出 ──
 async function submitRecord() {
+  if (!unlocked) return showToast('🔒 請先輸入今日密碼解鎖');
   const month = document.getElementById('inputMonth').value;
   const day = document.getElementById('inputDay').value;
   const name = document.getElementById('inputName').value.trim();
   const extraJpy = parseInt(document.getElementById('inputJpy').value) || 0;
   const kid = parseInt(document.getElementById('inputKid').value) || 0;
   const en = parseInt(document.getElementById('inputEn').value) || 0;
-
   const totalJpy = jpyParts.reduce((a, b) => a + b, 0) + extraJpy;
-
   if (!month || !day) return showToast('請輸入日期');
   if (!name) return showToast('請輸入品項名稱');
   if (totalJpy <= 0) return showToast('請輸入金額');
   if (!selectedCat) return showToast('請選擇類別');
   if (!selectedPay) return showToast('請選擇付款工具');
-
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
   btn.textContent = '送出中…';
-
   const params = new URLSearchParams({
     action: 'write',
     date: `${month}/${day}`,
@@ -652,7 +687,6 @@ async function submitRecord() {
     kid: kid,
     en: en,
   });
-
   try {
     await fetch(`${GAS_URL}?${params}`);
     // 清空
@@ -667,11 +701,9 @@ async function submitRecord() {
   } catch (e) {
     showToast('❌ 送出失敗，請重試');
   }
-
-  btn.disabled = false;
+  btn.disabled = !unlocked ? true : false;
   btn.textContent = '記帳 ✓';
 }
-
 // ── 讀取紀錄 ──
 async function loadRecords() {
   const list = document.getElementById('recordList');
@@ -685,45 +717,37 @@ async function loadRecords() {
     list.innerHTML = '<div class="loading-msg">無法讀取資料</div>';
   }
 }
-
 function renderRecords(data) {
   const list = document.getElementById('recordList');
   const totalEl = document.getElementById('listTotal');
-
   if (!data.length) {
     list.innerHTML = '<div class="loading-msg">尚無紀錄</div>';
     totalEl.innerHTML = '';
     return;
   }
-
   // 反轉（最新在上）
   const reversed = [...data].reverse();
-
   const totalJpy = data.reduce((s, r) => s + (Number(r.jpy) || 0), 0);
   const totalTwd = Math.round(totalJpy * 0.2);
   totalEl.innerHTML = `<small>合計</small>¥${totalJpy.toLocaleString()} <small style="font-size:10px;opacity:.5">≈ NT$${totalTwd.toLocaleString()}</small>`;
-
   list.innerHTML = '';
   reversed.forEach(r => {
     const jpy = Number(r.jpy) || 0;
     const twd = Math.round(jpy * 0.2);
     const kid = Number(r.kid) || 0;
     const en = Number(r.en) || 0;
-
     // 日期格式化
     let dateStr = r.date;
     try {
       const d = new Date(r.date);
       if (!isNaN(d)) dateStr = `${d.getMonth()+1}/${d.getDate()}`;
     } catch {}
-
     // 屁孩/EN 分攤小字（都是0就不顯示）
     let extraStr = '';
     const extraBits = [];
     if (kid) extraBits.push(`屁孩¥${kid.toLocaleString()}`);
     if (en) extraBits.push(`EN¥${en.toLocaleString()}`);
     if (extraBits.length) extraStr = `<div class="rec-extra">${extraBits.join(' · ')}</div>`;
-
     const item = document.createElement('div');
     item.className = 'record-item';
     item.innerHTML = `
@@ -742,9 +766,9 @@ function renderRecords(data) {
     list.appendChild(item);
   });
 }
-
 // ── 刪除 ──
 async function deleteRecord(row) {
+  if (!unlocked) return showToast('🔒 請先輸入今日密碼解鎖');
   if (!confirm('確定刪除這筆紀錄？')) return;
   try {
     await fetch(`${GAS_URL}?action=delete&row=${row}`);
@@ -754,7 +778,6 @@ async function deleteRecord(row) {
     showToast('❌ 刪除失敗');
   }
 }
-
 // ── Toast ──
 function showToast(msg) {
   const t = document.getElementById('toast');
@@ -762,12 +785,14 @@ function showToast(msg) {
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2200);
 }
-
-// Enter 鍵加 chip
+// Enter 鍵
 document.addEventListener('DOMContentLoaded', () => {
   init();
   document.getElementById('inputJpy').addEventListener('keydown', e => {
     if (e.key === 'Enter') addChip();
+  });
+  document.getElementById('inputPwd').addEventListener('keydown', e => {
+    if (e.key === 'Enter') tryUnlock();
   });
 });
 </script>
