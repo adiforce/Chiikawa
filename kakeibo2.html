@@ -17,6 +17,7 @@
       --white: #fff;
       --shadow: rgba(122, 79, 58, 0.08);
       --green: #7bbf6a;
+      --red: #d9534f;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -33,6 +34,7 @@
       padding: 14px 18px 12px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 10px;
       position: sticky;
       top: 0;
@@ -46,56 +48,105 @@
       letter-spacing: 0.04em;
     }
     header .logo span { color: var(--brown); font-size: 13px; margin-left: 6px; font-weight: 400; }
-    /* ── 密碼列 ── */
-    .lock-bar {
+    .lock-icon-btn {
+      flex-shrink: 0;
+      border: 1.5px solid var(--border);
+      background: var(--cream);
+      color: var(--brown);
+      border-radius: 10px;
+      font-size: 16px;
+      width: 36px;
+      height: 36px;
       display: flex;
       align-items: center;
-      gap: 8px;
-      background: var(--white);
-      border-bottom: 2px solid var(--border);
-      padding: 10px 14px;
-      position: sticky;
-      top: 52px;
-      z-index: 98;
+      justify-content: center;
+      cursor: pointer;
     }
-    .lock-bar input {
-      flex: 1;
-      min-width: 0;
-      padding: 9px 12px;
+    .lock-icon-btn.unlocked { color: var(--green); border-color: var(--green); }
+    /* ── 密碼遮罩層 ── */
+    #lockOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(122, 79, 58, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 500;
+      padding: 20px;
+    }
+    #lockOverlay.hidden { display: none; }
+    .lock-modal {
+      background: var(--white);
+      border-radius: 18px;
+      padding: 26px 22px 22px;
+      max-width: 320px;
+      width: 100%;
+      box-shadow: 0 8px 24px rgba(122, 79, 58, 0.25);
+      text-align: center;
+    }
+    .lock-modal .lm-icon { font-size: 34px; margin-bottom: 8px; }
+    .lock-modal .lm-title {
+      font-family: 'Zen Maru Gothic', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--pink-dark);
+      margin-bottom: 4px;
+    }
+    .lock-modal .lm-sub {
+      font-size: 12px;
+      color: var(--brown);
+      opacity: 0.6;
+      margin-bottom: 16px;
+    }
+    .lock-modal input {
+      width: 100%;
+      padding: 12px 14px;
       border: 1.5px solid var(--border);
       border-radius: 10px;
       background: var(--cream);
       font-family: 'Noto Sans TC', sans-serif;
-      font-size: 14px;
+      font-size: 18px;
+      text-align: center;
+      letter-spacing: 0.15em;
       color: var(--brown);
       outline: none;
-      transition: border-color 0.18s;
+      margin-bottom: 8px;
     }
-    .lock-bar input:focus { border-color: var(--pink-dark); }
-    .lock-btn {
-      flex-shrink: 0;
+    .lock-modal input:focus { border-color: var(--pink-dark); }
+    .lm-error {
+      font-size: 12px;
+      color: var(--red);
+      min-height: 16px;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    .lm-confirm-btn {
+      width: 100%;
+      padding: 12px;
       border: none;
+      border-radius: 12px;
       background: var(--pink-dark);
       color: #fff;
       font-family: 'Zen Maru Gothic', sans-serif;
+      font-size: 15px;
       font-weight: 700;
-      font-size: 13px;
-      padding: 9px 16px;
-      border-radius: 10px;
       cursor: pointer;
+      margin-bottom: 8px;
       transition: background 0.15s, transform 0.1s;
-      white-space: nowrap;
     }
-    .lock-btn:active { background: var(--brown); transform: scale(0.96); }
-    .lock-status {
-      font-size: 11px;
-      font-weight: 700;
-      white-space: nowrap;
+    .lm-confirm-btn:active { background: var(--brown); transform: scale(0.98); }
+    .lm-skip-btn {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      background: none;
       color: var(--brown);
       opacity: 0.55;
-      flex-shrink: 0;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: underline;
     }
-    .lock-status.unlocked { color: var(--green); opacity: 1; }
     /* ── 卡片 ── */
     .card {
       background: var(--white);
@@ -449,16 +500,11 @@
 <body>
 <header>
   <div class="logo">🇯🇵 家計簿<span>Japan Trip</span></div>
+  <button class="lock-icon-btn" id="lockIconBtn" onclick="openLockOverlay()" title="輸入密碼解鎖">🔒</button>
 </header>
 <div class="tabs">
   <button class="tab-btn active" onclick="switchTab('form')">✏️ 記帳</button>
   <button class="tab-btn" onclick="switchTab('list')">📋 紀錄</button>
-</div>
-<!-- ── 密碼解鎖列（存/刪都需要先解鎖） ── -->
-<div class="lock-bar">
-  <input type="text" id="inputPwd" placeholder="輸入今日密碼（MMDD）" inputmode="numeric" maxlength="4" />
-  <button class="lock-btn" onclick="tryUnlock()">解鎖</button>
-  <span class="lock-status" id="lockStatus">🔒 未解鎖</span>
 </div>
 <!-- ── 記帳表單頁 ── -->
 <div class="page active" id="page-form">
@@ -526,6 +572,18 @@
 </div>
 </div><!-- end page-list -->
 <div id="toast"></div>
+<!-- ── 進站密碼遮罩層 ── -->
+<div id="lockOverlay">
+  <div class="lock-modal">
+    <div class="lm-icon">🔒</div>
+    <div class="lm-title">請輸入密碼</div>
+    <div class="lm-sub">輸入正確密碼才能記帳與刪除紀錄</div>
+    <input type="password" id="inputPwd" placeholder="請輸入密碼" inputmode="numeric" maxlength="4" autocomplete="off" />
+    <div class="lm-error" id="lmError"></div>
+    <button class="lm-confirm-btn" onclick="confirmPassword()">確認</button>
+    <button class="lm-skip-btn" onclick="skipPassword()">先跳過（僅能瀏覽，無法記帳／刪除）</button>
+  </div>
+</div>
 <script>
 // ── 分頁切換 ──
 function switchTab(tab) {
@@ -559,7 +617,7 @@ const PAYMENTS = [
 let selectedCat = '';
 let selectedPay = '';
 let jpyParts = [];
-// ── 密碼解鎖（固定為系統當天日期 MMDD，例如 8/25 → 0825） ──
+// ── 密碼解鎖（固定為系統當天日期 MMDD，不對外顯示格式提示） ──
 let unlocked = false;
 function todayPassword() {
   const now = new Date();
@@ -567,26 +625,42 @@ function todayPassword() {
   const dd = String(now.getDate()).padStart(2, '0');
   return mm + dd;
 }
-function tryUnlock() {
+function openLockOverlay() {
+  document.getElementById('lmError').textContent = '';
+  document.getElementById('inputPwd').value = '';
+  document.getElementById('lockOverlay').classList.remove('hidden');
+  setTimeout(() => document.getElementById('inputPwd').focus(), 50);
+}
+function closeLockOverlay() {
+  document.getElementById('lockOverlay').classList.add('hidden');
+}
+function confirmPassword() {
   const val = document.getElementById('inputPwd').value.trim();
   if (val && val === todayPassword()) {
     unlocked = true;
     updateLockUI();
+    closeLockOverlay();
     showToast('🔓 解鎖成功');
   } else {
-    showToast('❌ 密碼錯誤');
+    document.getElementById('lmError').textContent = '密碼錯誤，請再試一次';
+    document.getElementById('inputPwd').value = '';
+    document.getElementById('inputPwd').focus();
   }
 }
+function skipPassword() {
+  closeLockOverlay();
+  updateLockUI();
+}
 function updateLockUI() {
-  const statusEl = document.getElementById('lockStatus');
+  const iconBtn = document.getElementById('lockIconBtn');
   const submitBtn = document.getElementById('submitBtn');
   if (unlocked) {
-    statusEl.textContent = '🔓 已解鎖';
-    statusEl.classList.add('unlocked');
+    iconBtn.textContent = '🔓';
+    iconBtn.classList.add('unlocked');
     submitBtn.disabled = false;
   } else {
-    statusEl.textContent = '🔒 未解鎖';
-    statusEl.classList.remove('unlocked');
+    iconBtn.textContent = '🔒';
+    iconBtn.classList.remove('unlocked');
     submitBtn.disabled = true;
   }
 }
@@ -617,6 +691,7 @@ function init() {
     payGrid.appendChild(btn);
   });
   updateLockUI();
+  openLockOverlay();
   loadRecords();
 }
 function selectCat(c) {
@@ -661,7 +736,7 @@ function renderChips() {
 }
 // ── 送出 ──
 async function submitRecord() {
-  if (!unlocked) return showToast('🔒 請先輸入今日密碼解鎖');
+  if (!unlocked) return showToast('🔒 請先輸入密碼解鎖');
   const month = document.getElementById('inputMonth').value;
   const day = document.getElementById('inputDay').value;
   const name = document.getElementById('inputName').value.trim();
@@ -701,7 +776,7 @@ async function submitRecord() {
   } catch (e) {
     showToast('❌ 送出失敗，請重試');
   }
-  btn.disabled = !unlocked ? true : false;
+  btn.disabled = !unlocked;
   btn.textContent = '記帳 ✓';
 }
 // ── 讀取紀錄 ──
@@ -768,7 +843,7 @@ function renderRecords(data) {
 }
 // ── 刪除 ──
 async function deleteRecord(row) {
-  if (!unlocked) return showToast('🔒 請先輸入今日密碼解鎖');
+  if (!unlocked) return showToast('🔒 請先輸入密碼解鎖');
   if (!confirm('確定刪除這筆紀錄？')) return;
   try {
     await fetch(`${GAS_URL}?action=delete&row=${row}`);
@@ -792,7 +867,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Enter') addChip();
   });
   document.getElementById('inputPwd').addEventListener('keydown', e => {
-    if (e.key === 'Enter') tryUnlock();
+    if (e.key === 'Enter') confirmPassword();
   });
 });
 </script>
