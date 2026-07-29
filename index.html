@@ -14,16 +14,13 @@
     --tab-h: 62px;
     --header-h: 52px;
   }
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   html, body {
     height: 100%;
     font-family: 'Noto Sans TC', sans-serif;
     background: #f0e8e0;
     overflow: hidden;
   }
-
   /* ── Header ── */
   .app-header {
     position: fixed;
@@ -36,7 +33,6 @@
     z-index: 200;
     box-shadow: 0 2px 12px rgba(100,40,40,0.2);
   }
-
   .app-title {
     font-family: 'Zen Maru Gothic', sans-serif;
     font-size: 17px;
@@ -44,7 +40,6 @@
     color: white;
     letter-spacing: 1px;
   }
-
   /* ── iframe ── */
   .iframe-wrap {
     position: fixed;
@@ -52,7 +47,6 @@
     bottom: var(--tab-h);
     left: 0; right: 0;
   }
-
   .iframe-wrap iframe {
     position: absolute;
     inset: 0;
@@ -62,11 +56,9 @@
     display: none;
     background: var(--cream);
   }
-
   .iframe-wrap iframe.active {
     display: block;
   }
-
   /* ── Tab Bar ── */
   .tab-bar {
     position: fixed;
@@ -79,7 +71,6 @@
     box-shadow: 0 -3px 14px rgba(100,40,40,0.10);
     padding-bottom: env(safe-area-inset-bottom, 0);
   }
-
   .tab-btn {
     flex: 1;
     display: flex;
@@ -95,12 +86,9 @@
     position: relative;
     -webkit-tap-highlight-color: transparent;
   }
-
   .tab-btn .icon { font-size: 22px; line-height: 1; }
   .tab-btn .label { font-size: 10px; font-weight: 700; font-family: 'Noto Sans TC', sans-serif; }
-
   .tab-btn.active { color: var(--pink-dark); }
-
   .tab-btn.active::after {
     content: '';
     position: absolute;
@@ -109,7 +97,6 @@
     background: var(--pink-dark);
     border-radius: 0 0 4px 4px;
   }
-
   /* ── 更多選單 ── */
   .more-overlay {
     display: none;
@@ -119,7 +106,6 @@
     background: rgba(60,30,20,0.3);
   }
   .more-overlay.show { display: block; }
-
   .more-sheet {
     position: absolute;
     bottom: var(--tab-h);
@@ -134,21 +120,18 @@
     from { transform: translateY(100%); }
     to   { transform: translateY(0); }
   }
-
   .more-sheet-title {
     font-family: 'Zen Maru Gothic', sans-serif;
     font-size: 12px; font-weight: 700; color: #c0a090;
     text-align: center; margin-bottom: 14px;
     letter-spacing: 2px;
   }
-
   .more-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 8px;
     padding-bottom: 8px;
   }
-
   .more-item {
     display: flex;
     flex-direction: column;
@@ -178,12 +161,10 @@
 </style>
 </head>
 <body>
-
 <!-- Header -->
 <header class="app-header">
   <div class="app-title">🐾 日本工具箱</div>
 </header>
-
 <!-- iframes -->
 <div class="iframe-wrap">
   <iframe id="frame-0" src="chiikawa-gw.html"></iframe>
@@ -196,7 +177,6 @@
   <iframe id="frame-7" src="kakeibo2.html"></iframe>
   <iframe id="frame-8" src="travel-list.html"></iframe>
 </div>
-
 <!-- Tab Bar（5個主要） -->
 <nav class="tab-bar">
   <button class="tab-btn" data-idx="6" onclick="switchTab(6)">
@@ -220,7 +200,6 @@
     <span class="label">更多</span>
   </button>
 </nav>
-
 <!-- 更多選單 -->
 <div class="more-overlay" id="moreOverlay" onclick="closeMore()">
   <div class="more-sheet" onclick="event.stopPropagation()">
@@ -241,21 +220,16 @@
     </div>
   </div>
 </div>
-
 <script>
   const LAST_TAB_KEY = 'japan-toolbox-tab';
   let current = parseInt(localStorage.getItem(LAST_TAB_KEY) || '0');
-
   const frames = document.querySelectorAll('.iframe-wrap iframe');
   const tabBtns = document.querySelectorAll('.tab-bar .tab-btn');
-
   // 主要 tab 對應的 frame index
   const mainTabs = [0, 6, 2, 1]; // 採購、匯率、查價、發票
-
   function switchTab(idx) {
     // 切換 iframe
     frames.forEach((f, i) => f.classList.toggle('active', i === idx));
-
     // 更新主 tab 按鈕狀態
     tabBtns.forEach(btn => {
       const btnIdx = btn.dataset.idx;
@@ -265,48 +239,55 @@
         btn.classList.toggle('active', parseInt(btnIdx) === idx);
       }
     });
-
     // 更新更多選單裡的狀態
     document.querySelectorAll('.more-item').forEach(item => {
       item.classList.toggle('active-page', parseInt(item.dataset.idx) === idx);
     });
-
     current = idx;
     localStorage.setItem(LAST_TAB_KEY, idx);
   }
-
   function switchTabFromMore(idx) {
     closeMore();
     switchTab(idx);
-
     // 更多按鈕保持 active 狀態（因為目前頁面是「更多」裡的）
     tabBtns.forEach(btn => {
       if (btn.dataset.idx === 'more') btn.classList.add('active');
       else btn.classList.remove('active');
     });
   }
-
   function toggleMore() {
     const overlay = document.getElementById('moreOverlay');
     overlay.classList.toggle('show');
   }
-
   function closeMore() {
     document.getElementById('moreOverlay').classList.remove('show');
   }
-
-  // 還原上次開的頁籤
-  if (mainTabs.includes(current)) {
-    switchTab(current);
-  } else {
-    switchTab(current);
-    // 更多裡面的頁面，更多按鈕 active
-    tabBtns.forEach(btn => {
-      if (btn.dataset.idx === 'more') btn.classList.add('active');
-      else btn.classList.remove('active');
-    });
+  // ── 網址深連結（#0 ~ #8，對應 frame 編號）──
+  function getHashTab() {
+    const raw = location.hash.replace('#', '').trim();
+    const n = parseInt(raw, 10);
+    if (!isNaN(n) && n >= 0 && n < frames.length) return n;
+    return null;
   }
+  // 切到指定頁，並同步更新 tab bar / 更多選單的選中樣式
+  function activateTab(idx) {
+    switchTab(idx);
+    if (!mainTabs.includes(idx)) {
+      tabBtns.forEach(btn => {
+        if (btn.dataset.idx === 'more') btn.classList.add('active');
+        else btn.classList.remove('active');
+      });
+    }
+  }
+  // 還原上次開的頁籤，但網址列有指定 #數字 時，以網址為優先
+  const hashTab = getHashTab();
+  if (hashTab !== null) current = hashTab;
+  activateTab(current);
+  // 頁面開著時如果網址 hash 被改變（例如手動改網址列 #8），即時切換，不用重整
+  window.addEventListener('hashchange', () => {
+    const t = getHashTab();
+    if (t !== null) activateTab(t);
+  });
 </script>
-
 </body>
 </html>
