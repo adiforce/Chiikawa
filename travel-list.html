@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>仙台旅遊清單 | 不要問我我是誰</title>
+<style>
+  :root{
+    --bg:#f7f5f0;
+    --card:#ffffff;
+    --ink:#2b2b2b;
+    --sub:#6b6b6b;
+    --accent:#c0392b;
+    --accent2:#1f7a5c;
+    --border:#e6e1d8;
+    --chip:#f0ebe1;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family: "Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    padding-bottom:60px;
+  }
+  header{
+    background:linear-gradient(135deg,#2b2b2b,#3f3f3f);
+    color:#fff;
+    padding:28px 20px 22px;
+    position:sticky;
+    top:0;
+    z-index:10;
+    box-shadow:0 2px 10px rgba(0,0,0,.15);
+  }
+  header h1{
+    margin:0 0 4px;
+    font-size:1.5rem;
+    letter-spacing:.5px;
+  }
+  header p{
+    margin:0;
+    font-size:.85rem;
+    color:#cfcfcf;
+  }
+  .controls{
+    max-width:960px;
+    margin:16px auto 0;
+    padding:0 20px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  #search{
+    flex:1;
+    min-width:200px;
+    padding:10px 14px;
+    border-radius:8px;
+    border:none;
+    font-size:1rem;
+    outline:none;
+  }
+  .filters{
+    max-width:960px;
+    margin:14px auto 0;
+    padding:0 20px;
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .filter-btn{
+    border:1px solid var(--border);
+    background:var(--chip);
+    color:var(--ink);
+    padding:6px 14px;
+    border-radius:999px;
+    font-size:.85rem;
+    cursor:pointer;
+    transition:.15s;
+  }
+  .filter-btn.active{
+    background:var(--accent);
+    color:#fff;
+    border-color:var(--accent);
+  }
+  .count{
+    max-width:960px;
+    margin:14px auto 0;
+    padding:0 22px;
+    font-size:.82rem;
+    color:var(--sub);
+  }
+  .grid{
+    max-width:960px;
+    margin:14px auto 0;
+    padding:0 20px;
+    display:grid;
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px 18px;
+    box-shadow:0 1px 3px rgba(0,0,0,.04);
+  }
+  .card-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .card h2{
+    margin:0 0 4px;
+    font-size:1.08rem;
+  }
+  .meta-line{
+    font-size:.82rem;
+    color:var(--sub);
+    margin-bottom:6px;
+  }
+  .tags{
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+    margin:6px 0;
+  }
+  .tag{
+    font-size:.72rem;
+    background:var(--chip);
+    color:var(--ink);
+    padding:2px 9px;
+    border-radius:999px;
+    border:1px solid var(--border);
+  }
+  .scores{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    margin:6px 0 8px;
+  }
+  .score-box{
+    font-size:.8rem;
+    background:#fbf8f2;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:6px 10px;
+    min-width:110px;
+  }
+  .score-box b{
+    display:block;
+    font-size:1rem;
+    color:var(--accent2);
+  }
+  .score-box.tabelog b{color:var(--accent);}
+  .section-label{
+    font-size:.78rem;
+    font-weight:700;
+    color:var(--ink);
+    margin-top:8px;
+    margin-bottom:2px;
+  }
+  ul.rec{
+    margin:2px 0 6px;
+    padding-left:18px;
+    font-size:.86rem;
+    line-height:1.5;
+  }
+  .notes{
+    font-size:.85rem;
+    line-height:1.6;
+    color:#444;
+    margin-top:4px;
+  }
+  .addr{
+    font-size:.82rem;
+    color:var(--sub);
+    margin-top:6px;
+  }
+  .toggle-btn{
+    font-size:.78rem;
+    color:var(--accent2);
+    cursor:pointer;
+    margin-top:8px;
+    display:inline-block;
+    user-select:none;
+  }
+  .details{
+    display:none;
+    margin-top:6px;
+    border-top:1px dashed var(--border);
+    padding-top:8px;
+  }
+  .details.open{display:block;}
+  .badge-nodata{
+    font-size:.72rem;
+    color:#a06a00;
+    background:#fff4dd;
+    border:1px solid #f0dcae;
+    padding:2px 8px;
+    border-radius:999px;
+  }
+  .empty{
+    text-align:center;
+    color:var(--sub);
+    padding:40px 0;
+  }
+  footer{
+    text-align:center;
+    font-size:.75rem;
+    color:var(--sub);
+    padding:20px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🔴 仙台旅遊清單｜不要問我我是誰</h1>
+  <p>Google Maps 共享清單 · 共 38 個地點 · 2026/08/25–08/30 行程參考</p>
+  <div class="controls">
+    <input id="search" type="text" placeholder="搜尋店名 / 品項 / 地區關鍵字...">
+  </div>
+  <div class="filters" id="filters"></div>
+</header>
+
+<div class="count" id="count"></div>
+<div class="grid" id="grid"></div>
+<div class="empty" id="empty" style="display:none;">沒有符合的結果</div>
+
+<footer>資料整理自 Google Maps 清單備註 + 食べログ / 官方網站公開資訊，僅供旅遊參考，實際營業時間請以現場公告為準。</footer>
+
+<script>
+const DATA = [
+{
+  name:"cafe haven't we met opus",
+  jp:"カフェ ハヴント ウィー メット オーパス",
+  type:"food", cat:"咖啡廳",
+  gRating:4.2, gReviews:304,
+  tRating:3.50, tReviews:209,
+  price:"¥1,000–2,000",
+  hours:"週二～週日 11:00-18:00（L.O.17:00）；週一公休，每月第3週二公休",
+  addr:"宮城県仙台市青葉区中央2-2-29",
+  access:"JR仙石線あおば通駅步行3分鐘",
+  rec:["ベーコンポテトサンド — 招牌，回購率最高","ガトーショコラ — 濕潤紮實巧克力蛋糕","クロックムッシュ","チャイ／シェカラート"],
+  notes:"2001年人氣咖啡廳「café haven't we met」2號店，木質裝潢氛圍靜謐。入口極隱密，需從すき家旁走廊穿越中庭爬樓梯才能抵達，典型隱藏版咖啡廳。僅接受AMEX與QR code付款，全面禁菸，店內僅能拍桌面不可拍環境。"
+},
+{
+  name:"ロワイヤルテラッセ エスパル店",
+  type:"food", cat:"甜點",
+  gRating:4.2, gReviews:77,
+  tRating:3.46, tReviews:105,
+  price:"999円以下",
+  hours:"每日10:00-20:30；依エスパル休館日調整",
+  addr:"JR仙台站直結，エスパル仙台本館地下",
+  rec:["生パイ — 招牌人氣No.1，季節限定口味搶手","ロワイヤルプリン・ショコラ — 3個入約1,000円","ダマンド ポテト サブレ — 11度Monde Selection最高金賞","マドレーヌ","フルーツのブランデー漬け"],
+  notes:"仙台在地菓子製造商「菓匠三全」旗下經營，主打法式傳統糕點。生パイ當地人氣極高，常見一次購入多個。位於車站地下商場，適合伴手禮採購。"
+},
+{
+  name:"Humming Meal Market",
+  type:"food", cat:"咖啡廳",
+  gRating:4.1, gReviews:318,
+  tRating:3.52, tReviews:254,
+  price:"¥1–1,000",
+  hours:"7:30-23:00，全年無休",
+  addr:"宮城県仙台市青葉区中央1-1-1 エスパル仙台東館2F",
+  access:"JR仙台站東口剪票口出來約5秒",
+  rec:["モーニングセット（7:30-11:00，約600円）— 附海老濃湯","咖啡／拿鐵 — 仙台老字號「ほの香」特調配方","もちもち生パスタ","自製甜點"],
+  notes:"位於仙台站構內東西向主通道旁，東北職人工藝風裝潢，備WiFi與插座。營業至23:00，早晚皆宜。早上尖峰時段人潮多，人氣キッシュ套餐常提早售罄。"
+},
+{
+  name:"熟成とんかつ フライ家",
+  type:"food", cat:"豬排",
+  gRating:4.7, gReviews:1043,
+  tRating:3.51, tReviews:48,
+  price:"¥1,000–2,000",
+  hours:"11:00-14:30、17:30-21:30；不定休",
+  addr:"宮城県仙台市青葉区花京院1-1-52 朝日プラザ花京院1F",
+  access:"JR仙台站西口步行5分鐘",
+  rec:["熟成かつ丼（1,700円）— 14天以上熟成豬肉，半熟蛋黃拌食","ミックスフライ定食（並2,400円）","熟成ロース／リブロースかつ定食（2,200円）"],
+  notes:"東京高田馬場人氣名店「Fry家」（米其林必比登推介）姊妹店，仙台首次展店，話題度高常大排長龍（尖峰等候30分鐘以上）。全店20席，全面禁菸。建議提早排隊。"
+},
+{
+  name:"Cafe MythiQue",
+  jp:"カフェ ミティーク 廣瀬通店",
+  type:"food", cat:"咖啡廳",
+  gRating:4.2, gReviews:309,
+  tRating:3.52, tReviews:196,
+  price:"¥1,000–2,000",
+  hours:"週一～五 11:00-20:00；週六日假日 11:00-18:00；不定休",
+  addr:"宮城県仙台市青葉区中央2-4-11 水晶堂ビル3F",
+  access:"距広瀬通駅211公尺",
+  rec:["Art Smoothie — 招牌旋轉上桌水果奶昔","3Dラテアート — 立體拉花咖啡","季節限定裝飾蛋糕、モンブラン"],
+  notes:"第三波咖啡浪潮風格，僅吧檯座＋沙發座無包廂。評價兩極，喜歡視覺系網美甜點會滿意，也有評論認為CP值普通。"
+},
+{
+  name:"Gyutanyaki Tsukasa Nishiguchi",
+  jp:"牛タン焼専門店 司 西口名掛丁店",
+  type:"food", cat:"牛舌",
+  gRating:4.3, gReviews:1530,
+  tRating:3.65, tReviews:965,
+  price:"¥2,000–3,000",
+  hours:"每日11:00-14:00、17:00-23:00（L.O.22:30）；不定休",
+  addr:"宮城県仙台市青葉区中央1-8-25 マジェスティビル2F",
+  access:"JR仙台站西口步行2分鐘",
+  rec:["牛タン定食 — 只取舌軟嫩部位，楢炭強火炭燒，1.5人前份量特別受歡迎","テールスープ（牛尾湯）","麥飯 — 宮城「ひとめぼれ」米＋栃木「こがし麦」"],
+  notes:"2017年開幕，全店50席含6人包廂，全席禁菸，僅可刷卡。營業至23:00，晚間21:30到訪仍可輕鬆入座。"
+},
+{
+  name:"Yakiniku Kotora - Clisroad",
+  jp:"牛刺しと焼肉 仔虎 クリスロード店",
+  type:"food", cat:"燒肉",
+  gRating:4.7, gReviews:705,
+  tRating:3.70, tReviews:341,
+  price:"晚餐6,000-7,999円／午餐2,000-2,999円",
+  hours:"11:30-15:00（L.O.14:30）、17:00-22:00；不定休",
+  addr:"宮城県仙台市青葉区中央2-3-18 B1F（阿部蒲鉾本店地下）",
+  access:"JR仙台站步行8分鐘，広瀬通駅步行3分鐘",
+  rec:["生ユッケ丼（2,200-2,530円）","牛刺し（上撰約3,000円）— 米沢牛等A5和牛生食刺身","上撰タン塩（3,278円）","仔虎の牛丼ランチ（1,430円）"],
+  notes:"仙台首間取得生肉提供許可的燒肉店，連續入選焼肉EAST百名店2022-2025。50席含4-10人包廂，晚餐收お通し費605円+服務費5%。"
+},
+{
+  name:"Kotora Sendai-Ekimae",
+  type:"food", cat:"燒肉",
+  gRating:4.5, gReviews:1337,
+  tRating:3.71, tReviews:931,
+  price:"晚餐10,000-14,999円／午餐1,000-1,999円",
+  hours:"每日11:30-15:00（L.O.14:30）、17:00-22:00；元旦及9月初數日公休",
+  addr:"宮城県仙台市青葉区中央1-6-1 Herb SENDAI 8F",
+  access:"JR仙台站西口步行3分鐘",
+  rec:["午間特選焼肉ランチ（約4,000-4,400円）— 附冷麵或迷你烤牛肉丼","米沢牛特上ロース薄切りタレ味","上撰焼物盛合せ","冷麺、石焼ビビンバ"],
+  notes:"高級米沢牛燒肉名店，60席含多種包廂，窗邊情侶席可賞夜景。建議提前預約。"
+},
+{
+  name:"kazunori ikeda individuel S-Pal Sendai",
+  type:"food", cat:"甜點",
+  gRating:4.2, gReviews:184,
+  tRating:3.81, tReviews:584,
+  price:"999円以下",
+  hours:"每日10:00-21:00，全年無休（依エスパル休館日）",
+  addr:"宮城県仙台市青葉区中央1-1-1 エスパル仙台東館2F",
+  access:"JR仙台站直結",
+  rec:["芒果布丁 — 「仙台最好吃的芒果布丁」","可麗露（カヌレ）","桃塔（季節限定，あかつき桃）","馬卡龍系列（20種口味）","シーラカンス最中（聯名伴手禮）"],
+  notes:"主理人池田一紀曾旅居巴黎10年，仙台人氣冠軍甜點店。仙台站店為外帶專門，平日傍晚6點左右可能等候15分鐘以上。"
+},
+{
+  name:"Suehiro Ramen",
+  type:"food", cat:"拉麵",
+  gRating:3.7, gReviews:2340,
+  price:"¥1,000–2,000",
+  notes:"仙台在地拉麵店，尚未取得完整食べログ／營業細節，建議實地查詢或點入Google地圖確認最新資訊。",
+  incomplete:true
+},
+{
+  name:"Ebisoba Ebisuke",
+  jp:"えびそば",
+  type:"food", cat:"拉麵",
+  gRating:4.1, gReviews:934,
+  tRating:3.55, tReviews:452,
+  price:"店家999円以下／口コミ1,000-1,999円",
+  hours:"11:00-14:30、17:00-22:00（不接受預約，現場排隊）",
+  addr:"宮城県仙台市青葉区国分町3-8-7",
+  access:"地下鐵南北線勾当台公園駅步行2分鐘",
+  rec:["招牌えびそば — 海老出汁湯頭＋海老油","オマール海老のクリームつけ麺 — 濃郁滑順沾汁","海老担々麺（季節限定）"],
+  notes:"全店23席，無包廂無停車場，僅接受PayPay。評論反映清淡系海老そば較符合期待，濃厚沾麵有時海老味被湯底蓋過。"
+},
+{
+  name:"Maison Cœlacanthe",
+  type:"food", cat:"甜點",
+  gRating:4.1, gReviews:732,
+  tRating:3.62, tReviews:825,
+  price:"JPY 1,000-2,999",
+  hours:"週一～五 11:00-19:00；週六日假日 10:00-19:00；僅元旦公休",
+  addr:"宮城県仙台市青葉区一番町2-2-3",
+  access:"青葉通一番町駅步行約3分鐘",
+  rec:["シーラカンス モナカ — 招牌名物，法國伊思尼奶油＋紅豆餡＋格朗德鹽","イズニーバターもなか","葡式蛋塔、法式可麗露"],
+  notes:"甜點主廚池田一紀融合和洋風味代表作，モナカ人氣極高常於下午售罄。仙台限定店鋪，東京大阪札幌皆無分店。"
+},
+{
+  name:"All you can eat Seafood - Matsushima Sashimi Restaurant",
+  type:"food", cat:"海鮮吃到飽",
+  gRating:3.6, gReviews:596,
+  tRating:3.22, tReviews:53,
+  price:"JPY 3,000-3,999（60分3,500円）",
+  hours:"10:00-16:00（L.O.15:00），全年無休",
+  addr:"宮城県宮城郡松島町松島浪打浜18 松島離宮2F",
+  access:"JR仙石線松島海岸駅步行1分鐘",
+  rec:["桃浦かき — 蒸牡蠣、生牡蠣、牡蠣天婦羅","三陸產厚切生魚片（鮪魚、鮭魚、白身魚）","自製海鮮丼、迷你海鮮百匯","仙台牛舌、笹かま、ずんだ餅等宮城名物"],
+  notes:"視野佳可看海景，適合親子。海鞘新鮮無腥味，但海膽未供應、鮭魚卵限一小杯不能加點。無專屬停車場，需用對面付費停車場。"
+},
+{
+  name:"Cafe Aoyama Bunko",
+  type:"food", cat:"咖啡廳",
+  gRating:4.0, gReviews:900,
+  tRating:3.57, tReviews:481,
+  price:"JPY 1,000-1,999",
+  hours:"週一～六及假日前一天 7:30-23:00；週日假日 7:30-21:00；早餐7:00-11:00；全年無休",
+  addr:"宮城県仙台市青葉区中央2-1-27 ever-i中央ビル5F",
+  access:"地下鐵仙台站北4出口步行1分鐘",
+  rec:["早鳥優惠 — 7:30-11:00點飲料送「Good Morning吐司」","起司塔＋冰紅茶（燒杯裝紅茶冰塊）","法式薄餅（ガレット）搭配蘋果酒","自家烘焙咖啡（早中晚三種配方）"],
+  notes:"復古裝潢＋1000冊以上藏書，書香咖啡主題。人氣很高，平日下午1點多仍可能滿座候位超過30分鐘。"
+},
+{
+  name:"Sendai Station",
+  jp:"仙台駅",
+  type:"sight", cat:"交通",
+  gRating:4.2, gReviews:4387,
+  notes:"JR東北新幹線／仙山線／仙石線與地下鐵南北線、東西線交會的仙台市中心車站，直結S-PAL百貨與多條商店街，是整趟行程的交通樞紐。"
+},
+{
+  name:"Tanya Zenjirou",
+  jp:"たんや善治郎",
+  type:"food", cat:"牛舌",
+  gRating:4.4, gReviews:3231,
+  tRating:3.54, tReviews:1450,
+  price:"¥2,000–3,000",
+  hours:"11:00-23:00（L.O.22:30），全年無休",
+  addr:"宮城県仙台市青葉区中央1-8-38 AKビル3F",
+  access:"JR仙台站步行2分鐘",
+  rec:["善治郎セット（約3,410円）— 水煮牛舌、牛舌尾湯、麥飯、山藥泥、烤牛舌、丸子、香腸拼盤","厚切牛舌定食（4～6枚可選）","牛舌極太定食"],
+  notes:"仙台知名排隊牛舌名店，週末尖峰可達1-2小時等候，可用店家系統取號手機叫號。平日限量午間套餐（6枚切1,680円）划算，建議提前抵達。僅可刷卡。"
+},
+{
+  name:"Sendai Asaichi",
+  jp:"仙台朝市",
+  type:"shop", cat:"市場",
+  gRating:4.0, gReviews:2477,
+  notes:"仙台站西口徒步約5分鐘的老字號市場，聚集生鮮、蔬果、熟食、乾貨等約60間店舖，適合早晨採買或吃碗新鮮海鮮丼當早餐，感受在地生活氣息。"
+},
+{
+  name:"EBeanS",
+  type:"shop", cat:"次文化購物中心",
+  gRating:3.8, gReviews:2871,
+  hours:"10:00-20:00，僅元旦公休",
+  addr:"JR仙台站西口正對面，與行人天橋2樓入口直通",
+  rec:["7F アニメイト仙台（東北最大規模動漫店）","8F ゲーマーズ仙台店／らしんばん仙台店","6F 喜久屋書店","B1F メイプル（假髮、Cosplay用品）"],
+  notes:"東北最大規模的次文化商業大樓（B1F～9F）。9F為活動空間、10F及屋上有期間限定啤酒花園。複合式商業大樓，無整體評分，個別樓層店家如需查詢可再問。"
+},
+{
+  name:"Dashiro",
+  jp:"だし廊 だしろ",
+  type:"food", cat:"拉麵",
+  gRating:4.2, gReviews:2027,
+  tRating:3.74, tReviews:1482,
+  price:"店家999円以下／口コミ1,000-1,999円",
+  hours:"週一二三四日 11:00-21:00；週五 11:00-22:00；週六 11:00-21:30",
+  addr:"宮城県仙台市青葉区一番町2-2-11 TKビル1F",
+  access:"JR仙台站西口步行8分鐘",
+  rec:["午間3款：貝出汁鹽味／雞出汁生醤油／飛魚出汁醤油拉麵","晚間：海老出汁藻鹽拉麵、根菜出汁味噌濃湯拉麵（可全素）"],
+  notes:"食べログラーメンEAST百名店2024・2025連續入選，並獲米其林Bib Gourmand認定。券売機點餐，僅收現金，不可預約。"
+},
+{
+  name:"Botan",
+  jp:"とんかつ 牡丹",
+  type:"food", cat:"豬排",
+  gRating:4.6, gReviews:409,
+  tRating:3.47, tReviews:195,
+  price:"JPY 2,000-2,999",
+  hours:"週二～四 11:00-15:00；週五～日假日 11:00-15:00、17:00-19:00；週一公休，每月第2、4週二＋不定休一天",
+  addr:"宮城県仙台市青葉区一番町1-11-20 SUGA-DUNビル1F",
+  access:"地下鐵青葉通一番町站步行約5分鐘",
+  rec:["牡丹定食（招牌，2,600円）— 東北品牌豬里肌+菲力雙拼","午間限定10份カツ丼（1,200円）— 半熟蛋佐梅乾","可選宮城もち豚、宮城32℃豚等品牌豬"],
+  notes:"厚實軟嫩炸豬排，價位偏高但肉質評價佳。僅吧檯座位，只接受現場排隊不能預約，無自有停車場。"
+},
+{
+  name:"水果派 Qu'il fait bon",
+  type:"food", cat:"甜點",
+  tRating:3.20, tReviews:305,
+  price:"JPY 3,000-3,999（單片塔約600-1,000円）",
+  hours:"商店 11:00-19:00；café 11:00-18:00（L.O.17:30），全年無休（偶有臨時公休）",
+  addr:"宮城県仙台市青葉区中央2-7-28 メルビル1F",
+  access:"地下鐵南北線廣瀬通站步行1分鐘",
+  rec:["季節鮮果塔（招牌No.1）","蠟燭之夜蛋糕（每月20日限定）","紅莓塔（常態款）","巧克力奶油塔、洋梨塔（季節限定）"],
+  notes:"價位偏高但普遍認為值得，假日傍晚可能需排隊等候內用座位。附設咖啡廳可搭配紅茶／咖啡享用。"
+},
+{
+  name:"仙台うみの杜水族館",
+  type:"sight", cat:"水族館",
+  price:"門票依票種而定（年間通票、團體優惠等）",
+  hours:"約9:00-17:30（依季節調整開閉館時間），全年無休",
+  addr:"宮城県仙台市宮城野区中野4-6",
+  rec:["約100個展示水槽，展示300種5萬條生物","東北最大規模海洋動物表演","企鵝與海獅接觸體驗"],
+  notes:"宮城縣內人氣第二高的水族館，適合親子行程，鄰近三井OUTLET PARK仙台港可安排同天行程。",
+  wasFilled:true
+},
+{
+  name:"三井OUTLET PARK 仙台港",
+  type:"shop", cat:"Outlet",
+  hours:"10:00-20:00（餐廳＆美食街10:30-20:00）",
+  addr:"宮城県仙台市宮城野区中野3-7-2",
+  access:"JR中野榮站步行約8分鐘；仙台站搭直達巴士約40分鐘；仙台機場開車約16分鐘",
+  rec:["東北最大規模OUTLET，120多家品牌","位於仙台機場與松島之間，適合安排在往返松島途中"],
+  notes:"可與仙台うみの杜水族館排在同一天，兩者車程相近。",
+  wasFilled:true
+},
+{
+  name:"Double Stone（作業服・空調服専門店）① ",
+  type:"shop", cat:"工作服／空調服",
+  addr:"宮城県內共22間分店（含六丁の目、仙台新港、泉等）",
+  rec:["空調服（風扇式涼感工作服）","涼感背心、頸部涼感用品等夏季消暑商品"],
+  notes:"清單中重複收藏3筆Double Stone，可能對應不同分店，實際地點請以Google地圖pin座標為準。官方分店查詢：w-stone.co.jp",
+  wasFilled:true
+},
+{
+  name:"Double Stone（作業服・空調服専門店）② ",
+  type:"shop", cat:"工作服／空調服",
+  addr:"宮城縣內分店，詳細地點請以Google地圖pin為準",
+  notes:"與上一筆同為Double Stone連鎖分店，主打作業服與空調服。",
+  wasFilled:true
+},
+{
+  name:"Double Stone（作業服・空調服専門店）③ ",
+  type:"shop", cat:"工作服／空調服",
+  addr:"宮城縣內分店，詳細地點請以Google地圖pin為準",
+  notes:"與上兩筆同為Double Stone連鎖分店，主打作業服與空調服。",
+  wasFilled:true
+},
+{
+  name:"PRONO",
+  type:"shop", cat:"工作服／空調服",
+  rec:["空調作業服（單品、全套、背心）","BURTLE、Union76、Dickies等品牌空調服"],
+  notes:"日本工作服／作業用品連鎖店，主打空調服（風扇涼感工作服）。搜尋未查到仙台實體店細節，建議以官網門市查詢或現場Google地圖確認。",
+  incomplete:true,
+  wasFilled:true
+},
+{
+  name:"ハピナ名掛丁商店街",
+  type:"shop", cat:"商店街",
+  addr:"仙台站西口出站第一條拱廊街，與行人天橋直結",
+  rec:["牛タン餐廳、和食、麵類、居酒屋","藥妝店、伴手禮店、時尚雜貨、遊戲中心"],
+  notes:"「ハピナ」取自「Heartful Amenity Place Interfaced Natural Arcade」，1993年建造的拱廊街，御影石地面搭配半透明天井。江戶時代仙台藩名懸組宅邸舊址，自古為東西交通要衝。",
+  wasFilled:true
+},
+{
+  name:"ドン・キホーテ 仙台駅西口本店",
+  type:"shop", cat:"藥妝／生活雜貨",
+  hours:"8:00-隔日2:00，全年無休",
+  addr:"宮城県仙台市青葉区中央1-8-20",
+  notes:"位於ハピナ名掛丁商店街內，深夜營業方便宵夜後採買伴手禮或日用品。",
+  wasFilled:true
+},
+{
+  name:"クリスロード商店街",
+  type:"shop", cat:"商店街",
+  addr:"仙台市青葉区中央二丁目，仙台站步行幾分鐘",
+  rec:["三瀧山不動院（供奉仙台福神「仙台四郎」）","新舊並存：時尚品牌店＋人偶店、和服店、文具店等老字號"],
+  notes:"年通行量約2000萬人，全長約285公尺，全區行人專用道路。名稱取自「Creative Life In Shopping」+「Road」，1992年獲頒「全國城市景觀大獎」。",
+  wasFilled:true
+},
+{
+  name:"Matsushima",
+  jp:"松島",
+  type:"sight", cat:"景點／絕景",
+  rec:["日本三景之一，松島灣散布260多座小島","可搭觀光遊覽船遊灣賞島","周邊有牡蠣料理、笹かま老店可品嚐"],
+  notes:"距仙台約40分鐘車程／JR仙石線約1小時，適合安排半日或一日遊，可與松島刺身吃到飽餐廳排在同一天。",
+  wasFilled:true
+},
+{
+  name:"金蛇水神社",
+  type:"sight", cat:"神社",
+  hours:"神社外苑Sando Terrace約8:30-16:00（各店鋪略有不同）",
+  addr:"宮城県岩沼市，JR岩沼站開車約10分鐘／東北自動車道仙台南IC開車約25分鐘",
+  access:"岩沼站搭巴士約10分鐘，或步行約40分鐘；備約600台免費停車場",
+  rec:["金蛇水神社限定御朱印（含季節彩色版）","原創御朱印帳"],
+  notes:"宮城知名金運祈願聖地，吸引許多參拜者前往，適合安排半天行程並順遊周邊自然景觀。",
+  wasFilled:true
+},
+{
+  name:"富沢公園",
+  type:"sight", cat:"公園",
+  hours:"運動廣場4/1-10/31 6:00-19:00；11/1-3/31 6:00-17:00；年末年始休場",
+  addr:"仙台市太白区，地下鐵南北線富沢駅步行約3分鐘",
+  rec:["寬廣球類運動／野餐廣場","大型遊具，適合小孩到小學生"],
+  notes:"運動廣場另有使用費（依時段700-1,800円，市內國中小學生半價），一般公園休憩區域免費開放。適合親子放風或散步。",
+  wasFilled:true
+},
+{
+  name:"ドン・キホーテ 晩翠通り店",
+  type:"shop", cat:"藥妝／生活雜貨",
+  hours:"24小時營業，全年無休",
+  addr:"宮城県仙台市青葉区立町15-17",
+  notes:"24小時營業，比西口本店更晚／更早採購都方便，適合排在深夜或清晨行程空檔。",
+  wasFilled:true
+},
+{
+  name:"仙台PARCO",
+  type:"shop", cat:"購物中心",
+  hours:"一般店舗10:00-20:00；餐飲店舗11:00-23:00",
+  addr:"宮城県仙台市青葉区中央1-2-3",
+  rec:["PARCO 1（本館）B1-9F — 街頭風服飾、寶可夢中心東北、CAPCOM STORE","PARCO 2 — 仙台站西口對面，都會文青風店家"],
+  notes:"分本館與PARCO 2兩棟建築，樓層豐富適合半天逛完，8F為ちいかわらんど所在樓層。",
+  wasFilled:true
+},
+{
+  name:"ちいかわらんど 仙台パルコ店",
+  type:"shop", cat:"角色主題商店",
+  hours:"10:00-20:30（隨仙台PARCO公休日調整）",
+  addr:"仙台PARCO本館8F，宮城県仙台市青葉区中央1-2-3",
+  notes:"東北首間ちいかわ官方商店，開幕人氣極高曾發放整理券。建議平日或避開開店尖峰時段前往。",
+  wasFilled:true
+},
+{
+  name:"BOOKOFF 仙台クリスロード店",
+  type:"shop", cat:"二手書／二手商品",
+  hours:"10:00-21:00，年中無休",
+  addr:"宮城県仙台市青葉区中央2-4-10 ガレリアクリスロード 1F-4F",
+  notes:"位於クリスロード商店街內，共4個樓層，適合逛街空檔挖寶二手書、動漫周邊或3C。",
+  wasFilled:true
+},
+{
+  name:"Sotetsu Fresa Inn Sendai",
+  jp:"相鐵FRESA INN 仙台",
+  type:"hotel", cat:"住宿",
+  gRating:8.8,
+  addr:"仙台站西口徒步約4-7分鐘（地下鐵南北/東西線西口1出口4分鐘；JR仙石線あおば通駅2出口5分鐘）",
+  rec:["自助辦理入住機","投幣式洗衣間","交誼廳免費咖啡"],
+  notes:"評價8.8分，房間乾淨、隔音佳、淋浴設備好評。地點極佳，鄰近國分町、仙台朝市、青葉城、瑞鳳殿等景點，性價比高。",
+  wasFilled:true
+}
+];
+
+const TYPE_LABELS = {food:"美食",shop:"購物／商店街",sight:"景點",hotel:"住宿"};
+
+function renderStars(v){
+  if(!v) return "";
+  return v.toFixed(1);
+}
+
+function cardHTML(item, idx){
+  const scores = [];
+  if(item.gRating){
+    scores.push(`<div class="score-box"><span>Google評分</span><b>★ ${renderStars(item.gRating)}</b>${item.gReviews? `<span>(${item.gReviews}則)</span>`:''}</div>`);
+  }
+  if(item.tRating){
+    scores.push(`<div class="score-box tabelog"><span>食べログ</span><b>${item.tRating.toFixed(2)}</b>${item.tReviews? `<span>(${item.tReviews}則)</span>`:''}</div>`);
+  }
+  const recHTML = item.rec && item.rec.length ? `
+    <div class="section-label">推薦品項／亮點</div>
+    <ul class="rec">${item.rec.map(r=>`<li>${r}</li>`).join('')}</ul>
+  ` : '';
+  const metaBits = [];
+  if(item.hours) metaBits.push(`⏰ ${item.hours}`);
+  if(item.price) metaBits.push(`💰 ${item.price}`);
+  const metaLine = metaBits.length ? `<div class="meta-line">${metaBits.join(' ・ ')}</div>` : '';
+  const addrLine = (item.addr || item.access) ? `<div class="addr">📍 ${item.addr||''}${item.access? ' ・ '+item.access:''}</div>` : '';
+  const incompleteBadge = item.incomplete ? `<span class="badge-nodata">資料有限</span>` : '';
+
+  return `
+  <div class="card" data-name="${(item.name+' '+(item.jp||'')+' '+(item.cat||'')).toLowerCase()}" data-type="${item.type}">
+    <div class="card-top">
+      <div>
+        <h2>${item.name} ${incompleteBadge}</h2>
+        ${item.jp? `<div class="meta-line">${item.jp}</div>`:''}
+      </div>
+    </div>
+    <div class="tags"><span class="tag">${TYPE_LABELS[item.type]||''}</span><span class="tag">${item.cat||''}</span></div>
+    ${scores.length? `<div class="scores">${scores.join('')}</div>` : ''}
+    ${metaLine}
+    ${addrLine}
+    <div class="toggle-btn" onclick="this.nextElementSibling.classList.toggle('open'); this.textContent = this.textContent==='▼ 展開詳細介紹'?'▲ 收合':'▼ 展開詳細介紹';">▼ 展開詳細介紹</div>
+    <div class="details">
+      ${recHTML}
+      ${item.notes? `<div class="section-label">評論觀察／備註</div><div class="notes">${item.notes}</div>` : ''}
+    </div>
+  </div>`;
+}
+
+function render(){
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const activeType = document.querySelector('.filter-btn.active')?.dataset.type || 'all';
+  const grid = document.getElementById('grid');
+  const filtered = DATA.filter(item=>{
+    const matchesType = activeType==='all' || item.type===activeType;
+    const haystack = (item.name+' '+(item.jp||'')+' '+(item.cat||'')+' '+(item.notes||'')+' '+(item.rec||[]).join(' ')).toLowerCase();
+    const matchesQ = !q || haystack.includes(q);
+    return matchesType && matchesQ;
+  });
+  grid.innerHTML = filtered.map(cardHTML).join('');
+  document.getElementById('count').textContent = `顯示 ${filtered.length} / ${DATA.length} 個地點`;
+  document.getElementById('empty').style.display = filtered.length? 'none':'block';
+}
+
+function buildFilters(){
+  const types = ['all','food','shop','sight','hotel'];
+  const labels = {all:'全部',food:'美食',shop:'購物／商店街',sight:'景點',hotel:'住宿'};
+  const wrap = document.getElementById('filters');
+  wrap.innerHTML = types.map(t=>`<button class="filter-btn ${t==='all'?'active':''}" data-type="${t}">${labels[t]}</button>`).join('');
+  wrap.querySelectorAll('.filter-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      wrap.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      render();
+    });
+  });
+}
+
+document.getElementById('search').addEventListener('input', render);
+buildFilters();
+render();
+</script>
+</body>
+</html>
