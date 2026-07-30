@@ -401,7 +401,7 @@ const DATA = [
 {
   name:"cafe haven't we met opus",
   jp:"カフェ ハヴント ウィー メット オーパス",
-  type:"food", cat:"咖啡廳",
+  type:"teacake", cat:"咖啡廳",
   img:"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnnp90NyY_1S32OPVct7TXGYDxCiqhazGYRJ4JDxvvpsGIOwRbgFj0w5ED6hJCpN1CRIOs32LsvpJhsvz97Z09Wm_6hlPimzf19mrYccZnkrrnDrdqOT4fmmm7UBd0pEOsoZ9SVa-CgSZMw=w200-h200-k-no",
   gRating:4.2, gReviews:304,
   tRating:3.50, tReviews:209,
@@ -414,7 +414,7 @@ const DATA = [
 },
 {
   name:"ロワイヤルテラッセ エスパル店",
-  type:"food", cat:"甜點",
+  type:"teacake", cat:"甜點",
   img:"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlvKAC6qrYW5zLwdM9KRG1lWn6nBCLS4xC37FqgmtpnTIiiIr2eyfEWaaxXdkz-TPnCzOoJdD1AhcTB0DfuUK55yfA4RWR7L-a33j1PBTb9zd0WFGzrVhXqtCZqt0o1GnLIvMNHGw=w200-h200-k-no",
   gRating:4.2, gReviews:77,
   tRating:3.46, tReviews:105,
@@ -427,7 +427,7 @@ const DATA = [
 {
   name:"Humming Meal Market",
   jp:"ハミングミールマーケット",
-  type:"food", cat:"咖啡廳",
+  type:"teacake", cat:"咖啡廳",
   img:"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn6of7wfcV-hjzrCXlwVQ6RJhj3s636mYCoO1seRvYrmfi5sdfba5p-C9sdS4lafm890XkhGmYtu7QDlPMoklMf1QiDGF9SalLpakWbcvPSz9TSu60yEahr-8aCQBIsSlyES7526g=w200-h200-k-no",
   gRating:4.1, gReviews:318,
   tRating:3.52, tReviews:254,
@@ -454,7 +454,7 @@ const DATA = [
 {
   name:"Cafe MythiQue",
   jp:"カフェ ミティーク 廣瀬通店",
-  type:"food", cat:"咖啡廳",
+  type:"teacake", cat:"咖啡廳",
   img:"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlvPLeM2r9t15ISqCZEQzbNReH8bleZ0MCxa7CO443MI8IgUdxHrE58aTQDoZ5tao7dLuZCh1XPRSFY_vx2Yg91DcH-rQh_9CbN_GCRCKkI1lXtM7PZ1Gy8lJnn-pbjKphvPgI=w200-h200-k-no",
   gRating:4.2, gReviews:309,
   tRating:3.52, tReviews:196,
@@ -548,7 +548,7 @@ const DATA = [
 {
   name:"Maison Cœlacanthe",
   jp:"メゾン シーラカンス",
-  type:"food", cat:"甜點",
+  type:"teacake", cat:"甜點",
   img:"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmBklG4HZUeoSfEt29c597ADfGBVh9fGx29GMwr4taex1m6lCAqmxxU5EHTnIh3j1rfX5jje5trAzTquXzPiPigHU3lgo4vhkfa2HU_p8SzWuTJ0IJzCoO7n6IRx1e_tV5e5qdsgu87DuAO=w200-h200-k-no",
   gRating:4.1, gReviews:732,
   tRating:3.62, tReviews:825,
@@ -576,7 +576,7 @@ const DATA = [
 {
   name:"Cafe Aoyama Bunko",
   jp:"Cafe 青山文庫",
-  type:"food", cat:"咖啡廳",
+  type:"teacake", cat:"咖啡廳",
   img:"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkGBCirXQ32FMLHtt2Lowtvk75RpEBBdrt1i2eqTeGhTNxskaz9MRap6pdZvr0tgnF3OFzJwHMDFqn6SWPO27BU9vLP-Lb1Y8pjsynXmnkkgMzONT_6O9rAgP_k7-1D78FLxjs53aH047Bv=w200-h200-k-no",
   gRating:4.0, gReviews:900,
   tRating:3.57, tReviews:481,
@@ -659,7 +659,7 @@ const DATA = [
 {
   name:"水果派 Qu'il fait bon",
   jp:"キル フェ ボン",
-  type:"food", cat:"甜點",
+  type:"teacake", cat:"甜點",
   tRating:3.20, tReviews:305,
   price:"JPY 3,000-3,999（單片塔約600-1,000円）",
   hours:"商店 11:00-19:00；café 11:00-18:00（L.O.17:30），全年無休（偶有臨時公休）",
@@ -818,7 +818,7 @@ const DATA = [
 }
 ];
 
-const TYPE_LABELS = {food:"美食",shop:"購物／商店街",sight:"景點",hotel:"住宿"};
+const TYPE_LABELS = {food:"美食",teacake:"點心／咖啡",shop:"購物／商店街",sight:"景點",hotel:"住宿"};
 
 // 沒有照片時，依類別給個 fallback emoji（讓卡片不要空一塊）
 const CAT_ICONS = {
@@ -955,8 +955,8 @@ function render(){
 }
 
 function buildFilters(){
-  const types = ['all','food','shop','sight','hotel'];
-  const labels = {all:'全部',food:'美食',shop:'購物／商店街',sight:'景點',hotel:'住宿'};
+  const types = ['all','food','teacake','shop','sight','hotel'];
+  const labels = {all:'全部',food:'美食',teacake:'點心/咖啡',shop:'購物／商店街',sight:'景點',hotel:'住宿'};
   const wrap = document.getElementById('filters');
   wrap.innerHTML = types.map(t=>`<button class="filter-btn ${t==='all'?'active':''}" data-type="${t}">${labels[t]}</button>`).join('');
   wrap.querySelectorAll('.filter-btn').forEach(btn=>{
