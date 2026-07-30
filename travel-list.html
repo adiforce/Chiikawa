@@ -510,7 +510,7 @@ const DATA = [
 {
   name:"kazunori ikeda individuel S-Pal Sendai",
   jp:"カズノリ イケダ アンディヴィデュエル",
-  type:"food", cat:"甜點",
+  type:"teacake", cat:"甜點",
   img:"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk55mwvkvJFWBaUUVzh-kNtiJVL0C8ykjbrB6TDOu2Hh69N47ptZ7GJMNKDF1Tj4hQ1ph05oat6DYnc6-N1y6Shl3aAaWia_Y40qFKWhJfRnaO029_EuwhED8cL85YywYr6tZcolEaLv7HW=w200-h200-k-no",
   gRating:4.2, gReviews:184,
   tRating:3.81, tReviews:584,
@@ -818,7 +818,7 @@ const DATA = [
 }
 ];
 
-const TYPE_LABELS = {food:"美食",teacake:"點心／咖啡",shop:"購物／商店街",sight:"景點",hotel:"住宿"};
+const TYPE_LABELS = {food:"美食",teacake:"點心",shop:"購物",sight:"景點",hotel:"住宿"};
 
 // 沒有照片時，依類別給個 fallback emoji（讓卡片不要空一塊）
 const CAT_ICONS = {
@@ -925,7 +925,7 @@ function cardHTML(item, idx){
           ${subTitle? `<div class="meta-line"><span class="copyable" data-copy="${escapeHTML(subTitle)}" onclick="copyText(this)">${escapeHTML(subTitle)}</span></div>`:''}
         </div>
       </div>
-      <a class="map-link" href="${mapUrl(item)}" target="_blank" rel="noopener">📍 開Google地圖</a>
+      <a class="map-link" href="${mapUrl(item)}" target="_blank" rel="noopener">📍</a>
     </div>
     <div class="tags"><span class="tag">${TYPE_LABELS[item.type]||''}</span><span class="tag">${item.cat||''}</span></div>
     ${scores.length? `<div class="scores">${scores.join('')}</div>` : ''}
@@ -956,7 +956,7 @@ function render(){
 
 function buildFilters(){
   const types = ['all','food','teacake','shop','sight','hotel'];
-  const labels = {all:'全部',food:'美食',teacake:'點心/咖啡',shop:'購物／商店街',sight:'景點',hotel:'住宿'};
+  const labels = {all:'全部',food:'美食',teacake:'點心',shop:'購物',sight:'景點',hotel:'住宿'};
   const wrap = document.getElementById('filters');
   wrap.innerHTML = types.map(t=>`<button class="filter-btn ${t==='all'?'active':''}" data-type="${t}">${labels[t]}</button>`).join('');
   wrap.querySelectorAll('.filter-btn').forEach(btn=>{
