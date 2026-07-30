@@ -213,6 +213,22 @@
     display:inline-block;
     user-select:none;
   }
+  .map-link{
+    font-size:.75rem;
+    font-weight:700;
+    font-family:'Zen Maru Gothic',sans-serif;
+    color:#fff;
+    background:var(--pink-dark);
+    border-radius:999px;
+    padding:5px 13px;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    white-space:nowrap;
+    transition:background .15s;
+  }
+  .map-link:active{background:var(--brown);}
   .details{
     display:none;
     margin-top:8px;
@@ -657,6 +673,15 @@ function renderStars(v){
   return v.toFixed(1);
 }
 
+function mapUrl(item){
+  // 用店名+地址組 Google 地圖搜尋連結（沒有地址就用店名+仙台，確保還是能開對地圖）
+  const parts = [item.name];
+  if(item.addr) parts.push(item.addr);
+  else parts.push('仙台');
+  const q = encodeURIComponent(parts.join(' '));
+  return `https://www.google.com/maps/search/?api=1&query=${q}`;
+}
+
 function cardHTML(item, idx){
   const scores = [];
   if(item.gRating){
@@ -683,6 +708,7 @@ function cardHTML(item, idx){
         <h2>${item.name} ${incompleteBadge}</h2>
         ${item.jp? `<div class="meta-line">${item.jp}</div>`:''}
       </div>
+      <a class="map-link" href="${mapUrl(item)}" target="_blank" rel="noopener">📍 開Google地圖</a>
     </div>
     <div class="tags"><span class="tag">${TYPE_LABELS[item.type]||''}</span><span class="tag">${item.cat||''}</span></div>
     ${scores.length? `<div class="scores">${scores.join('')}</div>` : ''}
