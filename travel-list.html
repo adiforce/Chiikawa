@@ -162,6 +162,38 @@
     font-weight:700;
     color:var(--brown);
   }
+  .copyable{
+    cursor:pointer;
+    border-bottom:1px dashed var(--border);
+    transition:opacity .1s;
+  }
+  .copyable:active{opacity:.55;}
+  .copy-ic{
+    font-size:.7rem;
+    opacity:.4;
+    cursor:pointer;
+  }
+  #copyToast{
+    position:fixed;
+    bottom:24px;
+    left:50%;
+    transform:translateX(-50%) translateY(20px);
+    background:var(--brown);
+    color:#fff;
+    font-size:.78rem;
+    font-weight:700;
+    padding:8px 18px;
+    border-radius:20px;
+    opacity:0;
+    transition:opacity .25s, transform .25s;
+    pointer-events:none;
+    white-space:nowrap;
+    max-width:80vw;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    z-index:999;
+  }
+  #copyToast.show{opacity:1;transform:translateX(-50%) translateY(0);}
   .meta-line{
     font-size:.8rem;
     color:var(--brown);
@@ -729,6 +761,48 @@ function fallbackIcon(item){
   return CAT_ICONS[item.cat] || (item.type==='food'?'🍽️':item.type==='shop'?'🛍️':item.type==='hotel'?'🏨':'📍');
 }
 
+function escapeHTML(s){
+  return String(s)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+
+// 點名稱複製到剪貼簿
+function copyText(el){
+  const text = el.dataset.copy || el.textContent;
+  const done = () => showCopyToast('已複製：' + text);
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+  } else {
+    fallbackCopy(text, done);
+  }
+}
+function fallbackCopy(text, cb){
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); } catch (e) {}
+  document.body.removeChild(ta);
+  cb();
+}
+function showCopyToast(msg){
+  let t = document.getElementById('copyToast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'copyToast';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._hideTimer);
+  t._hideTimer = setTimeout(() => t.classList.remove('show'), 1600);
+}
+
 function renderStars(v){
   if(!v) return "";
   return v.toFixed(1);
@@ -766,14 +840,18 @@ function cardHTML(item, idx){
     ? `<img class="thumb" src="${item.img}" alt="${item.name}" loading="lazy" onerror="this.outerHTML='<div class=&quot;thumb-fallback&quot;>${fallbackIcon(item)}</div>';">`
     : `<div class="thumb-fallback">${fallbackIcon(item)}</div>`;
 
+  // 標題：日文為主（大標），另一個名稱當小標；沒有另外的日文名就只顯示一行
+  const mainTitle = item.jp || item.name;
+  const subTitle = item.jp ? item.name : null;
+
   return `
   <div class="card" data-name="${(item.name+' '+(item.jp||'')+' '+(item.cat||'')).toLowerCase()}" data-type="${item.type}">
     <div class="card-top">
       <div class="card-main">
         ${thumbHTML}
         <div class="card-title-wrap">
-          <h2>${item.name} ${incompleteBadge}</h2>
-          ${item.jp? `<div class="meta-line">${item.jp}</div>`:''}
+          <h2><span class="copyable" data-copy="${escapeHTML(mainTitle)}" onclick="copyText(this)">${escapeHTML(mainTitle)}</span> <span class="copy-ic">⧉</span> ${incompleteBadge}</h2>
+          ${subTitle? `<div class="meta-line"><span class="copyable" data-copy="${escapeHTML(subTitle)}" onclick="copyText(this)">${escapeHTML(subTitle)}</span></div>`:''}
         </div>
       </div>
       <a class="map-link" href="${mapUrl(item)}" target="_blank" rel="noopener">📍 開Google地圖</a>
