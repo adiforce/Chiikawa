@@ -126,6 +126,35 @@
     gap:10px;
     flex-wrap:wrap;
   }
+  .card-main{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    flex:1;
+    min-width:0;
+  }
+  .thumb{
+    flex-shrink:0;
+    width:64px;
+    height:64px;
+    border-radius:12px;
+    object-fit:cover;
+    border:1.5px solid var(--border);
+    background:var(--cream);
+  }
+  .thumb-fallback{
+    flex-shrink:0;
+    width:64px;
+    height:64px;
+    border-radius:12px;
+    border:1.5px solid var(--border);
+    background:var(--cream);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:26px;
+  }
+  .card-title-wrap{min-width:0;flex:1;}
   .card h2{
     margin:0 0 4px;
     font-family:'Zen Maru Gothic',sans-serif;
@@ -283,6 +312,7 @@ const DATA = [
   name:"cafe haven't we met opus",
   jp:"カフェ ハヴント ウィー メット オーパス",
   type:"food", cat:"咖啡廳",
+  img:"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnnp90NyY_1S32OPVct7TXGYDxCiqhazGYRJ4JDxvvpsGIOwRbgFj0w5ED6hJCpN1CRIOs32LsvpJhsvz97Z09Wm_6hlPimzf19mrYccZnkrrnDrdqOT4fmmm7UBd0pEOsoZ9SVa-CgSZMw=w200-h200-k-no",
   gRating:4.2, gReviews:304,
   tRating:3.50, tReviews:209,
   price:"¥1,000–2,000",
@@ -295,6 +325,7 @@ const DATA = [
 {
   name:"ロワイヤルテラッセ エスパル店",
   type:"food", cat:"甜點",
+  img:"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlvKAC6qrYW5zLwdM9KRG1lWn6nBCLS4xC37FqgmtpnTIiiIr2eyfEWaaxXdkz-TPnCzOoJdD1AhcTB0DfuUK55yfA4RWR7L-a33j1PBTb9zd0WFGzrVhXqtCZqt0o1GnLIvMNHGw=w200-h200-k-no",
   gRating:4.2, gReviews:77,
   tRating:3.46, tReviews:105,
   price:"999円以下",
@@ -306,6 +337,7 @@ const DATA = [
 {
   name:"Humming Meal Market",
   type:"food", cat:"咖啡廳",
+  img:"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn6of7wfcV-hjzrCXlwVQ6RJhj3s636mYCoO1seRvYrmfi5sdfba5p-C9sdS4lafm890XkhGmYtu7QDlPMoklMf1QiDGF9SalLpakWbcvPSz9TSu60yEahr-8aCQBIsSlyES7526g=w200-h200-k-no",
   gRating:4.1, gReviews:318,
   tRating:3.52, tReviews:254,
   price:"¥1–1,000",
@@ -318,6 +350,7 @@ const DATA = [
 {
   name:"熟成とんかつ フライ家",
   type:"food", cat:"豬排",
+  img:"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmupe0AxPS2jamj7kTPpq2SoosmHcERjxJ9zqe9TWLJ43K-fvP47MzcSoWZCIigHEbi0qoO49m4tq3F5r8Hlf0yyo9klkMejRFSD4PmvoLyMsotD2ghogd01f7FL4lQQjxSB3AlFmZbiZY=w200-h200-k-no",
   gRating:4.7, gReviews:1043,
   tRating:3.51, tReviews:48,
   price:"¥1,000–2,000",
@@ -331,6 +364,7 @@ const DATA = [
   name:"Cafe MythiQue",
   jp:"カフェ ミティーク 廣瀬通店",
   type:"food", cat:"咖啡廳",
+  img:"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlvPLeM2r9t15ISqCZEQzbNReH8bleZ0MCxa7CO443MI8IgUdxHrE58aTQDoZ5tao7dLuZCh1XPRSFY_vx2Yg91DcH-rQh_9CbN_GCRCKkI1lXtM7PZ1Gy8lJnn-pbjKphvPgI=w200-h200-k-no",
   gRating:4.2, gReviews:309,
   tRating:3.52, tReviews:196,
   price:"¥1,000–2,000",
@@ -344,6 +378,7 @@ const DATA = [
   name:"Gyutanyaki Tsukasa Nishiguchi",
   jp:"牛タン焼専門店 司 西口名掛丁店",
   type:"food", cat:"牛舌",
+  img:"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnlB89DBVPJ979kVgSMSiUC5i90g5zOiNYj05ezyYD5xBx04z7KYUFeQQc8NQ948aPEoe_seAhMEqDldp_qHe4FmpnFxONbJN7Ob6Y04DUjGl3VnUj6k-Jgkso0ijmG0oCO7UhEiZ5TDGym=w200-h200-k-no",
   gRating:4.3, gReviews:1530,
   tRating:3.65, tReviews:965,
   price:"¥2,000–3,000",
@@ -357,6 +392,7 @@ const DATA = [
   name:"Yakiniku Kotora - Clisroad",
   jp:"牛刺しと焼肉 仔虎 クリスロード店",
   type:"food", cat:"燒肉",
+  img:"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnrpMSGU1TUbMqBGjHpND0C0KnrLFHyMQrBIpTW-YH38oMtWVSPdv9RCX-VPOkFfz_pKz58xRiMmFG2KIaYEQkVC0SyG8JC3kc1skcqlKOhP5o42xtWq853r1WBVQv79VUzgDO06g=w200-h200-k-no",
   gRating:4.7, gReviews:705,
   tRating:3.70, tReviews:341,
   price:"晚餐6,000-7,999円／午餐2,000-2,999円",
@@ -369,6 +405,7 @@ const DATA = [
 {
   name:"Kotora Sendai-Ekimae",
   type:"food", cat:"燒肉",
+  img:"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkI00yVojeuESa2VAu49cKQdTR3BgELVYT5i6APW1-1t1EgPG_94_1YOA5-8USGFZOKlBY314wkw6IRb30800COpVu4GZ99COFCk1im6xQLNAO7Q_0__YWK_Ie1tgcg59O3iZwC=w200-h200-k-no",
   gRating:4.5, gReviews:1337,
   tRating:3.71, tReviews:931,
   price:"晚餐10,000-14,999円／午餐1,000-1,999円",
@@ -381,6 +418,7 @@ const DATA = [
 {
   name:"kazunori ikeda individuel S-Pal Sendai",
   type:"food", cat:"甜點",
+  img:"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk55mwvkvJFWBaUUVzh-kNtiJVL0C8ykjbrB6TDOu2Hh69N47ptZ7GJMNKDF1Tj4hQ1ph05oat6DYnc6-N1y6Shl3aAaWia_Y40qFKWhJfRnaO029_EuwhED8cL85YywYr6tZcolEaLv7HW=w200-h200-k-no",
   gRating:4.2, gReviews:184,
   tRating:3.81, tReviews:584,
   price:"999円以下",
@@ -393,6 +431,7 @@ const DATA = [
 {
   name:"Suehiro Ramen",
   type:"food", cat:"拉麵",
+  img:"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl2PYT0ZM8qgzYqSNTcy_LrH02Xwa4pqvh-3vIcFZzMOcy7wWprdc1UcVnqbAyQKl8SjQPZ4ES0bHZVEGAyVQWtCJyXz2sxvLYNWn33AGBhhEno3sVNxbrlz1jwgYIr_CRCzsJ37ij3xt6x=w200-h200-k-no",
   gRating:3.7, gReviews:2340,
   price:"¥1,000–2,000",
   notes:"仙台在地拉麵店，尚未取得完整食べログ／營業細節，建議實地查詢或點入Google地圖確認最新資訊。",
@@ -402,6 +441,7 @@ const DATA = [
   name:"Ebisoba Ebisuke",
   jp:"えびそば",
   type:"food", cat:"拉麵",
+  img:"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkQPjos6ZSPeTosXBc15tW4xFpU4F7T4u-Wa1UtfTRt4V4-N-FM4x4DrwZAs0UcbNuP5MmsSikVBO5GCcCr7BV6Lj5wZYIBrjQmUVeDOl_jFCYULhoMazMpTSEW5wu-h5Z3IXg=w200-h200-k-no",
   gRating:4.1, gReviews:934,
   tRating:3.55, tReviews:452,
   price:"店家999円以下／口コミ1,000-1,999円",
@@ -414,6 +454,7 @@ const DATA = [
 {
   name:"Maison Cœlacanthe",
   type:"food", cat:"甜點",
+  img:"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmBklG4HZUeoSfEt29c597ADfGBVh9fGx29GMwr4taex1m6lCAqmxxU5EHTnIh3j1rfX5jje5trAzTquXzPiPigHU3lgo4vhkfa2HU_p8SzWuTJ0IJzCoO7n6IRx1e_tV5e5qdsgu87DuAO=w200-h200-k-no",
   gRating:4.1, gReviews:732,
   tRating:3.62, tReviews:825,
   price:"JPY 1,000-2,999",
@@ -426,6 +467,7 @@ const DATA = [
 {
   name:"All you can eat Seafood - Matsushima Sashimi Restaurant",
   type:"food", cat:"海鮮吃到飽",
+  img:"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnIP-ZeKv8rIFmMCnsOQFPDc8wkV1If2SPQqh6wKlWozW6UX1pZR3TTHp51t-jO-evCe8cKIuczndrIaQcknqggZNQPvP6LELAsbW17CDyEkzbM9k9k2SK3OJQzT159mUDa166jBA=w200-h200-k-no",
   gRating:3.6, gReviews:596,
   tRating:3.22, tReviews:53,
   price:"JPY 3,000-3,999（60分3,500円）",
@@ -438,6 +480,7 @@ const DATA = [
 {
   name:"Cafe Aoyama Bunko",
   type:"food", cat:"咖啡廳",
+  img:"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkGBCirXQ32FMLHtt2Lowtvk75RpEBBdrt1i2eqTeGhTNxskaz9MRap6pdZvr0tgnF3OFzJwHMDFqn6SWPO27BU9vLP-Lb1Y8pjsynXmnkkgMzONT_6O9rAgP_k7-1D78FLxjs53aH047Bv=w200-h200-k-no",
   gRating:4.0, gReviews:900,
   tRating:3.57, tReviews:481,
   price:"JPY 1,000-1,999",
@@ -451,6 +494,7 @@ const DATA = [
   name:"Sendai Station",
   jp:"仙台駅",
   type:"sight", cat:"交通",
+  img:"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl7SdaUO6SAroi2RzjeUPblO4uA0xaraGi0KrS-kHuuWFA74Ahju6FZ_vXEhTfxxBIbYcEdFA4DAqg-r0A3fHpgfqOKW2Wq72CaMDoA5Fhn2TviVBsm9pxTFJ6xnYnR5Npj2c9d=w200-h200-k-no",
   gRating:4.2, gReviews:4387,
   notes:"JR東北新幹線／仙山線／仙石線與地下鐵南北線、東西線交會的仙台市中心車站，直結S-PAL百貨與多條商店街，是整趟行程的交通樞紐。"
 },
@@ -458,6 +502,7 @@ const DATA = [
   name:"Tanya Zenjirou",
   jp:"たんや善治郎",
   type:"food", cat:"牛舌",
+  img:"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlPucE4Cuo7c9KhLtRjiexhW5G1P3SpEmDERsfTJwNX32mZwORivzw9zrdBVUac54goy2xIpaQr41KN7i3aulkMJKt5pWZFqt6O2Z1_8HIz2Nir9VcMKBYjF5APW-64JgMVZrgkopGlRTU_=w200-h200-k-no",
   gRating:4.4, gReviews:3231,
   tRating:3.54, tReviews:1450,
   price:"¥2,000–3,000",
@@ -471,12 +516,14 @@ const DATA = [
   name:"Sendai Asaichi",
   jp:"仙台朝市",
   type:"shop", cat:"市場",
+  img:"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnQ-oWHZsGQ1zuKOCZWDz79a6BlQQpwQcRFmVr0Fv3ecP8kOODtyGnb6Uc3ss1GpIge9h7nuTXvb0EQPJojigoz_8omBZdfGeOl0LXPKBLnKp-G2cn_pxFf63ie4IJxfMVYKELNngVP-4Yc=w200-h200-k-no",
   gRating:4.0, gReviews:2477,
   notes:"仙台站西口徒步約5分鐘的老字號市場，聚集生鮮、蔬果、熟食、乾貨等約60間店舖，適合早晨採買或吃碗新鮮海鮮丼當早餐，感受在地生活氣息。"
 },
 {
   name:"EBeanS",
   type:"shop", cat:"次文化購物中心",
+  img:"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkAHQRSQYqLZrvXvSPKENHWu04GvR72yaE0omxAtV9eEt4R5RjiMnPUaOgvTTZ_MQ_ZedkSm1V5Cg-2jFuXgmCnZaLTXqUiHxRmbCX1UVJFh75i1j3_46UdMb_giNOV96umG_L1F-fYWhIU=w200-h200-k-no",
   gRating:3.8, gReviews:2871,
   hours:"10:00-20:00，僅元旦公休",
   addr:"JR仙台站西口正對面，與行人天橋2樓入口直通",
@@ -487,6 +534,7 @@ const DATA = [
   name:"Dashiro",
   jp:"だし廊 だしろ",
   type:"food", cat:"拉麵",
+  img:"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkppc6uDEvSht6cIHfw4SzTgGpT-kpG4rE21rRcCjDgRFZ26mBfD6kylYCznT0ZRvgedF4mSorR47IQP5QP2IfdO8znsCT0sqU1bspiaga2lUK3L07lV3tmGxKSkosWrl1ZT_mMrbJfO7U1=w200-h200-k-no",
   gRating:4.2, gReviews:2027,
   tRating:3.74, tReviews:1482,
   price:"店家999円以下／口コミ1,000-1,999円",
@@ -500,6 +548,7 @@ const DATA = [
   name:"Botan",
   jp:"とんかつ 牡丹",
   type:"food", cat:"豬排",
+  img:"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkzcSqaR0m66ppK37GqiFZnn8-QUvk8iM5XoV2iQCt8przdnjNKA_6k2MtIXKET2egVnvXDeO-WQjYjJZxCUzZ9Fhul5KFWcTn7LqBnyjwHG1Ct57W7ZMgQY37kuhbTBu-z4jWy=w200-h200-k-no",
   gRating:4.6, gReviews:409,
   tRating:3.47, tReviews:195,
   price:"JPY 2,000-2,999",
@@ -668,6 +717,18 @@ const DATA = [
 
 const TYPE_LABELS = {food:"美食",shop:"購物／商店街",sight:"景點",hotel:"住宿"};
 
+// 沒有照片時，依類別給個 fallback emoji（讓卡片不要空一塊）
+const CAT_ICONS = {
+  "咖啡廳":"☕","甜點":"🍰","豬排":"🍱","牛舌":"🥩","燒肉":"🥓","拉麵":"🍜",
+  "海鮮吃到飽":"🦐","交通":"🚉","市場":"🏮","次文化購物中心":"🎮","Outlet":"🛍️",
+  "工作服／空調服":"🧥","商店街":"🏮","藥妝／生活雜貨":"💊","水族館":"🐬",
+  "景點／絕景":"🏞️","神社":"⛩️","公園":"🌳","購物中心":"🛍️","角色主題商店":"🧸",
+  "二手書／二手商品":"📚","住宿":"🏨"
+};
+function fallbackIcon(item){
+  return CAT_ICONS[item.cat] || (item.type==='food'?'🍽️':item.type==='shop'?'🛍️':item.type==='hotel'?'🏨':'📍');
+}
+
 function renderStars(v){
   if(!v) return "";
   return v.toFixed(1);
@@ -701,12 +762,19 @@ function cardHTML(item, idx){
   const addrLine = (item.addr || item.access) ? `<div class="addr">📍 ${item.addr||''}${item.access? ' ・ '+item.access:''}</div>` : '';
   const incompleteBadge = item.incomplete ? `<span class="badge-nodata">資料有限</span>` : '';
 
+  const thumbHTML = item.img
+    ? `<img class="thumb" src="${item.img}" alt="${item.name}" loading="lazy" onerror="this.outerHTML='<div class=&quot;thumb-fallback&quot;>${fallbackIcon(item)}</div>';">`
+    : `<div class="thumb-fallback">${fallbackIcon(item)}</div>`;
+
   return `
   <div class="card" data-name="${(item.name+' '+(item.jp||'')+' '+(item.cat||'')).toLowerCase()}" data-type="${item.type}">
     <div class="card-top">
-      <div>
-        <h2>${item.name} ${incompleteBadge}</h2>
-        ${item.jp? `<div class="meta-line">${item.jp}</div>`:''}
+      <div class="card-main">
+        ${thumbHTML}
+        <div class="card-title-wrap">
+          <h2>${item.name} ${incompleteBadge}</h2>
+          ${item.jp? `<div class="meta-line">${item.jp}</div>`:''}
+        </div>
       </div>
       <a class="map-link" href="${mapUrl(item)}" target="_blank" rel="noopener">📍 開Google地圖</a>
     </div>
