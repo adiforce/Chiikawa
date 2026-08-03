@@ -312,6 +312,124 @@
     opacity:.5;
     padding:40px 0;
   }
+  .nearby-toggle{
+    margin-top:12px;
+  }
+  .nearby-list-wrap{
+    display:none;
+    margin-top:6px;
+  }
+  .nearby-list-wrap.open{display:block;}
+  .nearby-list-ul{
+    list-style:none;
+    margin:4px 0 0;
+    padding:0;
+  }
+  .nearby-list-ul li{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:7px 10px;
+    border-radius:10px;
+    font-size:.82rem;
+    color:var(--brown);
+    cursor:pointer;
+    transition:background .15s;
+  }
+  .nearby-list-ul li:hover{background:var(--cream);}
+  .nearby-dist{
+    flex-shrink:0;
+    font-family:'Zen Maru Gothic',sans-serif;
+    font-weight:700;
+    font-size:.72rem;
+    color:#fff;
+    background:var(--green);
+    padding:2px 8px;
+    border-radius:999px;
+    min-width:48px;
+    text-align:center;
+  }
+  .nearby-cat{
+    margin-left:auto;
+    font-size:.7rem;
+    opacity:.55;
+    flex-shrink:0;
+  }
+  .nearby-empty{
+    font-size:.82rem;
+    color:var(--brown);
+    opacity:.55;
+    padding:6px 2px;
+  }
+  @keyframes cardFlash{
+    0%{box-shadow:0 0 0 3px var(--pink-dark);}
+    100%{box-shadow:0 2px 8px var(--shadow);}
+  }
+  .card.flash{animation:cardFlash 1.4s ease-out;}
+  .locate-btn{
+    border:1.5px solid var(--pink-dark);
+    background:var(--pink-dark);
+    color:#fff;
+    font-family:'Zen Maru Gothic',sans-serif;
+    padding:9px 16px;
+    border-radius:10px;
+    font-size:.86rem;
+    font-weight:700;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .near-me-panel{
+    max-width:960px;
+    margin:12px auto 0;
+    padding:0 18px;
+  }
+  .near-me-inner{
+    background:var(--white);
+    border:1.5px solid var(--border);
+    border-radius:14px;
+    padding:14px 16px;
+    box-shadow:0 2px 8px var(--shadow);
+  }
+  .near-me-header{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:6px;
+  }
+  .near-me-title{
+    font-family:'Zen Maru Gothic',sans-serif;
+    font-weight:700;
+    color:var(--pink-dark);
+    font-size:.9rem;
+    flex:1;
+  }
+  .near-me-radius{
+    display:flex;
+    gap:6px;
+  }
+  .radius-btn{
+    border:1.5px solid var(--border);
+    background:var(--cream);
+    color:var(--brown);
+    font-family:'Zen Maru Gothic',sans-serif;
+    padding:4px 11px;
+    border-radius:999px;
+    font-size:.74rem;
+    font-weight:700;
+    cursor:pointer;
+  }
+  .radius-btn.active{
+    background:var(--pink-dark);
+    color:#fff;
+    border-color:var(--pink-dark);
+  }
+  .near-me-close{
+    cursor:pointer;
+    font-size:.9rem;
+    opacity:.5;
+    padding:0 4px;
+  }
   footer{
     text-align:center;
     font-size:.72rem;
@@ -329,6 +447,21 @@
 </header>
 <div class="controls">
   <input id="search" type="text" placeholder="搜尋店名 / 品項 / 地區關鍵字...">
+  <button class="locate-btn" onclick="findNearMe()">📍 我在這附近</button>
+</div>
+<div class="near-me-panel" id="nearMePanel" style="display:none;">
+  <div class="near-me-inner">
+    <div class="near-me-header">
+      <span class="near-me-title">📍 你附近的地點</span>
+      <div class="near-me-radius">
+        <button class="radius-btn" data-r="500">500m</button>
+        <button class="radius-btn active" data-r="1000">1km</button>
+        <button class="radius-btn" data-r="2000">2km</button>
+      </div>
+      <span class="near-me-close" onclick="closeNearMe()">✕</span>
+    </div>
+    <div id="nearMeList"></div>
+  </div>
 </div>
 <div class="filters" id="filters"></div>
 
@@ -1077,7 +1210,122 @@ function mapUrl(item){
   return `https://www.google.com/maps/search/?api=1&query=${q}`;
 }
 
-function cardHTML(item, idx){
+// ===== 距離計算與附近景點功能 =====
+function haversine(lat1, lng1, lat2, lng2){
+  const R = 6371000; // 地球半徑（公尺）
+  const toRad = d => d * Math.PI / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a = Math.sin(dLat/2) ** 2 +
+            Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng/2) ** 2;
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+function getNearbyOf(item, maxDist = 1000, limit = 8){
+  if(item.lat == null || item.lng == null) return null;
+  return DATA
+    .map((d, idx) => ({ d, idx, dist: (d !== item && d.lat != null && d.lng != null) ? haversine(item.lat, item.lng, d.lat, d.lng) : Infinity }))
+    .filter(x => x.dist <= maxDist)
+    .sort((a, b) => a.dist - b.dist)
+    .slice(0, limit);
+}
+
+function nearbyListItemsHTML(results){
+  return `<ul class="nearby-list-ul">${results.map(r =>
+    `<li onclick="scrollToCard(${r.idx})"><span class="nearby-dist">${Math.round(r.dist)}m</span> ${escapeHTML(r.d.jp || r.d.name)} <span class="nearby-cat">${r.d.cat || ''}</span></li>`
+  ).join('')}</ul>`;
+}
+
+function toggleNearby(btn, idx){
+  const container = document.getElementById('nearby-' + idx);
+  const isOpen = container.classList.toggle('open');
+  btn.textContent = isOpen ? '▲ 收合附近景點' : '📍 查看附近景點（1公里內）';
+  if(isOpen && !container.dataset.loaded){
+    const item = DATA[idx];
+    const nearby = getNearbyOf(item, 1000, 8);
+    if(nearby === null){
+      container.innerHTML = `<div class="nearby-empty">此地點尚無座標資料，無法計算附近景點。</div>`;
+    } else if(!nearby.length){
+      container.innerHTML = `<div class="nearby-empty">1公里內查無其他已收錄地點。</div>`;
+    } else {
+      container.innerHTML = nearbyListItemsHTML(nearby);
+    }
+    container.dataset.loaded = '1';
+  }
+}
+
+function scrollToCard(idx){
+  document.getElementById('search').value = '';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  const allBtn = document.querySelector('.filter-btn[data-type="all"]');
+  if(allBtn) allBtn.classList.add('active');
+  render();
+  requestAnimationFrame(() => {
+    const el = document.getElementById('card-' + idx);
+    if(el){
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.classList.add('flash');
+      setTimeout(() => el.classList.remove('flash'), 1400);
+    }
+  });
+}
+
+// ===== 「我在這附近」（使用者GPS定位）=====
+let userCoords = null;
+
+function currentRadius(){
+  const active = document.querySelector('.radius-btn.active');
+  return active ? parseInt(active.dataset.r, 10) : 1000;
+}
+
+function findNearMe(){
+  const panel = document.getElementById('nearMePanel');
+  panel.style.display = 'block';
+  const list = document.getElementById('nearMeList');
+  list.innerHTML = `<div class="nearby-empty">定位中，請允許瀏覽器取得您的位置...</div>`;
+  if(!navigator.geolocation){
+    list.innerHTML = `<div class="nearby-empty">此瀏覽器不支援定位功能，請改用手動搜尋。</div>`;
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      userCoords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+      renderNearMeList();
+    },
+    err => {
+      let msg = '無法取得您的位置，請再試一次。';
+      if(err.code === 1) msg = '您拒絕了定位權限，請至瀏覽器設定允許定位後再試一次。';
+      else if(err.code === 2) msg = '目前無法判斷您的位置（訊號或裝置問題）。';
+      else if(err.code === 3) msg = '定位逾時，請再試一次。';
+      list.innerHTML = `<div class="nearby-empty">${msg}</div>`;
+    },
+    { enableHighAccuracy: true, timeout: 10000 }
+  );
+}
+
+function renderNearMeList(){
+  if(!userCoords) return;
+  const r = currentRadius();
+  const list = document.getElementById('nearMeList');
+  const results = DATA
+    .map((d, idx) => ({ d, idx, dist: (d.lat != null && d.lng != null) ? haversine(userCoords.lat, userCoords.lng, d.lat, d.lng) : Infinity }))
+    .filter(x => x.dist <= r)
+    .sort((a, b) => a.dist - b.dist)
+    .slice(0, 15);
+  if(!results.length){
+    list.innerHTML = `<div class="nearby-empty">${r}公尺內查無收錄地點，試試看擴大範圍。</div>`;
+    return;
+  }
+  list.innerHTML = nearbyListItemsHTML(results);
+}
+
+function closeNearMe(){
+  document.getElementById('nearMePanel').style.display = 'none';
+}
+
+function cardHTML(item){
+  const origIdx = DATA.indexOf(item);
   const scores = [];
   if(item.gRating){
     scores.push(`<div class="score-box"><span>Google評分</span><b>★ ${renderStars(item.gRating)}</b>${item.gReviews? `<span>(${item.gReviews}則)</span>`:''}</div>`);
@@ -1105,7 +1353,7 @@ function cardHTML(item, idx){
   const subTitle = item.jp ? item.name : null;
 
   return `
-  <div class="card" data-name="${(item.name+' '+(item.jp||'')+' '+(item.cat||'')).toLowerCase()}" data-type="${item.type}">
+  <div class="card" id="card-${origIdx}" data-name="${(item.name+' '+(item.jp||'')+' '+(item.cat||'')).toLowerCase()}" data-type="${item.type}">
     <div class="card-top">
       <div class="card-main">
         ${thumbHTML}
@@ -1124,6 +1372,8 @@ function cardHTML(item, idx){
     <div class="details">
       ${recHTML}
       ${item.notes? `<div class="section-label">評論觀察／備註</div><div class="notes">${item.notes}</div>` : ''}
+      <div class="toggle-btn nearby-toggle" onclick="toggleNearby(this, ${origIdx})">📍 查看附近景點（1公里內）</div>
+      <div class="nearby-list-wrap" id="nearby-${origIdx}"></div>
     </div>
   </div>`;
 }
@@ -1159,6 +1409,13 @@ function buildFilters(){
 
 document.getElementById('search').addEventListener('input', render);
 document.getElementById('totalCount').textContent = DATA.length;
+document.querySelectorAll('.radius-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.radius-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderNearMeList();
+  });
+});
 buildFilters();
 render();
 </script>
