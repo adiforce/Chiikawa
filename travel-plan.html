@@ -18,6 +18,7 @@
     --shadow:rgba(122,79,58,0.08);
     --green:#7bbf6a;
     --blue:#8bb4d8;
+    --blue-dark:#6fa0c9;
   }
   *{box-sizing:border-box;}
   body{
@@ -240,7 +241,7 @@
   .detail-toggle{
     font-size:.74rem;
     font-weight:700;
-    color:var(--pink-dark);
+    color:var(--blue-dark);
     cursor:pointer;
     margin-top:6px;
     display:inline-block;
@@ -249,8 +250,8 @@
   .detail-wrap{
     display:none;
     margin-top:6px;
-    background:var(--cream);
-    border:1px dashed var(--border);
+    background:#eef4fa;
+    border:1px dashed var(--blue);
     border-radius:10px;
     padding:10px 12px;
   }
@@ -258,7 +259,7 @@
   .detail-scores{
     font-size:.78rem;
     font-weight:700;
-    color:var(--brown);
+    color:var(--blue-dark);
     margin-bottom:4px;
   }
   .detail-meta{
@@ -285,7 +286,7 @@
     margin-top:6px;
     font-size:.74rem;
     font-weight:700;
-    color:var(--pink-dark);
+    color:var(--blue-dark);
     text-decoration:none;
   }
 </style>
@@ -792,7 +793,7 @@ function detailBoxHTML(d, rawQuery){
   if(d.hours) meta.push('⏰ ' + escapeHTML(d.hours));
   if(d.price) meta.push('💰 ' + escapeHTML(d.price));
   const rec = (d.rec && d.rec.length) ? `<ul class="detail-rec">${d.rec.map(r => `<li>${escapeHTML(r)}</li>`).join('')}</ul>` : '';
-  const listUrl = 'travle-list.html?q=' + encodeURIComponent(rawQuery);
+  const listUrl = 'travel-list.html?q=' + encodeURIComponent(rawQuery);
   return `
     <div class="detail-wrap" data-loaded="1">
       ${scores.length ? `<div class="detail-scores">${scores.join(' ・ ')}</div>` : ''}
@@ -817,7 +818,7 @@ function initDetailToggles(){
 
     const toggle = document.createElement('div');
     toggle.className = 'detail-toggle';
-    toggle.textContent = '▼ 詳細資訊（清單同步）';
+    toggle.textContent = '▼ 詳細資訊';
 
     const box = document.createElement('div');
     box.innerHTML = detailBoxHTML(venue, query);
@@ -825,7 +826,7 @@ function initDetailToggles(){
 
     toggle.addEventListener('click', () => {
       const isOpen = boxInner.classList.toggle('open');
-      toggle.textContent = isOpen ? '▲ 收合' : '▼ 詳細資訊（清單同步）';
+      toggle.textContent = isOpen ? '▲ 收合' : '▼ 詳細資訊';
     });
 
     stopMain.appendChild(toggle);
