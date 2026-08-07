@@ -43,6 +43,21 @@
     margin-bottom:2px;
   }
   header .logo span{color:var(--brown);font-size:12px;margin-left:6px;font-weight:400;opacity:.7;}
+  .back-to-plan{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    background:var(--cream);
+    border:1.5px solid var(--border);
+    color:var(--brown);
+    font-family:'Zen Maru Gothic',sans-serif;
+    font-size:.78rem;
+    font-weight:700;
+    padding:6px 13px;
+    border-radius:999px;
+    text-decoration:none;
+    margin-top:8px;
+  }
   header p.sub{
     margin:2px 0 0;
     font-size:.78rem;
@@ -443,6 +458,7 @@
 
 <header>
   <div class="logo">🇯🇵 仙台旅遊清單<span>不要問我我是誰</span></div>
+  <div id="backToPlan" style="display:none;"></div>
   <p class="sub" id="headerSub">Google Maps 共享清單 · 共 <span id="totalCount"></span> 個地點 · 2026/08/25–08/30 行程參考</p>
 </header>
 <div class="controls">
@@ -772,6 +788,11 @@ async function loadData(){
   const q = params.get('q');
   if(q){
     document.getElementById('search').value = q;
+    // 從行程表點進來的（帶有q參數），顯示返回按鈕
+    // 加到主畫面的App模式沒有分頁/返回鍵，用連結導回travel-plan.html
+    const backWrap = document.getElementById('backToPlan');
+    backWrap.style.display = 'block';
+    backWrap.innerHTML = `<a class="back-to-plan" href="travel-plan.html">← 返回行程表</a>`;
   }
   render();
 }
@@ -779,4 +800,3 @@ loadData();
 </script>
 </body>
 </html>
-
