@@ -236,7 +236,8 @@
     color:var(--brown);
     opacity:.45;
     padding:20px 18px;
-    .detail-toggle{
+  }
+  .detail-toggle{
     font-size:.74rem;
     font-weight:700;
     color:var(--pink-dark);
@@ -791,7 +792,7 @@ function detailBoxHTML(d, rawQuery){
   if(d.hours) meta.push('⏰ ' + escapeHTML(d.hours));
   if(d.price) meta.push('💰 ' + escapeHTML(d.price));
   const rec = (d.rec && d.rec.length) ? `<ul class="detail-rec">${d.rec.map(r => `<li>${escapeHTML(r)}</li>`).join('')}</ul>` : '';
-  const listUrl = '仙台旅遊清單.html?q=' + encodeURIComponent(rawQuery);
+  const listUrl = 'travle-list.html?q=' + encodeURIComponent(rawQuery);
   return `
     <div class="detail-wrap" data-loaded="1">
       ${scores.length ? `<div class="detail-scores">${scores.join(' ・ ')}</div>` : ''}
