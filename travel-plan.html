@@ -236,6 +236,56 @@
     color:var(--brown);
     opacity:.45;
     padding:20px 18px;
+    .detail-toggle{
+    font-size:.74rem;
+    font-weight:700;
+    color:var(--pink-dark);
+    cursor:pointer;
+    margin-top:6px;
+    display:inline-block;
+    user-select:none;
+  }
+  .detail-wrap{
+    display:none;
+    margin-top:6px;
+    background:var(--cream);
+    border:1px dashed var(--border);
+    border-radius:10px;
+    padding:10px 12px;
+  }
+  .detail-wrap.open{display:block;}
+  .detail-scores{
+    font-size:.78rem;
+    font-weight:700;
+    color:var(--brown);
+    margin-bottom:4px;
+  }
+  .detail-meta{
+    font-size:.78rem;
+    color:var(--brown);
+    opacity:.75;
+    margin-bottom:4px;
+  }
+  .detail-rec{
+    margin:4px 0 6px;
+    padding-left:16px;
+    font-size:.8rem;
+    line-height:1.55;
+    color:var(--brown);
+  }
+  .detail-notes{
+    font-size:.8rem;
+    line-height:1.6;
+    color:var(--brown);
+    opacity:.85;
+  }
+  .detail-list-link{
+    display:inline-block;
+    margin-top:6px;
+    font-size:.74rem;
+    font-weight:700;
+    color:var(--pink-dark);
+    text-decoration:none;
   }
 </style>
 </head>
@@ -289,7 +339,7 @@
             <div class="stop-time">約19:30</div>
             <div class="stop-name">東橫INN仙台西口広瀬通 Check-in</div>
           </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=東橫INN仙台西口広瀬通" target="_blank" rel="noopener">📍</a>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=38.2642295,140.8792741" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
       <div class="stop">
@@ -300,7 +350,7 @@
             <div class="stop-note">牛舌名店，西口步行約7-8分。同系列駅前分店常大排長龍，這間人潮分散許多。善治郎セット約3,410円</div>
             <span class="stop-tag">牛舌</span>
           </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=たんや善治郎 南町通り店" target="_blank" rel="noopener">📍</a>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=38.2591322,140.8786471" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
     </div>
@@ -323,7 +373,7 @@
             <div class="stop-note">広瀬通駅搭南北線直達富沢駅（約15分），步行3分到公園。運動廣場開放6:00-19:00，早上人少適合拍照，カメイアリーナ仙台目前整修中僅供外觀參觀</div>
             <span class="stop-tag">公園</span>
           </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=富沢公園 仙台" target="_blank" rel="noopener">📍</a>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=38.2173577,140.8704544" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
       <div class="stop">
@@ -334,7 +384,7 @@
             <div class="stop-note">仙台站東口剪票口出來約5秒。モーニングセット約600円附海老濃湯（7:30-11:00）。搭南北線回仙台站後直接過來吃</div>
             <span class="stop-tag">咖啡廳</span>
           </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Humming Meal Market Sendai" target="_blank" rel="noopener">📍</a>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=38.2597776,140.8830859" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
       <div class="stop">
@@ -345,7 +395,7 @@
             <div class="stop-note">7F アニメイト仙台（東北最大）、8F ゲーマーズ／らしんばん</div>
             <span class="stop-tag">次文化購物中心</span>
           </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=EBeanS Sendai" target="_blank" rel="noopener">📍</a>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=38.2585564,140.8797295" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
       <div class="stop">
@@ -356,7 +406,7 @@
             <div class="stop-note">8F ちいかわらんど（東北首間官方店）、Jump Shop</div>
             <span class="stop-tag">角色主題商店</span>
           </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=仙台PARCO" target="_blank" rel="noopener">📍</a>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=38.2619940,140.8816332" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
       <div class="stop">
@@ -367,7 +417,7 @@
             <div class="stop-note">兩選一：Fry家熟成豬排（話題度高常排隊）或牛舌司西口名掛丁店</div>
             <span class="stop-tag">豬排／牛舌</span>
           </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=熟成とんかつ フライ家 仙台" target="_blank" rel="noopener">📍</a>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=38.2617683,140.8796744" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
       <div class="stop">
@@ -378,7 +428,7 @@
             <div class="stop-note">兩條拱廊街連通，可順路挖BOOKOFF仙台クリスロード店</div>
             <span class="stop-tag">商店街</span>
           </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=クリスロード商店街 仙台" target="_blank" rel="noopener">📍</a>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=38.2615123,140.8765902" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
       <div class="stop">
@@ -389,7 +439,7 @@
             <div class="stop-note">米其林Bib Gourmand認定，午間3款出汁鹽味拉麵。券売機點餐僅收現金</div>
             <span class="stop-tag">拉麵</span>
           </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=だし廊 だしろ 仙台" target="_blank" rel="noopener">📍</a>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=38.2585770,140.8749215" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
     </div>
@@ -412,7 +462,7 @@
             <div class="stop-note">西口步行5分，老字號市場，生鮮熟食皆有，感受在地生活氣息</div>
             <span class="stop-tag">市場</span>
           </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=仙台朝市" target="_blank" rel="noopener">📍</a>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=38.2587960,140.8786683" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
       <div class="stop">
@@ -432,7 +482,7 @@
             <div class="stop-note">松島海岸駅步行1分。牡蠣（蒸／生／天婦羅）、三陸厚切生魚片吃到飽，60分3,500円</div>
             <span class="stop-tag">海鮮吃到飽</span>
           </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=松島おさしみ水族館" target="_blank" rel="noopener">📍</a>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=38.3675814,141.0601827" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
       <div class="stop">
@@ -443,7 +493,7 @@
             <div class="stop-note">日本三景之一，260多座小島，搭船賞灣後可順遊瑞巌寺</div>
             <span class="stop-tag">景點／絕景</span>
           </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=松島" target="_blank" rel="noopener">📍</a>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=38.3675442,141.0598863" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
       <div class="stop">
@@ -475,7 +525,7 @@
             <div class="stop-note">朝ラー600円，清爽鹽味／豚骨清湯拉麵當早餐（7:00-15:00，週三公休）</div>
             <span class="stop-tag">拉麵</span>
           </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=伊藤商店 仙台朝市店" target="_blank" rel="noopener">📍</a>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=38.2585141,140.8783046" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
       <div class="stop">
@@ -486,7 +536,7 @@
             <div class="stop-note">約100個展示水槽、東北最大規模海洋動物表演，企鵝海獅接觸體驗</div>
             <span class="stop-tag">水族館</span>
           </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=仙台うみの杜水族館" target="_blank" rel="noopener">📍</a>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=38.2711521,140.9807068" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
       <div class="stop">
@@ -497,7 +547,7 @@
             <div class="stop-note">與水族館車程相近，可直接安排同一天。東北最大規模OUTLET，120多家品牌</div>
             <span class="stop-tag">Outlet</span>
           </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=三井OUTLET PARK 仙台港" target="_blank" rel="noopener">📍</a>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=38.2751825,140.9898398" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
       <div class="stop">
@@ -508,7 +558,7 @@
             <div class="stop-note">海老出汁湯頭拉麵。現場排隊不接受預約，全店23席</div>
             <span class="stop-tag">拉麵</span>
           </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=えびそば えびすけ 仙台" target="_blank" rel="noopener">📍</a>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=38.2671986,140.8685396" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
       <div class="stop optional">
@@ -519,7 +569,7 @@
             <div class="stop-note">招牌シーラカンス モナカ人氣款常下午售罄，建議白天先買起來</div>
             <span class="stop-tag">甜點</span>
           </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Maison Cœlacanthe 仙台" target="_blank" rel="noopener">📍</a>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=38.2587233,140.8749906" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
     </div>
@@ -542,7 +592,7 @@
             <div class="stop-note">早鳥優惠7:30-11:00點飲料送吐司，地下鐵仙台站北4出口步行1分。不用趕，飯店繼續住一晚</div>
             <span class="stop-tag">咖啡廳</span>
           </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Cafe Aoyama Bunko 仙台" target="_blank" rel="noopener">📍</a>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=38.2612949,140.8787853" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
       <div class="stop">
@@ -553,7 +603,7 @@
             <div class="stop-note">JR仙台駅→岩沼駅（東北本線約22分）→ 計程車往返神社（約13-18分/趟，來回約2,000-2,500円，巴士班次少不建議）。可求金運御守、御朱印、逛牡丹園、買白蛇伴手禮</div>
             <span class="stop-tag">神社</span>
           </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=金蛇水神社" target="_blank" rel="noopener">📍</a>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=38.1195023,140.8385793" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
       <div class="stop">
@@ -573,7 +623,7 @@
             <div class="stop-note">兩選一：仔虎駅前店有午間特選焼肉ランチ（約4,000-4,400円，比晚餐親民很多）；クリスロード店有生ユッケ丼、生食刺身</div>
             <span class="stop-tag">燒肉</span>
           </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=米沢牛焼肉 仔虎 仙台駅前店" target="_blank" rel="noopener">📍</a>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=38.2626961,140.8803287" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
       <div class="stop">
@@ -584,7 +634,7 @@
             <div class="stop-note">仙台最大商店街之一，服飾、雜貨、藥妝齊全，比クリスロード規模更大。順路走到水果派</div>
             <span class="stop-tag">商店街</span>
           </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=一番町商店街 仙台" target="_blank" rel="noopener">📍</a>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=38.2590938,140.8721392" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
       <div class="stop">
@@ -595,7 +645,7 @@
             <div class="stop-note">一番町，地下鐵廣瀬通站步行1分。季節鮮果塔招牌No.1，假日傍晚內用可能要排隊</div>
             <span class="stop-tag">甜點</span>
           </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=キル フェ ボン 仙台" target="_blank" rel="noopener">📍</a>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=38.2622424,140.8768290" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
       <div class="stop">
@@ -636,7 +686,7 @@
             <div class="stop-note">搭觀光巴士るーぷる仙台約20分。伊達政宗騎馬像、青葉城資料展示館、本丸展望市街景</div>
             <span class="stop-tag">歷史地標</span>
           </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=仙台城跡" target="_blank" rel="noopener">📍</a>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=38.2530776,140.8567093" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
       <div class="stop">
@@ -647,7 +697,7 @@
             <div class="stop-note">大町西公園駅步行1分，伊達政宗1621年創建，規模小巧但值得一訪</div>
             <span class="stop-tag">神社</span>
           </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=櫻岡大神宮" target="_blank" rel="noopener">📍</a>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=38.2596325,140.8616785" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
       <div class="stop">
@@ -667,7 +717,7 @@
             <div class="stop-note">仙台站構內剪票口內2F。ロワイヤルテラッセ 生パイ、kazunori ikeda individuel 甜點（皆在エスパル內）</div>
             <span class="stop-tag">咖啡廳／甜點</span>
           </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=ロワイヤルテラッセ エスパル店" target="_blank" rel="noopener">📍</a>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=38.2605459,140.8820051" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
       <div class="stop">
@@ -694,6 +744,96 @@
 </div>
 
 <footer>行程僅供參考，實際營業時間／交通班次請以現場公告與官方最新資訊為準。</footer>
+
+<script>
+let DATA = [];
+
+async function loadVenues(){
+  try {
+    const res = await fetch('venues.json');
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    DATA = await res.json();
+    initDetailToggles();
+  } catch(err){
+    console.warn('venues.json 載入失敗：', err.message, '（詳細資訊功能將不可用，但行程表其餘內容不受影響）');
+  }
+}
+
+function findVenue(queryText){
+  const q = (queryText || '').trim().toLowerCase();
+  if(!q) return null;
+  for(const d of DATA){
+    const n = (d.name || '').toLowerCase();
+    const j = (d.jp || '').toLowerCase();
+    if(n === q || j === q) return d;
+  }
+  for(const d of DATA){
+    const n = (d.name || '').toLowerCase();
+    const j = (d.jp || '').toLowerCase();
+    if((n && (n.includes(q) || q.includes(n))) || (j && (j.includes(q) || q.includes(j)))) return d;
+  }
+  return null;
+}
+
+function escapeHTML(s){
+  return String(s)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+
+function detailBoxHTML(d, rawQuery){
+  const scores = [];
+  if(d.gRating) scores.push(`Google ★${d.gRating}${d.gReviews ? `（${d.gReviews}則）` : ''}`);
+  if(d.tRating) scores.push(`食べログ ${d.tRating.toFixed(2)}${d.tReviews ? `（${d.tReviews}則）` : ''}`);
+  const meta = [];
+  if(d.hours) meta.push('⏰ ' + escapeHTML(d.hours));
+  if(d.price) meta.push('💰 ' + escapeHTML(d.price));
+  const rec = (d.rec && d.rec.length) ? `<ul class="detail-rec">${d.rec.map(r => `<li>${escapeHTML(r)}</li>`).join('')}</ul>` : '';
+  const listUrl = '仙台旅遊清單.html?q=' + encodeURIComponent(rawQuery);
+  return `
+    <div class="detail-wrap" data-loaded="1">
+      ${scores.length ? `<div class="detail-scores">${scores.join(' ・ ')}</div>` : ''}
+      ${meta.length ? `<div class="detail-meta">${meta.join(' ・ ')}</div>` : ''}
+      ${rec}
+      ${d.notes ? `<div class="detail-notes">${escapeHTML(d.notes)}</div>` : ''}
+      <a class="detail-list-link" href="${listUrl}" target="_blank" rel="noopener">在完整清單中查看 →</a>
+    </div>`;
+}
+
+function initDetailToggles(){
+  document.querySelectorAll('.map-link').forEach(a => {
+    let query = '';
+    try {
+      query = new URL(a.href).searchParams.get('query') || '';
+    } catch(e){ return; }
+    const venue = findVenue(query);
+    if(!venue) return;
+
+    const stopMain = a.closest('.stop-top')?.querySelector('.stop-main');
+    if(!stopMain) return;
+
+    const toggle = document.createElement('div');
+    toggle.className = 'detail-toggle';
+    toggle.textContent = '▼ 詳細資訊（清單同步）';
+
+    const box = document.createElement('div');
+    box.innerHTML = detailBoxHTML(venue, query);
+    const boxInner = box.firstElementChild;
+
+    toggle.addEventListener('click', () => {
+      const isOpen = boxInner.classList.toggle('open');
+      toggle.textContent = isOpen ? '▲ 收合' : '▼ 詳細資訊（清單同步）';
+    });
+
+    stopMain.appendChild(toggle);
+    stopMain.appendChild(boxInner);
+  });
+}
+
+loadVenues();
+</script>
 
 </body>
 </html>
