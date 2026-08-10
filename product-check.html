@@ -339,12 +339,12 @@
   function init() {
     const saved = localStorage.getItem(HIS_KEY);
     if (saved) productHistory = JSON.parse(saved);
-    
+
     const geminiKey = localStorage.getItem('product-gemini-key') || '';
     const claudeKey = localStorage.getItem('product-claude-key') || '';
     document.getElementById('geminiKey').value = geminiKey;
     document.getElementById('claudeKey').value = claudeKey;
-    
+
     renderHistory();
   }
 
@@ -519,7 +519,7 @@
             'anthropic-dangerous-direct-browser-access': 'true'
           },
           body: JSON.stringify({
-            model: 'claude-sonnet-4-20250514',
+            model: 'claude-sonnet-5',
             max_tokens: 1500,
             messages: [{ role: 'user', content: [
               { type: 'image', source: { type: 'base64', media_type: imageMime, data: base64Image } },
@@ -540,7 +540,7 @@
       const record = {
         timestamp: Date.now(),
         engine,
-        model: engine === 'gemini' ? 'gemini-2.0-flash' : 'claude-sonnet-4-20250514',
+        model: engine === 'gemini' ? 'gemini-2.0-flash' : 'claude-sonnet-5',
         data: { ...parsedData, jp_equiv: jpEquiv }
       };
 
