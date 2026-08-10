@@ -465,7 +465,6 @@
     "name": "Tanya Zenjirou - Minamimachidori",
     "jp": "たんや善治郎 南町通り店",
     "type": "food",
-    "img":"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlLctyybhyKCCSYNPyF3QQWeRnEdFD8hlaVKN79mrExQUmMOryoVEQQrF8VzeT0SNaR5sSaPwh78pNNO-gjHTUc_6iBXYvfp6GcXT_pCbN92wvEbtvBNQ5CWyteQFWY8ba0XJ4KYYeAXifN=s680-w680-h510-rw",
     "cat": "牛舌",
     "gRating": 4.4,
     "gReviews": 781,
@@ -483,7 +482,8 @@
       "焼肉部（17:00後）— 可自己動手烤牛舌",
       "平日午餐時段預約免費，划算"
     ],
-    "notes": "2024年4月新開幕分店，同系列的駅前本店／牛たん通り店常年大排長龍（假日等候常超過1小時），這間位置稍微遠一點（西口步行約7-8分），但排隊人潮明顯分散不少，CP值更高。"
+    "notes": "2024年4月新開幕分店，同系列的駅前本店／牛たん通り店常年大排長龍（假日等候常超過1小時），這間位置稍微遠一點（西口步行約7-8分），但排隊人潮明顯分散不少，CP值更高。",
+    "img": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlLctyybhyKCCSYNPyF3QQWeRnEdFD8hlaVKN79mrExQUmMOryoVEQQrF8VzeT0SNaR5sSaPwh78pNNO-gjHTUc_6iBXYvfp6GcXT_pCbN92wvEbtvBNQ5CWyteQFWY8ba0XJ4KYYeAXifN=s680-w680-h510-rw"
   },
   {
     "name": "Sendai Asaichi",
@@ -1043,7 +1043,7 @@
     "notes": "位於仙台站西口プレイビル地下，湯頭選擇組合多元（節系魚粉湯頭評價高）。價位親民（999円以下），週一、週日公休要留意，湯頭售完會提前打烊。",
     "wasFilled": true
   },
-    {
+  {
     "name": "SS30",
     "jp": "SS30（住友生命仙台中央ビル）",
     "type": "sight",
@@ -1064,6 +1064,31 @@
       "28-30F餐廳 — 可邊看夜景邊用餐，有平價義式餐廳選項"
     ],
     "notes": "正式名稱「住友生命仙台中央ビル」，1989年完工，東北地方第一棟超過100公尺高建築。展望樓層照明偏暗、氣氛安靜，是在地知名約會/夜景景點。與AER展望テラス同為仙台免費展望台，SS30視野較開闊、開放至23:00（AER只到20:00），兩者建議擇一安排避免重複。",
+    "wasFilled": true
+  },
+  {
+    "name": "くら寿司 仙台中野栄店",
+    "jp": "無添くら寿司 仙台中野栄店",
+    "type": "food",
+    "cat": "迴轉壽司",
+    "img": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmdXmNzX-QXbPJU4T379yuHIkbEWiWYZqlubGC5ogOip_5qmfdLGEO9RhQaPduDf8l_EACRUiYMY73KlAl3tV_FHH5YEHpMX02P9KPBP73L8vNv7yP_R5AUEKCECxaEmpUb2qf_JH2dSleE=w408-h306-k-no",
+    "gRating": 3.4,
+    "gReviews": 1440,
+    "tRating": 3.02,
+    "tReviews": 27,
+    "lat": 38.2811064,
+    "lng": 140.9878634,
+    "price": "¥1,000-1,999（一盤115円起）",
+    "hours": "週一～三 11:00-23:00；週四～日・假日 10:20-23:00（閉店前30分最終入店）",
+    "addr": "宮城県仙台市宮城野区中野字出花西90-1",
+    "mapAddr": "宮城県仙台市宮城野区中野字出花西90-1",
+    "access": "JR仙石線中野栄駅步行約4分；仙台港北IC下交流道左轉第一個紅綠燈即達",
+    "rec": [
+      "四大添加物無添加 — 全食材不使用化學調味料、人工甘味料、合成色素、人工防腐劑",
+      "ビッくらポン！— 每吃5盤有機會轉扭蛋，小朋友高中生都愛玩",
+      "季節限定壽司、炸物、甜點等副食豐富"
+    ],
+    "notes": "連鎖平價迴轉壽司，一盤115円起，CP值高。有多人座位（ボックス席），適合團體用餐。與仙台うみの杜水族館、三井OUTLET PARK仙台港同在中野栄駅周邊，安排在同一天很順路。旺季（週五六日晚餐時段）建議先预约座位。",
     "wasFilled": true
   }
 ]
