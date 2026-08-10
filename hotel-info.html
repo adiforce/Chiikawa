@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>仙台訂房記錄</title>
+<style>
+  body {
+    font-family: -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif;
+    background: #f4f6f8;
+    margin: 0;
+    padding: 24px 16px;
+    color: #1a1a1a;
+  }
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: 1.4em;
+    margin-bottom: 4px;
+  }
+  .subtitle {
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 20px;
+  }
+  .flight-info {
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    font-size: 0.85em;
+    color: #444;
+  }
+  .flight-info div { margin: 2px 0; }
+  .all-done-banner {
+    background: linear-gradient(135deg, #1a8a4a, #22a355);
+    color: #fff;
+    text-align: center;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    font-size: 0.95em;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  .checkin-note {
+    background: #fff;
+    border-left: 4px solid #1a3a5c;
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin-bottom: 20px;
+    font-size: 0.85em;
+    color: #333;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .checkin-note strong { color: #1a3a5c; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  th, td {
+    padding: 10px 8px;
+    text-align: left;
+    font-size: 0.82em;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+  }
+  th {
+    background: #1a3a5c;
+    color: #fff;
+    font-weight: 600;
+  }
+  tr:last-child td { border-bottom: none; }
+  .date-cell { font-weight: 600; white-space: nowrap; }
+  .room-filled {
+    color: #1a1a1a;
+  }
+  .status {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .status-done { color: #1a8a4a; }
+  .subtotal {
+    font-weight: 400;
+    font-size: 0.85em;
+    color: #666;
+  }
+  .room-type-diff {
+    display: inline-block;
+    background: #fff3cd;
+    color: #8a6d00;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 1em;
+    margin-bottom: 3px;
+  }
+  .member-badge {
+    display: inline-block;
+    background: #e8f0fe;
+    color: #1a3a5c;
+    font-weight: 600;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.95em;
+    margin-top: 3px;
+  }
+  .grand-total {
+    margin-top: 16px;
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    font-size: 0.9em;
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    color: #1a3a5c;
+  }
+  .footer-note {
+    margin-top: 18px;
+    font-size: 0.78em;
+    color: #999;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🏨 仙台訂房記錄</h1>
+  <div class="subtitle">東橫INN仙台西口広瀬通 ｜ 4人同行，每晚2間房</div>
+
+  <div class="flight-info">
+    <div><strong>去程</strong> IT254　TPE 08/25 13:45 → SDJ 08/25 18:10</div>
+    <div><strong>回程</strong> IT255　SDJ 08/30 19:00 → TPE 08/30 21:55</div>
+  </div>
+
+  <div class="all-done-banner">🎉 全部5晚、10間房已訂完成！</div>
+
+  <div class="checkin-note">
+    <strong>Check-in 對應：</strong>實際入住由兩位會員本人刷卡——<strong>YEN CHIHRUNG</strong>（I0018-021777）負責CHIHRUNG訂的5間；<strong>ほん じゃいん</strong>（I0042-018482）負責YUHAO訂的5間（訂房時用YUHAO姓名，宿泊者代表已改為ほんじゃいん本人，套用其會員價）。
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>日期</th>
+        <th>房1</th>
+        <th>房2</th>
+        <th>狀態</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="date-cell">08/25–08/26</td>
+        <td class="room-filled">訂房人 YEN YUHAO<br>6368545<br>禁煙ツイン（雙床）（夏のリフレッシュステイプラン）<br>2人<br>12,093円<br><span class="member-badge">宿泊者：ほん じゃいん（I0042-018482）</span></td>
+        <td class="room-filled">訂房人 YEN CHIHRUNG<br>6369300<br>ツイン（雙床）（會員限定11:00退房方案）<br>2人<br>12,540円<br><span class="member-badge">宿泊者：YEN CHIHRUNG（I0018-021777）</span></td>
+        <td class="status status-done">✅ 完成<br><span class="subtotal">合計 24,633円</span></td>
+      </tr>
+      <tr>
+        <td class="date-cell">08/26–08/27</td>
+        <td class="room-filled">訂房人 YEN CHIHRUNG<br>6368515<br>禁煙ツイン（雙床）（會員限定11:00退房方案）<br>2人<br>12,540円<br><span class="member-badge">宿泊者：ほん じゃいん（I0042-018482）</span></td>
+        <td class="room-filled">訂房人 YEN CHIHRUNG<br>6368514<br>禁煙ツイン（雙床）（會員限定11:00退房方案）<br>2人<br>12,540円<br><span class="member-badge">宿泊者：YEN CHIHRUNG（I0018-021777）</span></td>
+        <td class="status status-done">✅ 完成<br><span class="subtotal">合計 25,080円</span></td>
+      </tr>
+      <tr>
+        <td class="date-cell">08/27–08/28</td>
+        <td class="room-filled"><span class="room-type-diff">⚠️ 房型不同：禁煙セパレートツイン</span><br>（隔間雙床）訂房人 YEN YUHAO<br>6368950<br>學生優惠方案<br>2人<br>11,457円<br><span class="member-badge">宿泊者：ほん じゃいん（I0042-018482）</span></td>
+        <td class="room-filled">訂房人 YEN CHIHRUNG<br>6369301<br>ツイン（雙床）（會員限定11:00退房方案）<br>2人<br>12,540円<br><span class="member-badge">宿泊者：YEN CHIHRUNG（I0018-021777）</span></td>
+        <td class="status status-done">✅ 完成<br><span class="subtotal">合計 23,997円</span></td>
+      </tr>
+      <tr>
+        <td class="date-cell">08/28–08/29</td>
+        <td class="room-filled">訂房人 YEN YUHAO<br>6368934<br>禁煙ツイン（雙床）（標準方案）<br>2人<br>12,540円<br><span class="member-badge">宿泊者：ほん じゃいん（I0042-018482）</span></td>
+        <td class="room-filled">訂房人 YEN CHIHRUNG<br>6369302<br>ツイン（雙床）（會員限定11:00退房方案）<br>2人<br>12,540円<br><span class="member-badge">宿泊者：YEN CHIHRUNG（I0018-021777）</span></td>
+        <td class="status status-done">✅ 完成<br><span class="subtotal">合計 25,080円</span></td>
+      </tr>
+      <tr>
+        <td class="date-cell">08/29–08/30</td>
+        <td class="room-filled">訂房人 YEN YUHAO<br>6368946<br>禁煙ツイン（雙床）（夏のリフレッシュステイプラン）<br>2人<br>17,206円（含宿泊税600円）<br><span class="member-badge">宿泊者：ほん じゃいん（I0042-018482）</span></td>
+        <td class="room-filled">訂房人 YEN CHIHRUNG<br>6368437<br>禁煙ツイン（雙床）<br>2人<br>17,890円（現地払い）<br><span class="member-badge">宿泊者：YEN CHIHRUNG（I0018-021777）</span></td>
+        <td class="status status-done">✅ 完成<br><span class="subtotal">合計 35,096円</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="grand-total">
+    <span>5晚總計</span>
+    <span>133,886円</span>
+  </div>
+
+  <div class="footer-note">最後更新：2026/08/01　※飯店統一為東橫INN仙台西口広瀬通　※所有房型皆為ツイン系（雙床），僅08/27–28為セパレートツイン（隔間雙床）</div>
+</div>
+</body>
+</html>
