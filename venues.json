@@ -1016,5 +1016,30 @@
     ],
     "notes": "伊達政宗菩提寺，松島代表名剎，正式名稱「松島青龍山瑞巌円福禅寺」，臨済宗妙心寺派。拝觀所需約30-40分鐘。輪椅僅能進入宝物館，本堂・庫裡不可。與台灣關係良好，曾有台灣元首來訪紀錄。",
     "wasFilled": true
+  },
+  {
+    "name": "らーめん屋本舗 麺龍",
+    "jp": "らーめん屋本舗 麺龍 仙台駅前店",
+    "type": "food",
+    "cat": "拉麵",
+    "img": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm9nsUk0GT-fOPo4Hn10CI1Uqjcd2RzZ92Bgt-l3wQ2Qv-JB_-TvMbGr2DoxLAxFaNfSD1ON0-5_43JTb5JBYsMgClCXVy9-W9KRD00PtmKa14SuV92G9yoUgQgoIpDcAOoTVi3PQ=w427-h240-k-no",
+    "gRating": 4.0,
+    "gReviews": 348,
+    "tRating": 3.51,
+    "tReviews": 218,
+    "lat": 38.2585888,
+    "lng": 140.8801245,
+    "price": "～999円（大盛免費）",
+    "hours": "11:30-13:55、17:00-21:55（湯頭售完為止）；週一、週日公休",
+    "addr": "宮城県仙台市青葉区中央4-1-3 仙台プレイビル B1F",
+    "mapAddr": "宮城県仙台市青葉区中央4-1-3",
+    "access": "仙台站西口徒步範圍內",
+    "rec": [
+      "湯頭4選：黒(醤油)・白(白湯醤油)・赤(味噌)・塩，可加點魚粉「ぶし」或背油「とん」變化",
+      "麺可選細麺或太麺",
+      "つけ麺 とん黒 — 中太麺配濃郁沾汁，麵香四溢"
+    ],
+    "notes": "位於仙台站西口プレイビル地下，湯頭選擇組合多元（節系魚粉湯頭評價高）。價位親民（999円以下），週一、週日公休要留意，湯頭售完會提前打烊。",
+    "wasFilled": true
   }
 ]
