@@ -1041,5 +1041,28 @@
     ],
     "notes": "位於仙台站西口プレイビル地下，湯頭選擇組合多元（節系魚粉湯頭評價高）。價位親民（999円以下），週一、週日公休要留意，湯頭售完會提前打烊。",
     "wasFilled": true
+  },
+    {
+    "name": "SS30",
+    "jp": "SS30（住友生命仙台中央ビル）",
+    "type": "sight",
+    "cat": "展望台",
+    "img": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWleHeWc_gZn0rHwOyL5PsYG_Yeg40oeqGq48TW1j6sO6wM0yXR7AJTOvCaJPbM5eoipd-5a-fu4h_cHEmeJk8k2MC99TDWZBuckxYoqwPjcVwOmDWPGI-kzR0XrjkCnmVyg2g6B27vzA1NI=s680-w680-h510-rw",
+    "gRating": 3.9,
+    "gReviews": 715,
+    "lat": 38.2562852,
+    "lng": 140.877987,
+    "price": "免費",
+    "hours": "7:00-23:00，全年無休",
+    "addr": "宮城県仙台市青葉区中央4-6-1 住友生命仙台中央ビル 30F",
+    "mapAddr": "宮城県仙台市青葉区中央4-6-1",
+    "access": "JR仙台站步行約10分；地下鐵仙台站南出口2步行約6分",
+    "rec": [
+      "南側展望フロア「憩いの場・市民プラザ」— 專用電梯「スカイシャトル」1分鐘直達128公尺高樓層",
+      "夜景燈光秀 — 東北放送・仙台放送・宮城電視三座電波塔點燈，曾獲日本夜景遺產認證",
+      "28-30F餐廳 — 可邊看夜景邊用餐，有平價義式餐廳選項"
+    ],
+    "notes": "正式名稱「住友生命仙台中央ビル」，1989年完工，東北地方第一棟超過100公尺高建築。展望樓層照明偏暗、氣氛安靜，是在地知名約會/夜景景點。與AER展望テラス同為仙台免費展望台，SS30視野較開闊、開放至23:00（AER只到20:00），兩者建議擇一安排避免重複。",
+    "wasFilled": true
   }
 ]
