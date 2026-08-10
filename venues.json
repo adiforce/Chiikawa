@@ -465,7 +465,6 @@
     "name": "Tanya Zenjirou - Minamimachidori",
     "jp": "たんや善治郎 南町通り店",
     "type": "food",
-    "img":"https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlLctyybhyKCCSYNPyF3QQWeRnEdFD8hlaVKN79mrExQUmMOryoVEQQrF8VzeT0SNaR5sSaPwh78pNNO-gjHTUc_6iBXYvfp6GcXT_pCbN92wvEbtvBNQ5CWyteQFWY8ba0XJ4KYYeAXifN=s680-w680-h510-rw",
     "cat": "牛舌",
     "gRating": 4.4,
     "gReviews": 781,
@@ -977,7 +976,6 @@
     "name": "AER展望テラス",
     "jp": "AER展望テラス",
     "type": "sight",
-    "img":"https://lh3.googleusercontent.com/grass-cs/ACvplmPqgyeNmTo4mCwnnpk7QCC1TUfMvmA8GEabnd7hZCfA-zoHU5AdR7E64MuikMKdZMkb_DISAYXOMcqV6bQrdyPpBFraZYCxZL_2LtqC4xH5vpdUZen2V22_QBDlTnlpYmp9LuMi=w270-h312-n-k-no",
     "cat": "展望台",
     "gRating": 4.2,
     "gReviews": 1854,
@@ -995,5 +993,28 @@
     "wasFilled": true,
     "lat": 38.2627389,
     "lng": 140.8817811
+  },
+  {
+    "name": "瑞巌寺",
+    "jp": "松島青龍山瑞巌円福禅寺",
+    "type": "sight",
+    "cat": "寺廟",
+    "img": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkShOHE6CkK2Jbi0NQz7UBvZm0Q3g6oVUWg3RcdBq0L5GD5ULk2nqrDURf3SmqTYARpjBWt6gusy040SpEiY35HRxT2I93I0IXTfCIz4VekUaS1uJjGSuL2oZGetGgLxKxoXKLG5hG6hBRB=w408-h306-k-no",
+    "gRating": 4.4,
+    "gReviews": 6579,
+    "lat": 38.3720098,
+    "lng": 141.0598105,
+    "price": "大人1,000円（2026/4/1起新價，原700円）、國高中生500円",
+    "hours": "8:30-16:00（閉門時間依季節調整，最終受付為閉門前30分）",
+    "addr": "宮城県宮城郡松島町松島字町内91",
+    "mapAddr": "宮城県宮城郡松島町松島字町内91",
+    "access": "JR仙石線松島海岸駅步行約6分",
+    "rec": [
+      "本堂・庫裡及廊下 — 國寶，伊達政宗1609年耗時5年建成",
+      "絢爛豪華襖繪 — 伊達風格金碧輝煌裝飾必看",
+      "宝物館 — 展示伊達政宗、正室愛姫、女兒五郎八姫木像及刀劍畫作"
+    ],
+    "notes": "伊達政宗菩提寺，松島代表名剎，正式名稱「松島青龍山瑞巌円福禅寺」，臨済宗妙心寺派。拝觀所需約30-40分鐘。輪椅僅能進入宝物館，本堂・庫裡不可。與台灣關係良好，曾有台灣元首來訪紀錄。",
+    "wasFilled": true
   }
 ]
