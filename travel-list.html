@@ -738,7 +738,7 @@ function cardHTML(item){
     ${scores.length? `<div class="scores">${scores.join('')}</div>` : ''}
     ${metaLine}
     ${addrLine}
-    <div class="toggle-btn" onclick="this.nextElementSibling.classList.toggle('open'); this.textContent = this.textContent==='▼ 展開詳細介紹'?'▲ 收合':'▼ 展開詳細介紹';">▼ 展開詳細介紹</div>
+    <div class="toggle-btn" onclick="this.nextElementSibling.classList.toggle('open'); this.textContent = this.textContent.startsWith('▼')?'▲ 收合':'▼ 展開詳細介紹 · 📍附近景點';">▼ 展開詳細介紹 · 📍附近景點</div>
     <div class="details">
       ${recHTML}
       ${item.notes? `<div class="section-label">評論觀察／備註</div><div class="notes">${item.notes}</div>` : ''}
