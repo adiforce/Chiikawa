@@ -392,17 +392,6 @@
         <div class="settings-body" id="settingsBody">
             <div class="divider"></div>
             <div class="field">
-                <label>AI 引擎</label>
-                <select id="engineSelect" onchange="switchEngine(this.value)">
-                    <option value="gemini">Google Gemini</option>
-                    <option value="claude">Anthropic Claude</option>
-                </select>
-            </div>
-            <div class="field">
-                <label>模型</label>
-                <select id="modelSelect"></select>
-            </div>
-            <div class="field">
                 <label>Gemini API Key</label>
                 <input type="password" id="geminiKey" placeholder="AIza...">
             </div>
@@ -444,29 +433,16 @@
 
 <script>
 const CONFIG = {
-    gemini: {
-        key: 'receipt-gemini-key',
-        models: [
-            {v:'gemini-2.0-flash', l:'Gemini 2.0 Flash'},
-            {v:'gemini-1.5-flash', l:'Gemini 1.5 Flash'}
-        ]
-    },
-    claude: {
-        key: 'receipt-claude-key',
-        models: [
-            {v:'claude-sonnet-4-5', l:'Claude Sonnet 4.5'},
-            {v:'claude-haiku-4-5-20251001', l:'Claude Haiku 4.5'}
-        ]
-    }
+    gemini: { key: 'receipt-gemini-key', model: 'gemini-2.0-flash' },
+    claude: { key: 'receipt-claude-key', model: 'claude-sonnet-5' }
 };
 
 const HIS_KEY = 'invoice_history_v2';
 let base64Image = '', imageMime = 'image/jpeg', invoiceHistory = [];
 
 (function init() {
-    const engine = localStorage.getItem('receipt-engine') || 'gemini';
-    document.getElementById('engineSelect').value = engine;
-    switchEngine(engine, true);
+    document.getElementById('geminiKey').value = localStorage.getItem(CONFIG.gemini.key) || '';
+    document.getElementById('claudeKey').value = localStorage.getItem(CONFIG.claude.key) || '';
     try { invoiceHistory = JSON.parse(localStorage.getItem(HIS_KEY)) || []; } catch(e){}
     renderHistory();
 })();
@@ -478,20 +454,9 @@ function toggleSettings() {
     arrow.classList.toggle('open');
 }
 
-function switchEngine(engine, silent) {
-    const cfg = CONFIG[engine];
-    const sel = document.getElementById('modelSelect');
-    sel.innerHTML = cfg.models.map(m => `<option value="${m.v}">${m.l}</option>`).join('');
-    document.getElementById('geminiKey').value = localStorage.getItem(CONFIG.gemini.key) || '';
-    document.getElementById('claudeKey').value = localStorage.getItem(CONFIG.claude.key) || '';
-    if (!silent) localStorage.setItem('receipt-engine', engine);
-}
-
 function saveSettings() {
     localStorage.setItem(CONFIG.gemini.key, document.getElementById('geminiKey').value.trim());
     localStorage.setItem(CONFIG.claude.key, document.getElementById('claudeKey').value.trim());
-    localStorage.setItem('receipt-engine', document.getElementById('engineSelect').value);
-    localStorage.setItem('receipt-model-' + document.getElementById('engineSelect').value, document.getElementById('modelSelect').value);
     alert('設定已儲存');
     toggleSettings();
 }
@@ -538,10 +503,12 @@ function onFileChange(e) {
 }
 
 async function analyze() {
-    const engine = document.getElementById('engineSelect').value;
-    const model = document.getElementById('modelSelect').value;
-    const key = localStorage.getItem(CONFIG[engine].key);
-    if (!key) { alert('請先設定 API Key'); toggleSettings(); return; }
+    const geminiKey = localStorage.getItem(CONFIG.gemini.key);
+    const claudeKey = localStorage.getItem(CONFIG.claude.key);
+    if (!geminiKey && !claudeKey) { alert('請先設定 API Key'); toggleSettings(); return; }
+    const engine = geminiKey ? 'gemini' : 'claude';
+    const key = engine === 'gemini' ? geminiKey : claudeKey;
+    const model = CONFIG[engine].model;
 
     document.getElementById('loadingCard').classList.add('show');
     const statusEl = document.getElementById('statusText');
