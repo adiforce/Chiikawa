@@ -493,11 +493,22 @@
         <div class="stop-top">
           <div class="stop-main">
             <div class="stop-time">下午</div>
-            <div class="stop-name">遊覽船遊灣 ＋ 瑞巌寺</div>
-            <div class="stop-note">日本三景之一，260多座小島，搭船賞灣後可順遊瑞巌寺</div>
+            <div class="stop-name">遊覽船遊灣</div>
+            <div class="stop-note">日本三景之一，260多座小島，搭船賞灣</div>
             <span class="stop-tag">景點／絕景</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=松島" target="_blank" rel="noopener">📍</a>
+        </div>
+      </div>
+      <div class="stop">
+        <div class="stop-top">
+          <div class="stop-main">
+            <div class="stop-time">下午</div>
+            <div class="stop-name">瑞巌寺</div>
+            <div class="stop-note">松島海岸駅步行約6分，伊達政宗菩提寺，本堂・庫裡為國寶，拝觀約30-40分鐘</div>
+            <span class="stop-tag">寺廟</span>
+          </div>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=瑞巌寺" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
       <div class="stop">
@@ -802,7 +813,7 @@ function detailBoxHTML(d, rawQuery){
       ${meta.length ? `<div class="detail-meta">${meta.join(' ・ ')}</div>` : ''}
       ${rec}
       ${d.notes ? `<div class="detail-notes">${escapeHTML(d.notes)}</div>` : ''}
-      <a class="detail-list-link" href="${listUrl}" target="_blank" rel="noopener">在完整清單中查看 →</a>
+      <a class="detail-list-link" href="${listUrl}">在完整清單中查看 →</a>
     </div>`;
 }
 
