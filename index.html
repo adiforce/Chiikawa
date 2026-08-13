@@ -158,6 +158,31 @@
     border-color: var(--pink-dark);
   }
   .more-item.active-page .more-label { color: var(--pink-dark); }
+  /* ── iOS 加入主畫面提示 ── */
+  .a2hs-banner {
+    position: fixed;
+    left: 12px; right: 12px;
+    bottom: calc(var(--tab-h) + env(safe-area-inset-bottom, 0) + 10px);
+    background: white;
+    border: 1.5px solid var(--pink);
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(100,40,40,0.18);
+    padding: 12px 14px;
+    display: none;
+    align-items: center;
+    gap: 10px;
+    z-index: 300;
+    font-family: 'Noto Sans TC', sans-serif;
+  }
+  .a2hs-banner.show { display: flex; }
+  .a2hs-banner .a2hs-icon { font-size: 26px; flex-shrink: 0; }
+  .a2hs-banner .a2hs-text { flex: 1; font-size: 12.5px; color: var(--brown); line-height: 1.5; }
+  .a2hs-banner .a2hs-text b { color: var(--pink-dark); }
+  .a2hs-banner .a2hs-share { display: inline-block; font-size: 14px; }
+  .a2hs-banner .a2hs-close {
+    background: none; border: none; font-size: 18px; color: var(--brown);
+    opacity: .5; padding: 4px; flex-shrink: 0; cursor: pointer;
+  }
 </style>
 </head>
 <body>
@@ -235,6 +260,12 @@
     </div>
   </div>
 </div>
+<!-- iOS 加入主畫面提示 -->
+<div class="a2hs-banner" id="a2hsBanner">
+  <span class="a2hs-icon">🐾</span>
+  <div class="a2hs-text">將本站加入<b>主畫面</b>，開啟像 App 一樣方便：點下方分享鍵 <span class="a2hs-share">⬆️</span> → 「加入主畫面」</div>
+  <button class="a2hs-close" onclick="dismissA2HS()">✕</button>
+</div>
 <script>
   const LAST_TAB_KEY = 'japan-toolbox-tab';
   let current = parseInt(localStorage.getItem(LAST_TAB_KEY) || '0');
@@ -303,6 +334,21 @@
     const t = getHashTab();
     if (t !== null) activateTab(t);
   });
+  // ── iOS「加入主畫面」提示 ──
+  (function () {
+    const A2HS_KEY = 'japan-toolbox-a2hs-dismissed';
+    const ua = window.navigator.userAgent;
+    const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const isSafari = /Safari/.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS|LineApp|FBAN|FBAV|Instagram/.test(ua);
+    const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+    if (isIOS && isSafari && !isStandalone && !localStorage.getItem(A2HS_KEY)) {
+      document.getElementById('a2hsBanner').classList.add('show');
+    }
+  })();
+  function dismissA2HS() {
+    localStorage.setItem('japan-toolbox-a2hs-dismissed', '1');
+    document.getElementById('a2hsBanner').classList.remove('show');
+  }
 </script>
 </body>
 </html>
