@@ -1,5 +1,26 @@
 [
   {
+  "name": "ホシヤマ珈琲店 本店",
+  "jp": "ホシヤマ珈琲店 本店",
+  "type": "food",
+  "cat": "咖啡廳",
+  "img": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmg8M8GCoVhX_Gn9CTb8MLyoovYjNipLU91aH5hoyAsB5dF1MargXC87TEecq-A7gkGxtWDQOsvBLYfRiuIkF6rganH3-QAyVJOTrmSFGbePoynyuKsAgdRWug9gX3msn-z9QJT=w426-h240-k-no",
+  "gRating": 4.37,
+  "gReviews": null,
+  "tRating": 3.63,
+  "tReviews": 290,
+  "lat": 38.26478,
+  "lng": 140.870338,
+  "price": "￥1,000-￥1,999",
+  "hours": "平日10:00-22:00／日祝10:00-20:00",
+  "addr": "宮城県仙台市青葉区一番町4-9-1 かき徳玉澤ビル3F",
+  "mapAddr": "宮城県仙台市青葉区一番町4-9-1",
+  "access": "地下鐵勾当台公園駅 南出口3 徒歩約1-3分",
+  "rec": ["招牌ロイヤルブレンド（自家焙煎咖啡）", "ホシヤマチーズケーキセット", "每日不同名貴咖啡杯（Meissen等）供應"],
+  "notes": "青葉區喫茶店Tabelog排名第1；全年無休（元旦除外）；老牌自家焙煎咖啡店，氣氛沉穩、松本民藝家具裝潢",
+  "wasFilled": true
+},
+  {
   "name": "猫カフェ Puchi Marry 仙台青葉店",
   "jp": "猫カフェ ぷちまりー 仙台青葉店",
   "type": "shop",
