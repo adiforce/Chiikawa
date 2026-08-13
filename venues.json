@@ -1,5 +1,26 @@
 [
   {
+  "name": "味 太助 本店",
+  "jp": "味 太助 本店",
+  "type": "food",
+  "cat": "牛タン",
+  "img": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnzyXMk5tx8ITixXDOb3X9begk71OeHxMCiZnn7FfZKpTvd8cvwj6ELiC1JNXqzorSo-i4tm0zw8NuKTsa8yjl0oShrnS05nJEtkmx1sISZqbkRSxtqTOTQJB9u4V10Dk-oLq_j8gfwtlA4=w426-h240-k-no",
+  "gRating": 3.84,
+  "gReviews": 124,
+  "tRating": 3.53,
+  "tReviews": 978,
+  "lat": 38.26535,
+  "lng": 140.87141,
+  "price": "￥1,000-￥1,999",
+  "hours": "11:30-20:30（L.O.20:00），週二公休",
+  "addr": "宮城県仙台市青葉区一番町4-4-13",
+  "mapAddr": "宮城県仙台市青葉区一番町4-4-13",
+  "access": "地下鐵勾当台公園駅 南出口3 徒歩約3分",
+  "rec": ["牛タン定食（含テールスープ、麦飯）", "元祖牛タン焼", "夜限定おつまみスモークタン"],
+  "notes": "仙台牛タン焼發祥老店，1948年創業，三代目経営中；全面可吸菸；不可刷卡；假日易排隊",
+  "wasFilled": true
+},
+  {
   "name": "ホシヤマ珈琲店 本店",
   "jp": "ホシヤマ珈琲店 本店",
   "type": "food",
