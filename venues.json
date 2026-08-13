@@ -1,5 +1,26 @@
 [
   {
+  "name": "猫カフェ Puchi Marry 仙台青葉店",
+  "jp": "猫カフェ ぷちまりー 仙台青葉店",
+  "type": "shop",
+  "cat": "貓咪咖啡廳",
+  "img": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkqLmV-FFK6XxZYuEkXqHYZ0Ef67eJxVfrb6oK7smoVK2XZPjpj1KhuQQ9GVZBEC3x5QWp3PCkXsxTMiPoC03sjp-F3e6HdCnZzCKE3yuxLAa9Tzt6SHDHyH5K-JLb5pRAKRVpF=w408-h544-k-no",
+  "gRating": 3.86,
+  "gReviews": 17,
+  "tRating": 3.02,
+  "tReviews": 2,
+  "lat": 38.259683,
+  "lng": 140.872281,
+  "price": "30分1,045円起(含飲料吧)；平日暢遊2,580円/假日2,800円",
+  "hours": "11:00-21:00（最終入場20:30）",
+  "addr": "宮城県仙台市青葉区一番町3-11-11 鈴木ビル2F",
+  "mapAddr": "宮城県仙台市青葉区一番町3-11-11",
+  "access": "地下鐵東西線 青葉通一番町駅 徒歩約1-2分",
+  "rec": ["PuchiMarry第一號店，20多隻貓常駐", "12:00/18:00或19:00餵食時間", "免費WiFi、可充電、有漫畫"],
+  "notes": "入店需著襪；全館禁菸；Tabelog評分較低但Google/Yahoo地圖評分3.86較能反映實際評價",
+  "wasFilled": true
+},
+  {
   "name": "島村樂器 仙台ロフト店",
   "jp": "島村楽器 仙台ロフト店",
   "type": "shop",
