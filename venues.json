@@ -1,5 +1,26 @@
 [
   {
+  "name": "阿部蒲鉾店 本店",
+  "jp": "阿部蒲鉾店 本店",
+  "type": "food",
+  "cat": "笹かまぼこ",
+  "img": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmOp1V8CwMim4HhFacWNsqwduOVXCjFTA6VyELJS58DpKQchWEAvoZRo-uP8E18xd6XLrjQwgFC2rcvtv0j03Ojb4r38EPtN4dPAOYCOpmHxX6jPnDEijD6sjGsS_EcKulNFbLyTdMqgKI=w408-h306-k-no",
+  "gRating": null,
+  "gReviews": null,
+  "tRating": 3.25,
+  "tReviews": 818,
+  "lat": 38.260834,
+  "lng": 140.875043,
+  "price": "￥0-999",
+  "hours": "10:00-18:30（另有店家標示至19:00）",
+  "addr": "宮城県仙台市青葉区中央2-3-18（クリスロード商店街内）",
+  "mapAddr": "宮城県仙台市青葉区中央2-3-18",
+  "access": "広瀬通駅／あおば通駅 徒歩約3分",
+  "rec": ["名物ひょうたん揚げ（葫蘆揚，¥250/支）", "阿部の笹かまぼこ（8枚包¥2,000）", "笹かまぼこ手焼き體驗（¥400/10分）"],
+  "notes": "1935年創業，「笹かまぼこ」名稱由來老店；ひょうたん揚げ常大排長龍，上空需慎防鴿子偷叼；定休元旦",
+  "wasFilled": true
+},
+  {
   "name": "味 太助 本店",
   "jp": "味 太助 本店",
   "type": "food",
