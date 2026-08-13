@@ -1,5 +1,26 @@
 [
   {
+  "name": "島村樂器 仙台ロフト店",
+  "jp": "島村楽器 仙台ロフト店",
+  "type": "shop",
+  "cat": "樂器",
+  "img": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm2W8r3be-s-yYX3-Pae3nfXOKueFoas1Y6TjdU72BDmJ1k2xNXbZOS6y1wEp2GJzbLHxHuaNgj1eXOOpciPPaOeiTPwU1jb99FrjymVipvsiKS9LiDxSoYQ5RWec46CNAZOQkKbl541r3b=w408-h307-k-no",
+  "gRating": null,
+  "gReviews": null,
+  "tRating": null,
+  "tReviews": null,
+  "lat": 38.26013,
+  "lng": 140.880372,
+  "price": null,
+  "hours": "10:00-21:00",
+  "addr": "宮城県仙台市青葉区中央1-10-10 仙台ロフト7F",
+  "mapAddr": "宮城県仙台市青葉区中央1-10-10",
+  "access": "JR仙台駅西口徒歩3分／地下鉄仙台駅中央1出口徒歩1分",
+  "rec": ["電吉他/貝斯個人試彈間", "電鋼琴", "烏克麗麗", "DTM/DJ器材"],
+  "notes": "非餐飲店家，無Tabelog評分；駐店有吉他維修技師，可修理及客製化調音",
+  "wasFilled": true
+},
+  {
     "name": "水原製麺",
     "jp": "水原製麺",
     "type": "拉麵/沾麵",
