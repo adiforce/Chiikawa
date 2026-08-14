@@ -71,6 +71,40 @@
     padding:3px 11px;
     border-radius:999px;
   }
+  .now-status{
+    max-width:960px;
+    margin:10px auto 0;
+    padding:0 18px;
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+    font-size:.74rem;
+    font-weight:700;
+  }
+  .now-status-item{
+    color:var(--brown);
+    opacity:.8;
+  }
+  .status-dot{
+    display:inline-block;
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:var(--border);
+    margin-right:5px;
+    vertical-align:middle;
+  }
+  #nowStatusCurrent.is-live{color:var(--green);opacity:1;}
+  #nowStatusCurrent.is-live .status-dot{
+    background:var(--green);
+    box-shadow:0 0 0 2px var(--white),0 0 0 4px rgba(123,191,106,.35);
+    animation:pulse-dot 1.6s ease-in-out infinite;
+  }
+  #nowStatusNext{
+    font-size:.68rem;
+    font-weight:400;
+    opacity:.55;
+  }
   .day-nav{
     max-width:960px;
     margin:14px auto 0;
@@ -199,8 +233,9 @@
     font-size:.72rem;
     font-weight:700;
     font-family:'Zen Maru Gothic',sans-serif;
-    color:#fff;
-    background:var(--pink-dark);
+    color:var(--pink-dark);
+    background:#fdeef2;
+    border:1px solid #f6d3dd;
     border-radius:999px;
     padding:5px 12px;
     text-decoration:none;
@@ -286,6 +321,40 @@
     color:var(--brown);
     opacity:.85;
   }
+  .stop.active::before{
+    background:var(--green);
+    box-shadow:0 0 0 2px var(--white),0 0 0 5px rgba(123,191,106,.35);
+    animation:pulse-dot 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse-dot{
+    0%{box-shadow:0 0 0 2px var(--white),0 0 0 5px rgba(123,191,106,.35);}
+    50%{box-shadow:0 0 0 2px var(--white),0 0 0 9px rgba(123,191,106,.12);}
+    100%{box-shadow:0 0 0 2px var(--white),0 0 0 5px rgba(123,191,106,.35);}
+  }
+  .stop.active .stop-name{color:var(--green);}
+  .live-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    font-size:.68rem;
+    font-weight:700;
+    color:#fff;
+    background:var(--green);
+    padding:2px 9px 2px 7px;
+    border-radius:999px;
+    margin-left:6px;
+    vertical-align:middle;
+    animation:pulse-badge 1.6s ease-in-out infinite;
+  }
+  .live-badge .live-dot{
+    width:6px;height:6px;
+    border-radius:50%;
+    background:#fff;
+  }
+  @keyframes pulse-badge{
+    0%,100%{opacity:1;}
+    50%{opacity:.6;}
+  }
   .detail-list-link{
     display:inline-block;
     margin-top:6px;
@@ -300,22 +369,22 @@
 
 <div class="sticky-top">
 <header>
-  <div class="logo">🇯🇵 仙台行程表<span style="font-size:12px;font-weight:400;opacity:.6;margin-left:6px;">定點慢玩・仙台西口廣瀬通基地</span></div>
+  <div class="logo">🌸 仙台六日遊 ✈️<span style="font-size:12px;font-weight:400;opacity:.6;margin-left:6px;">🏠 定點慢玩・仙台西口廣瀬通基地</span></div>
 </header>
 
-<div class="day-nav">
-  <a href="#day1">Day1（二）抵達</a>
-  <a href="#day2">Day2（三）西口購物</a>
-  <a href="#day3">Day3（四）松島</a>
-  <a href="#day4">Day4（五）水族館+Outlet</a>
-  <a href="#day5">Day5（六）金蛇水神社+逛街</a>
-  <a href="#day6">Day6（日）城跡+回程</a>
-</div>
+<div class="now-status">
+  <div class="now-status-item" id="nowStatusCurrent"><span class="status-dot"></span>目前：讀取中…</div>
+  <div class="now-status-item" id="nowStatusNext">⏭️ 下一站：讀取中…</div>
 </div>
 
-<div class="legend">
-  <span><span class="legend-dot" style="background:var(--pink-dark);"></span>行程景點</span>
-  <span><span class="legend-dot" style="background:var(--orange);"></span>可省略/備選</span>
+<div class="day-nav">
+  <a href="#day1">🛫 Day1（二）抵達</a>
+  <a href="#day2">🛍️ Day2（三）西口購物</a>
+  <a href="#day3">⛴️ Day3（四）松島</a>
+  <a href="#day4">🐬 Day4（五）水族館+Outlet</a>
+  <a href="#day5">🐍 Day5（六）金蛇水神社+逛街</a>
+  <a href="#day6">🏯 Day6（日）城跡+回程</a>
+</div>
 </div>
 
 <div class="wrap">
@@ -323,36 +392,36 @@
   <!-- DAY 1 -->
   <div class="day-card" id="day1">
     <div class="day-head">
-      <span class="day-num">Day 1</span>
+      <span class="day-num">🛫 Day 1</span>
       <span class="day-date">2026/08/25（二）</span>
     </div>
-    <div class="day-title">抵達仙台</div>
+    <div class="day-title">🛬 抵達仙台，落地開吃！</div>
     <div class="timeline">
-      <div class="stop">
+      <div class="stop" data-date="2026-08-25" data-start="18:10" data-end="19:00">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">18:10</div>
+            <div class="stop-time">🛬 18:10</div>
             <div class="stop-name">SDJ 仙台機場降落</div>
             <div class="stop-note">仙台空港アクセス線約25分直達仙台站，轉西口步行7-8分到飯店</div>
           </div>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop" data-date="2026-08-25" data-start="19:00" data-end="19:45">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">約19:30</div>
+            <div class="stop-time">🕖 約19:30</div>
             <div class="stop-name">東橫INN仙台西口広瀬通 Check-in</div>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=東横INN仙台西口広瀬通" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop" data-date="2026-08-25" data-start="19:45" data-end="21:30">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">晚餐</div>
+            <div class="stop-time">🌆 晚餐</div>
             <div class="stop-name">たんや善治郎 南町通り店</div>
             <div class="stop-note">牛舌名店，西口步行約7-8分。同系列駅前分店常大排長龍，這間人潮分散許多。善治郎セット約3,410円</div>
-            <span class="stop-tag">牛舌</span>
+            <span class="stop-tag">🐮 牛舌</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=たんや善治郎 南町通り店" target="_blank" rel="noopener">📍</a>
         </div>
@@ -364,84 +433,84 @@
   <!-- DAY 2 -->
   <div class="day-card" id="day2">
     <div class="day-head">
-      <span class="day-num">Day 2</span>
+      <span class="day-num">🛍️ Day 2</span>
       <span class="day-date">2026/08/26（三）</span>
     </div>
-    <div class="day-title">西口動漫購物日</div>
+    <div class="day-title">🎮 西口動漫購物日 全開火力</div>
     <div class="timeline">
-      <div class="stop">
+      <div class="stop" data-date="2026-08-26" data-start="07:00" data-end="08:00">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">一早</div>
+            <div class="stop-time">🌅 一早</div>
             <div class="stop-name">富沢公園（ハイキュー聖地）</div>
             <div class="stop-note">広瀬通駅搭南北線直達富沢駅（約15分），步行3分到公園。運動廣場開放6:00-19:00，早上人少適合拍照，カメイアリーナ仙台目前整修中僅供外觀參觀</div>
-            <span class="stop-tag">公園</span>
+            <span class="stop-tag">🌳 公園</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=富沢公園" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop" data-date="2026-08-26" data-start="08:30" data-end="09:30">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">早餐</div>
+            <div class="stop-time">🍳 早餐</div>
             <div class="stop-name">Humming Meal Market</div>
             <div class="stop-note">仙台站東口剪票口出來約5秒。モーニングセット約600円附海老濃湯（7:30-11:00）。搭南北線回仙台站後直接過來吃</div>
-            <span class="stop-tag">咖啡廳</span>
+            <span class="stop-tag">☕ 咖啡廳</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=ハミングミールマーケット" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop" data-date="2026-08-26" data-start="09:30" data-end="11:00">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">上午</div>
+            <div class="stop-time">☀️ 上午</div>
             <div class="stop-name">EBeanS</div>
             <div class="stop-note">7F アニメイト仙台（東北最大）、8F ゲーマーズ／らしんばん</div>
-            <span class="stop-tag">次文化購物中心</span>
+            <span class="stop-tag">🎮 次文化購物中心</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=イービーンズ" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop" data-date="2026-08-26" data-start="11:00" data-end="12:00">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">上午</div>
+            <div class="stop-time">☀️ 上午</div>
             <div class="stop-name">仙台PARCO</div>
             <div class="stop-note">8F ちいかわらんど（東北首間官方店）、Jump Shop</div>
-            <span class="stop-tag">角色主題商店</span>
+            <span class="stop-tag">🧸 角色主題商店</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=仙台PARCO" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop" data-date="2026-08-26" data-start="12:00" data-end="13:30">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">午餐</div>
+            <div class="stop-time">🍽️ 午餐</div>
             <div class="stop-name">熟成とんかつ フライ家</div>
             <div class="stop-note">話題度高的熟成豬排，常需排隊</div>
-            <span class="stop-tag">豬排</span>
+            <span class="stop-tag">🍱 豬排</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=熟成とんかつ フライ家" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop" data-date="2026-08-26" data-start="13:30" data-end="17:30">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">下午</div>
+            <div class="stop-time">🌤️ 下午</div>
             <div class="stop-name">ハピナ名掛丁商店街 → クリスロード商店街</div>
             <div class="stop-note">兩條拱廊街連通，可順路挖BOOKOFF仙台クリスロード店</div>
-            <span class="stop-tag">商店街</span>
+            <span class="stop-tag">🏮 商店街</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=クリスロード商店街" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop" data-date="2026-08-26" data-start="18:00" data-end="19:30">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">晚餐</div>
+            <div class="stop-time">🌆 晚餐</div>
             <div class="stop-name">だし廊 だしろ</div>
             <div class="stop-note">米其林Bib Gourmand認定，午間3款出汁鹽味拉麵。券売機點餐僅收現金</div>
-            <span class="stop-tag">拉麵</span>
+            <span class="stop-tag">🍜 拉麵</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=だし廊 だしろ" target="_blank" rel="noopener">📍</a>
         </div>
@@ -453,71 +522,71 @@
   <!-- DAY 3 -->
   <div class="day-card" id="day3">
     <div class="day-head">
-      <span class="day-num">Day 3</span>
+      <span class="day-num">⛴️ Day 3</span>
       <span class="day-date">2026/08/27（四）</span>
     </div>
-    <div class="day-title">松島一日遊</div>
+    <div class="day-title">⛴️ 松島一日遊・日本三景</div>
     <div class="timeline">
-      <div class="stop">
+      <div class="stop" data-date="2026-08-27" data-start="07:00" data-end="08:00">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">早餐</div>
+            <div class="stop-time">🍳 早餐</div>
             <div class="stop-name">仙台朝市</div>
             <div class="stop-note">西口步行5分，老字號市場，生鮮熟食皆有，感受在地生活氣息</div>
-            <span class="stop-tag">市場</span>
+            <span class="stop-tag">🐟 市場</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=仙台朝市" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop" data-date="2026-08-27" data-start="08:15" data-end="08:30">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">順路</div>
+            <div class="stop-time">🚶 順路</div>
             <div class="stop-name">榴岡天満宮</div>
             <div class="stop-note">仙台朝市後搭仙石線先在「榴ヶ岡駅」下車，步行3分鐘參拜，再搭下一班車繼續往松島，不繞路</div>
-            <span class="stop-tag">神社</span>
+            <span class="stop-tag">⛩️ 神社</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=榴岡天満宮" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop" data-date="2026-08-27" data-start="08:30" data-end="09:30">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">上午</div>
+            <div class="stop-time">☀️ 上午</div>
             <div class="stop-name">JR仙石線 → 松島海岸駅</div>
             <div class="stop-note">榴ヶ岡駅搭下一班車繼續前往松島海岸駅，全程約1小時</div>
           </div>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop" data-date="2026-08-27" data-start="13:00" data-end="14:00">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">午餐</div>
+            <div class="stop-time">🍽️ 午餐</div>
             <div class="stop-name">海の食べ放題 松島おさしみ水族館</div>
-            <div class="stop-note">松島海岸駅步行1分。牡蠣（蒸／生／天婦羅）、三陸厚切生魚片吃到飽，60分3,500円</div>
-            <span class="stop-tag">海鮮吃到飽</span>
+            <div class="stop-note">松島海岸駅步行1分。牡蠣（蒸／生／天婦羅）、三陸厚切生魚片吃到飽，60分3,500円，4人已訂位</div>
+            <span class="stop-tag">🦀 海鮮吃到飽</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=海の食べ放題 松島おさしみ水族館" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop" data-date="2026-08-27" data-start="11:00" data-end="11:50">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">下午</div>
-            <div class="stop-name">遊覽船遊灣</div>
-            <div class="stop-note">日本三景之一，260多座小島，搭船賞灣</div>
-            <span class="stop-tag">景點／絕景</span>
+            <div class="stop-time">🌤️ 下午</div>
+            <div class="stop-name">松島島巡り観光船（仁王丸コース）</div>
+            <div class="stop-note">日本三景之一，260多座小島，搭船賞灣約50分。原訂11:00整點發船，約11:50下船；如與其他行程銜接不上，可視情況改搭下午班次</div>
+            <span class="stop-tag">🌅 景點／絕景</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=松島" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop" data-date="2026-08-27" data-start="14:15" data-end="15:00">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">下午</div>
+            <div class="stop-time">🌤️ 下午</div>
             <div class="stop-name">瑞巌寺</div>
             <div class="stop-note">松島海岸駅步行約6分，伊達政宗菩提寺，本堂・庫裡為國寶，拝觀約30-40分鐘</div>
-            <span class="stop-tag">寺廟</span>
+            <span class="stop-tag">🛕 寺廟</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=瑞巌寺" target="_blank" rel="noopener">📍</a>
         </div>
@@ -525,7 +594,7 @@
       <div class="stop">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">晚餐</div>
+            <div class="stop-time">🌆 晚餐</div>
             <div class="stop-name"><font color=red>未定</font></div>
             <div class="stop-note">搭車回程後在站內或西口隨意找店，不用刻意安排</div>
           </div>
@@ -538,75 +607,64 @@
   <!-- DAY 4 -->
   <div class="day-card" id="day4">
     <div class="day-head">
-      <span class="day-num">Day 4</span>
+      <span class="day-num">🐬 Day 4</span>
       <span class="day-date">2026/08/28（五）</span>
     </div>
-    <div class="day-title">水族館 + Outlet</div>
+    <div class="day-title">🐬 水族館 + 🛍️ Outlet 血拚日</div>
     <div class="timeline">
-      <div class="stop">
+      <div class="stop" data-date="2026-08-28" data-start="07:30" data-end="08:30">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">早餐</div>
+            <div class="stop-time">🍳 早餐</div>
             <div class="stop-name">伊藤商店 仙台朝市店</div>
             <div class="stop-note">朝ラー600円，清爽鹽味／豚骨清湯拉麵當早餐（7:00-15:00，週三公休）</div>
-            <span class="stop-tag">拉麵</span>
+            <span class="stop-tag">🍜 拉麵</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=伊藤商店 仙台朝市店" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop" data-date="2026-08-28" data-start="09:00" data-end="11:30">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">上午</div>
+            <div class="stop-time">☀️ 上午</div>
             <div class="stop-name">仙台うみの杜水族館</div>
             <div class="stop-note">約100個展示水槽、東北最大規模海洋動物表演，企鵝海獅接觸體驗</div>
-            <span class="stop-tag">水族館</span>
+            <span class="stop-tag">🐬 水族館</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=仙台うみの杜水族館" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop" data-date="2026-08-28" data-start="11:30" data-end="13:00">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">午餐</div>
+            <div class="stop-time">🍽️ 午餐</div>
             <div class="stop-name">くら寿司 仙台中野栄店</div>
             <div class="stop-note">中野栄駅步行約4分，水族館與Outlet之間，平價迴轉壽司一盤115円起，「ビッくらポン！」轉蛋機小孩高中生都愛</div>
-            <span class="stop-tag">迴轉壽司</span>
+            <span class="stop-tag">🍣 迴轉壽司</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=くら寿司 仙台中野栄店" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop" data-date="2026-08-28" data-start="13:00" data-end="16:30">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">下午</div>
+            <div class="stop-time">🌤️ 下午</div>
             <div class="stop-name">三井OUTLET PARK 仙台港</div>
             <div class="stop-note">與水族館車程相近，可直接安排同一天。東北最大規模OUTLET，120多家品牌</div>
-            <span class="stop-tag">Outlet</span>
+            <span class="stop-tag">🛍️ Outlet</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=三井OUTLET PARK 仙台港" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop" data-date="2026-08-28" data-start="18:00" data-end="19:30">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">晚餐</div>
+            <div class="stop-time">🌆 晚餐</div>
             <div class="stop-name">牛たん料理 閣 電力ビル店</div>
             <div class="stop-note">広瀬通駅徒歩1分，離飯店最近，Outlet回程順路。牛タンのタタキ、タン刺身、牛タン焼き必點</div>
-            <span class="stop-tag">牛タン</span>
+            <span class="stop-tag">🐮 牛タン</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=牛たん料理 閣 電力ビル店" target="_blank" rel="noopener">📍</a>
-        </div>
-      </div>
-      <div class="stop optional">
-        <div class="stop-top">
-          <div class="stop-main">
-            <div class="stop-time">飯後</div>
-            <div class="stop-name">Maison Cœlacanthe（順路甜點／伴手禮）</div>
-            <div class="stop-note">招牌シーラカンス モナカ人氣款常下午售罄，建議白天先買起來</div>
-            <span class="stop-tag">甜點</span>
-          </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=メゾン シーラカンス" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
     </div>
@@ -616,162 +674,173 @@
   <!-- DAY 5 -->
   <div class="day-card" id="day5">
     <div class="day-head">
-      <span class="day-num">Day 5</span>
+      <span class="day-num">🐍 Day 5</span>
       <span class="day-date">2026/08/29（六）</span>
     </div>
-    <div class="day-title">金蛇水神社 + 逛街</div>
+    <div class="day-title">🐍 金蛇水神社 + 🏮 一番町逛街</div>
     <div class="timeline">
-      <div class="stop">
+      <div class="stop" data-date="2026-08-29" data-start="07:30" data-end="08:30">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">早餐</div>
+            <div class="stop-time">🍳 早餐</div>
             <div class="stop-name">Cafe 青山文庫</div>
             <div class="stop-note">早鳥優惠7:30-11:00點飲料送吐司，地下鐵仙台站北4出口步行1分。不用趕，飯店繼續住一晚</div>
-            <span class="stop-tag">咖啡廳</span>
+            <span class="stop-tag">☕ 咖啡廳</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Cafe 青山文庫" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop" data-date="2026-08-29" data-start="09:00" data-end="10:30">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">上午</div>
+            <div class="stop-time">☀️ 上午</div>
             <div class="stop-name">金蛇水神社（岩沼本社）</div>
             <div class="stop-note">JR仙台駅→岩沼駅（東北本線約22分）→ 計程車往返神社（約13-18分/趟，來回約2,000-2,500円，巴士班次少不建議）。可求金運御守、御朱印、逛牡丹園、買白蛇伴手禮</div>
-            <span class="stop-tag">神社</span>
+            <span class="stop-tag">⛩️ 神社</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=金蛇水神社" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop" data-date="2026-08-29" data-start="11:00" data-end="11:30">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">約11:00</div>
+            <div class="stop-time">🕚 約11:00</div>
             <div class="stop-name">JR回仙台站</div>
             <div class="stop-note">岩沼駅搭東北本線回仙台站，約22分</div>
           </div>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop" data-date="2026-08-29" data-start="11:30" data-end="13:00">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">午餐</div>
+            <div class="stop-time">🍽️ 午餐</div>
             <div class="stop-name">米沢牛焼肉 仔虎 仙台駅前店 ／ 牛刺しと焼肉 仔虎 クリスロード店</div>
             <div class="stop-note">兩選一：仔虎駅前店有午間特選焼肉ランチ（約4,000-4,400円，比晚餐親民很多）；クリスロード店有生ユッケ丼、生食刺身</div>
-            <span class="stop-tag">燒肉</span>
+            <span class="stop-tag">🥩 燒肉</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=米沢牛焼肉 仔虎 仙台駅前店" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop" data-date="2026-08-29" data-start="13:00" data-end="15:00">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">下午</div>
+            <div class="stop-time">🌤️ 下午</div>
             <div class="stop-name">一番町商店街 逛街</div>
-            <div class="stop-note">仙台最大商店街之一，服飾、雜貨、藥妝齊全，比クリスロード規模更大。順路走到水果派</div>
-            <span class="stop-tag">商店街</span>
+            <div class="stop-note">仙台最大商店街之一，服飾、雜貨、藥妝齊全，比クリスロード規模更大。順路走到水果派、Maison Cœlacanthe</div>
+            <span class="stop-tag">🏮 商店街</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=一番町商店街 仙台" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop optional" data-date="2026-08-29" data-start="15:00" data-end="15:20">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">下午茶</div>
+            <div class="stop-time">🚶 順路</div>
+            <div class="stop-name">Maison Cœlacanthe（順路甜點／伴手禮）</div>
+            <div class="stop-note">跟一番町商店街、水果派都在同一區，順路買。營業至19:00，招牌シーラカンス モナカ人氣款常下午售罄，建議提早買</div>
+            <span class="stop-tag">🍰 甜點</span>
+          </div>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=メゾン シーラカンス" target="_blank" rel="noopener">📍</a>
+        </div>
+      </div>
+      <div class="stop" data-date="2026-08-29" data-start="15:20" data-end="16:20">
+        <div class="stop-top">
+          <div class="stop-main">
+            <div class="stop-time">🍵 下午茶</div>
             <div class="stop-name">水果派 Qu'il fait bon</div>
             <div class="stop-note">一番町，地下鐵廣瀬通站步行1分。季節鮮果塔招牌No.1，假日傍晚內用可能要排隊</div>
-            <span class="stop-tag">甜點</span>
+            <span class="stop-tag">🍰 甜點</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=キル フェ ボン" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop" data-date="2026-08-29" data-start="18:00" data-end="19:30">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">晚餐</div>
+            <div class="stop-time">🌆 晚餐</div>
             <div class="stop-name">えびそば えびすけ</div>
             <div class="stop-note">海老出汁湯頭拉麵。現場排隊不接受預約，全店23席。今晚正常過夜（明天才退房）</div>
-            <span class="stop-tag">拉麵</span>
+            <span class="stop-tag">🍜 拉麵</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=えびそば" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
     </div>
-    <div class="day-summary">💡 岩沼來回加參拜抓2.5-3小時，早上出發綽綽有餘。國分町已拿掉（居酒屋一條街晚上沒事做），下午改一番町逛街+水果派。</div>
+    <div class="day-summary">💡 岩沼來回加參拜抓2.5-3小時，早上出發綽綽有餘。國分町已拿掉（居酒屋一條街晚上沒事做），下午改一番町逛街+水果派+Maison Cœlacanthe，三個點都在同一區域，順路解決兩家甜點店。</div>
   </div>
 
   <!-- DAY 6 -->
   <div class="day-card" id="day6">
     <div class="day-head">
-      <span class="day-num">Day 6</span>
+      <span class="day-num">🏯 Day 6</span>
       <span class="day-date">2026/08/30（日）</span>
     </div>
-    <div class="day-title">仙台城跡 + 退房 + 回程</div>
+    <div class="day-title">🏯 仙台城跡 + 退房回程</div>
     <div class="timeline">
-      <div class="stop">
+      <div class="stop" data-date="2026-08-30" data-start="09:00" data-end="09:30">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">早上</div>
+            <div class="stop-time">🌅 早上</div>
             <div class="stop-name">退房</div>
             <div class="stop-note">行李寄放飯店櫃檯或車站置物櫃，輕裝出發</div>
           </div>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop" data-date="2026-08-30" data-start="09:30" data-end="11:00">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">上午</div>
+            <div class="stop-time">☀️ 上午</div>
             <div class="stop-name">仙台城跡</div>
             <div class="stop-note">搭觀光巴士るーぷる仙台約20分。伊達政宗騎馬像、青葉城資料展示館、本丸展望市街景</div>
-            <span class="stop-tag">歷史地標</span>
+            <span class="stop-tag">🏯 歷史地標</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=仙台城跡" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop" data-date="2026-08-30" data-start="11:00" data-end="11:20">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">順路</div>
+            <div class="stop-time">🚶 順路</div>
             <div class="stop-name">櫻岡大神宮</div>
             <div class="stop-note">大町西公園駅步行1分，伊達政宗1621年創建，規模小巧但值得一訪</div>
-            <span class="stop-tag">神社</span>
+            <span class="stop-tag">⛩️ 神社</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=櫻岡大神宮" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop" data-date="2026-08-30" data-start="11:30" data-end="12:30">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">午餐</div>
+            <div class="stop-time">🍽️ 午餐</div>
             <div class="stop-name">回仙台站周邊簡單解決</div>
             <div class="stop-note">時間有限，站內或西口隨意找店即可</div>
           </div>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop" data-date="2026-08-30" data-start="12:30" data-end="14:00">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">早午餐／伴手禮</div>
+            <div class="stop-time">🍳 早午餐／伴手禮</div>
             <div class="stop-name">ダテカフェ オーダー ＋ 伴手禮採購</div>
             <div class="stop-note">仙台站構內剪票口內2F。ロワイヤルテラッセ 生パイ、kazunori ikeda individuel 甜點（皆在エスパル內）</div>
-            <span class="stop-tag">咖啡廳／甜點</span>
+            <span class="stop-tag">☕🍰 咖啡廳／甜點</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=ロワイヤルテラッセ エスパル店" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop" data-date="2026-08-30" data-start="15:30" data-end="16:00">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">16:00前</div>
+            <div class="stop-time">🕓 16:00前</div>
             <div class="stop-name">前往仙台機場</div>
             <div class="stop-note">仙台空港アクセス線約25分。19:00起飛，建議提早抵達辦理退稅/報到</div>
           </div>
         </div>
       </div>
-      <div class="stop">
+      <div class="stop" data-date="2026-08-30" data-start="18:30" data-end="19:00">
         <div class="stop-top">
           <div class="stop-main">
-            <div class="stop-time">19:00</div>
+            <div class="stop-time">🛫 19:00</div>
             <div class="stop-name">IT255 SDJ → TPE 起飛</div>
           </div>
         </div>
@@ -782,7 +851,7 @@
 
 </div>
 
-<footer>行程僅供參考，實際營業時間／交通班次請以現場公告與官方最新資訊為準。</footer>
+<footer>🎒 行程僅供參考，實際營業時間／交通班次請以現場公告與官方最新資訊為準 ✨ 祝旅途愉快，戰利品滿載而歸 🛍️🧸</footer>
 
 <script>
 let DATA = [];
@@ -850,6 +919,10 @@ function initDetailToggles(){
     const venue = findVenue(query);
     if(!venue) return;
 
+    if(venue.lat && venue.lng){
+      a.href = `https://www.google.com/maps/search/?api=1&query=${venue.lat},${venue.lng}`;
+    }
+
     const stopMain = a.closest('.stop-top')?.querySelector('.stop-main');
     if(!stopMain) return;
 
@@ -870,6 +943,78 @@ function initDetailToggles(){
     stopMain.appendChild(boxInner);
   });
 }
+
+function initScheduleLabels(){
+  document.querySelectorAll('.stop[data-date]').forEach(stop => {
+    const nameEl = stop.querySelector('.stop-name');
+    if(nameEl && !stop.dataset.stopName){
+      stop.dataset.stopName = nameEl.textContent.trim();
+    }
+  });
+}
+
+function updateNowStatus(){
+  const now = new Date();
+  const stops = Array.from(document.querySelectorAll('.stop[data-date]'))
+    .map(el => {
+      const { date, start, end, stopName } = el.dataset;
+      return {
+        name: stopName || '',
+        timeLabel: el.querySelector('.stop-time')?.textContent.trim() || '',
+        dateLabel: el.closest('.day-card')?.querySelector('.day-date')?.textContent.trim() || '',
+        start: new Date(`${date}T${start}:00`),
+        end: new Date(`${date}T${end}:00`),
+      };
+    })
+    .sort((a, b) => a.start - b.start);
+
+  const current = stops.find(s => now >= s.start && now <= s.end) || null;
+  const next = stops.find(s => s.start > now) || null;
+
+  const currentEl = document.getElementById('nowStatusCurrent');
+  const nextEl = document.getElementById('nowStatusNext');
+
+  if(currentEl){
+    const label = current ? `目前：${current.name}` : '目前沒有進行中的行程';
+    currentEl.innerHTML = `<span class="status-dot"></span>${escapeHTML(label)}`;
+    currentEl.classList.toggle('is-live', !!current);
+  }
+  if(nextEl){
+    nextEl.textContent = next
+      ? `⏭️ 下一站：${next.dateLabel}　${next.timeLabel}　${next.name}`
+      : '🏁 行程已全部結束';
+  }
+}
+
+function updateActiveStops(){
+  const now = new Date();
+  document.querySelectorAll('.stop[data-date]').forEach(stop => {
+    const { date, start, end } = stop.dataset;
+    if(!date || !start || !end) return;
+    const startAt = new Date(`${date}T${start}:00`);
+    const endAt = new Date(`${date}T${end}:00`);
+    const isActive = now >= startAt && now <= endAt;
+
+    stop.classList.toggle('active', isActive);
+
+    const stopMain = stop.querySelector('.stop-main');
+    const nameEl = stop.querySelector('.stop-name');
+    let badge = stop.querySelector('.live-badge');
+    if(isActive && !badge && nameEl){
+      badge = document.createElement('span');
+      badge.className = 'live-badge';
+      badge.innerHTML = '<span class="live-dot"></span>進行中';
+      nameEl.appendChild(badge);
+    } else if(!isActive && badge){
+      badge.remove();
+    }
+  });
+  updateNowStatus();
+}
+
+initScheduleLabels();
+updateActiveStops();
+setInterval(updateActiveStops, 60000);
 
 loadVenues();
 </script>
