@@ -69,14 +69,6 @@
             text-align: center;
             padding: 28px 0 32px;
         }
-        .header-en {
-            font-family: 'DM Mono', monospace;
-            font-size: 10px;
-            letter-spacing: 4px;
-            color: var(--accent);
-            text-transform: uppercase;
-            margin-bottom: 10px;
-        }
         .header h1 {
             font-family: 'Noto Serif JP', serif;
             font-size: 26px;
@@ -117,12 +109,6 @@
             display: flex;
             align-items: center;
             gap: 8px;
-        }
-        .settings-toggle-label::before {
-            content: '';
-            width: 6px; height: 6px;
-            background: var(--accent);
-            border-radius: 50%;
         }
         .settings-arrow {
             color: var(--text3);
@@ -358,13 +344,6 @@
             color: var(--red);
         }
 
-        /* Divider */
-        .divider {
-            height: 1px;
-            background: var(--border);
-            margin: 4px 0 14px;
-        }
-
         /* Footer */
         .footer {
             text-align: center;
@@ -378,19 +357,17 @@
 <body>
 <div class="container">
     <div class="header">
-        <div class="header-en">Japan Toolbox</div>
-        <h1>発票解析</h1>
-        <div class="header-sub">Gemini · Claude · 日本收據直連版</div>
+        <h1>🧾 發票解析</h1>
+        <div class="header-sub">照片 → AI 解析 → 日文收據明細</div>
     </div>
 
-    <!-- API 設定 -->
+    <!-- 設定 -->
     <div class="card">
         <div class="settings-toggle" onclick="toggleSettings()">
-            <span class="settings-toggle-label">API 設定</span>
-            <span class="settings-arrow" id="settingsArrow">▾</span>
+            <span class="settings-toggle-label">⚙️ 設定</span>
+            <span class="settings-arrow" id="settingsArrow">▴</span>
         </div>
         <div class="settings-body" id="settingsBody">
-            <div class="divider"></div>
             <div class="field">
                 <label>Gemini API Key</label>
                 <input type="password" id="geminiKey" placeholder="AIza...">
@@ -399,7 +376,7 @@
                 <label>Claude API Key</label>
                 <input type="password" id="claudeKey" placeholder="sk-ant-...">
             </div>
-            <button class="save-btn" onclick="saveSettings()">儲存設定</button>
+            <button class="save-btn" onclick="saveSettings()">💾 保存設定</button>
         </div>
     </div>
 
