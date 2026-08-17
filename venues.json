@@ -1,5 +1,26 @@
 [
   {
+  "name": "デ・スティル コーヒー 一番町店",
+  "jp": "デ・スティル コーフィー 一番町店（DE STIJL KOFFIE）",
+  "type": "咖啡店",
+  "cat": "café",
+  "img": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkZ-HMOqLfAxSsxIq4vhVGaFv1PX5bbDddRNGM32ioJ5VK1mZPJkVITGjyLaULjgykrvyTARXDPTRFAYuggdIlTeK1eLNrlREPLRwZv12RnBdrGCuhurcdy2IgdEoMxdpoRt1i4Jp-y6E8=s680-w680-h510-rw",
+  "gRating": null,
+  "gReviews": null,
+  "tRating": 3.14,
+  "tReviews": 19,
+  "lat": 38.2591106,
+  "lng": 140.8722355,
+  "price": "¥1,000以下(單杯約¥200-350)",
+  "hours": "10:00-19:30(內用L.O. 18:45)；週日、國定假日公休",
+  "addr": "宮城県仙台市青葉区一番町2丁目5-5 1F",
+  "mapAddr": "宮城県仙台市青葉区一番町2丁目5-5",
+  "access": "青葉通一番町駅(東西線)徒歩約3分；仙台駅徒歩約10分",
+  "rec": ["自家焙煎ブレンド", "エチオピア(モカ)", "ロイヤルブレンド1989", "カフェラッテ"],
+  "notes": "1982年創業的自家焙煎咖啡老鋪，位於サンモール一番町拱廊旁小巷內，現點現磨手沖，也提供咖啡豆秤重販售(¥400~/100g)，適合喜歡精品咖啡的人順路造訪",
+  "wasFilled": true
+},
+  {
     "name": "JR仙台駅ステンドグラス「杜の讃歌」",
     "jp": "仙台駅ステンドグラス「杜の讃歌」",
     "type": "景點",
