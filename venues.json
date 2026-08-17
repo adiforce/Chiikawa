@@ -1,5 +1,26 @@
 [
   {
+  "name": "SPARK COFFEE ROASTERS",
+  "jp": "スパーク コーヒー ロースターズ",
+  "type": "咖啡店",
+  "cat": "café",
+  "img": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkvqDpBuwFvB8rNG2xcyv5VAbn9GZ74T0MVS80NoWYkOAZGT_Jx3v3EXtfEbsjY05-uNW6w1zskzofUmXjUlc5d7FyEsA2P4Vh1kL_X1P23YI5kgZjhZEJnVbPQ-I7tnLxb8AXD9A=s680-w680-h510-rw",
+  "gRating": null,
+  "gReviews": null,
+  "tRating": 3.12,
+  "tReviews": 22,
+  "lat": 38.2509,
+  "lng": 140.8845,
+  "price": "¥500-800(單杯手沖/拿鐵)",
+  "hours": "9:00-17:30(週日 13:00-17:30)；週三公休",
+  "addr": "宮城県仙台市若林区連坊小路138",
+  "mapAddr": "宮城県仙台市若林区連坊小路138",
+  "access": "地下鉄南北線五橋駅徒歩4-5分；仙台駅徒歩約12-15分",
+  "rec": ["自家焙煎シングルオリジン", "エチオピア", "オリジナルブレンド", "カフェラテ"],
+  "notes": "純咖啡專門店，不供應甜點土司，主打單品手沖與濃縮咖啡，也可買咖啡豆帶回家沖。年輕夫妻經營，先生烘豆、太太是咖啡師，會不定期開咖啡講座。位在連坊小路的小巷商店街，8席小店",
+  "wasFilled": true
+},
+  {
   "name": "デ・スティル コーヒー 一番町店",
   "jp": "デ・スティル コーフィー 一番町店（DE STIJL KOFFIE）",
   "type": "咖啡店",
