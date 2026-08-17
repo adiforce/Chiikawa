@@ -1,5 +1,26 @@
 [
   {
+    "name": "JR仙台駅ステンドグラス「杜の讃歌」",
+    "jp": "仙台駅ステンドグラス「杜の讃歌」",
+    "type": "景點",
+    "cat": "地標/集合點",
+    "img": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmx_FjhzUUAkjPMFyFSArQeRK2GZgyc28Rf7p4pvBRzKL3GwsEazU0C1dKfPLnD86rOVJ5tlDpYmlnVajJrBY4f81Eq2aKWKNZERjsxHP2v8JpB-Bb7WScVsBwYp_0QOy0rUkDd=w408-h660-k-no",
+    "gRating": null,
+    "gReviews": null,
+    "tRating": null,
+    "tReviews": null,
+    "lat": 38.2603,
+    "lng": 140.8822,
+    "price": null,
+    "hours": "車站營業時間內全天開放（無單獨開放時段限制）",
+    "addr": "仙台駅2階中央改札外コンコース（東西自由通路側）",
+    "mapAddr": "宮城県仙台市青葉区中央1-1-1",
+    "access": "JR仙台駅 2樓，出中央改札後即可看到",
+    "rec": [],
+    "notes": "1978年設置，畫家近岡善次郎原畫，描繪七夕飾り、伊達政宗騎馬像、松島風景等仙台宮城元素，是仙台站經典的碰面地標。8/26~9/2『ようこそ仙台!!』排球少年物販活動就辦在這片彩繪玻璃前的2樓コンコース。注意：伊達政宗騎馬像本尊現移至3樓美食街，非此處。",
+    "wasFilled": true
+},
+  {
   "name": "齋藤惣菜店「ころっけや」",
   "jp": "斎藤惣菜店 ころっけや",
   "type": "food",
