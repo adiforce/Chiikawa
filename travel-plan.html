@@ -20,9 +20,15 @@
     --orange:#e8a04d;
     --orange-dark:#cf8830;
   }
+  html{
+    -webkit-text-size-adjust:100%;
+    text-size-adjust:100%;
+  }
   *{box-sizing:border-box;}
   body{
     margin:0;
+    -webkit-text-size-adjust:100%;
+    text-size-adjust:100%;
     font-family:'Noto Sans TC',"PingFang TC","Microsoft JhengHei",sans-serif;
     background:var(--cream);
     color:var(--brown);
@@ -105,13 +111,48 @@
     font-weight:400;
     opacity:.55;
   }
-  .day-nav{
+  .day-nav-toggle{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
     max-width:960px;
     margin:14px auto 0;
+    padding:10px 16px;
+    background:var(--white);
+    border:1.5px solid var(--border);
+    border-radius:14px;
+    font-family:'Zen Maru Gothic',sans-serif;
+    font-weight:700;
+    font-size:.82rem;
+    color:var(--brown);
+    cursor:pointer;
+    user-select:none;
+  }
+  .day-nav-toggle .chevron{
+    display:inline-block;
+    font-size:.75rem;
+    opacity:.6;
+    transition:transform .25s ease;
+  }
+  .day-nav-toggle.open .chevron{
+    transform:rotate(180deg);
+  }
+  .day-nav{
+    max-width:960px;
+    margin:0 auto;
     padding:0 18px;
     display:flex;
     gap:8px;
     flex-wrap:wrap;
+    overflow:hidden;
+    max-height:0;
+    opacity:0;
+    transition:max-height .3s ease, opacity .2s ease, margin-top .3s ease;
+  }
+  .day-nav.open{
+    max-height:400px;
+    opacity:1;
+    margin-top:10px;
   }
   .day-nav a{
     text-decoration:none;
@@ -377,7 +418,11 @@
   <div class="now-status-item" id="nowStatusNext">⏭️ 下一站：讀取中…</div>
 </div>
 
-<div class="day-nav">
+<button class="day-nav-toggle" id="dayNavToggle" type="button">
+  <span>📅 快速跳日</span>
+  <span class="chevron">▾</span>
+</button>
+<div class="day-nav" id="dayNav">
   <a href="#day1">🛫 Day1（二）抵達</a>
   <a href="#day2">🛍️ Day2（三）西口購物</a>
   <a href="#day3">⛴️ Day3（四）松島</a>
@@ -1012,7 +1057,29 @@ function updateActiveStops(){
   updateNowStatus();
 }
 
+function initDayNavToggle(){
+  const toggle = document.getElementById('dayNavToggle');
+  const nav = document.getElementById('dayNav');
+  if(!toggle || !nav) return;
+
+  const setOpen = open => {
+    toggle.classList.toggle('open', open);
+    nav.classList.toggle('open', open);
+  };
+
+  toggle.addEventListener('click', () => {
+    setOpen(!nav.classList.contains('open'));
+  });
+
+  nav.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => setOpen(false));
+  });
+
+  setOpen(false);
+}
+
 initScheduleLabels();
+initDayNavToggle();
 updateActiveStops();
 setInterval(updateActiveStops, 60000);
 
