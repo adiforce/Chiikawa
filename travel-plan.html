@@ -111,26 +111,32 @@
     font-weight:400;
     opacity:.55;
   }
-  .day-nav-toggle{
+  .now-status-next-row{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    max-width:960px;
-    margin:14px auto 0;
-    padding:10px 16px;
+    gap:8px;
+  }
+  .day-nav-toggle{
+    flex-shrink:0;
+    display:inline-flex;
+    align-items:center;
+    gap:3px;
     background:var(--white);
-    border:1.5px solid var(--border);
-    border-radius:14px;
+    border:1px solid var(--border);
+    border-radius:999px;
+    padding:3px 10px;
     font-family:'Zen Maru Gothic',sans-serif;
+    font-size:.66rem;
     font-weight:700;
-    font-size:.82rem;
     color:var(--brown);
+    opacity:.85;
     cursor:pointer;
     user-select:none;
   }
   .day-nav-toggle .chevron{
     display:inline-block;
-    font-size:.75rem;
+    font-size:.6rem;
     opacity:.6;
     transition:transform .25s ease;
   }
@@ -415,13 +421,15 @@
 
 <div class="now-status">
   <div class="now-status-item" id="nowStatusCurrent"><span class="status-dot"></span>目前：讀取中…</div>
-  <div class="now-status-item" id="nowStatusNext">⏭️ 下一站：讀取中…</div>
+  <div class="now-status-item now-status-next-row">
+    <span id="nowStatusNext">⏭️ 下一站：讀取中…</span>
+    <button class="day-nav-toggle" id="dayNavToggle" type="button">
+      <span>📅 跳日</span>
+      <span class="chevron">▾</span>
+    </button>
+  </div>
 </div>
 
-<button class="day-nav-toggle" id="dayNavToggle" type="button">
-  <span>📅 快速跳日</span>
-  <span class="chevron">▾</span>
-</button>
 <div class="day-nav" id="dayNav">
   <a href="#day1">🛫 Day1（二）抵達</a>
   <a href="#day2">🛍️ Day2（三）西口購物</a>
@@ -1088,4 +1096,3 @@ loadVenues();
 
 </body>
 </html>
-
