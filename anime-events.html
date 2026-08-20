@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>動漫活動 GW</title>
+<title>仙台 動漫活動</title>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -31,7 +31,9 @@
     background: var(--cream);
     color: var(--text);
     min-height: 100vh;
+    -webkit-text-size-adjust: 100%;
   }
+  html { -webkit-text-size-adjust: 100%; }
 
   body::before {
     content: '';
@@ -66,9 +68,10 @@
     font-size: 11px; font-weight: 700;
     padding: 4px 12px; border-radius: 99px;
   }
-  .badge-gw    { background: #ff6b6b; color: white; }
+  .badge-trip  { background: #ff6b6b; color: white; }
   .badge-on    { background: var(--mint-dark); color: white; }
   .badge-ended { background: #e0d0c0; color: #7a6050; }
+  .badge-warn  { background: var(--yellow); color: #6b5000; }
 
   /* ── Category tabs ── */
   .cat-tabs {
@@ -133,12 +136,12 @@
   .card-inner { display: flex; align-items: stretch; }
 
   .card-accent { width: 6px; flex-shrink: 0; }
-  .a-frieren  { background: #7a60c0; }
-  .a-bluelock { background: #2060d0; }
-  .a-oshinoko { background: #e06090; }
-  .a-kisekoi  { background: #f0a030; }
-  .a-usj      { background: #c04040; }
-  .a-other    { background: var(--mint-dark); }
+  .a-haikyu    { background: #e8600a; }
+  .a-oshinoko  { background: #e06090; }
+  .a-chiikawa  { background: #f0a0b0; }
+  .a-kusuriya  { background: #7a9060; }
+  .a-other     { background: var(--mint-dark); }
+  .a-warn      { background: var(--orange-dark); }
 
   .card-content { flex: 1; padding: 13px 14px; min-width: 0; }
 
@@ -165,7 +168,7 @@
     font-size: 11px; font-weight: 700;
     margin: 5px 0 4px;
   }
-  .period-gw    { color: #cc3030; }
+  .period-trip  { color: #cc3030; }
   .period-on    { color: var(--mint-dark); }
   .period-ended { color: #b0a090; }
 
@@ -178,15 +181,13 @@
     font-size: 10px; font-weight: 700;
     padding: 2px 8px; border-radius: 99px;
   }
-  .tag-gw     { background: #ffe0e0; color: #cc3030; }
-  .tag-osaka  { background: #fce97a; color: #6b5000; }
-  .tag-kyoto  { background: var(--pink); color: #6b1a30; }
-  .tag-tokyo  { background: var(--sky); color: #1a5080; }
-  .tag-fukuoka{ background: #d4f0d4; color: #1a6030; }
-  .tag-online { background: var(--lavender); color: #3d2080; }
-  .tag-cafe   { background: var(--orange); color: #7a3000; }
-  .tag-usj    { background: #f0d0d0; color: #803030; }
-  .tag-free   { background: #e8f8e8; color: #2a7a2a; }
+  .tag-trip    { background: #ffe0e0; color: #cc3030; }
+  .tag-sendai  { background: var(--pink); color: #6b1a30; }
+  .tag-station { background: var(--sky); color: #1a5080; }
+  .tag-permanent{ background: #d4f0d4; color: #1a6030; }
+  .tag-cafe    { background: var(--orange); color: #7a3000; }
+  .tag-free    { background: #e8f8e8; color: #2a7a2a; }
+  .tag-warn    { background: var(--yellow); color: #6b5000; }
 
   .cat-section.hidden { display: none; }
 
@@ -209,263 +210,79 @@
 <div class="container">
 
   <div class="header">
-    <h1>🎌 動漫活動 GW</h1>
-    <div class="header-sub">5月1日〜5月5日 京阪為主・含近期活動</div>
+    <h1>🎌 仙台 動漫活動</h1>
+    <div class="header-sub">2026/8/25〜8/30 行程期間・仙台限定彙整</div>
   </div>
 
   <div class="status-row">
-    <span class="status-badge badge-gw">🔥 GW期間中</span>
-    <span class="status-badge badge-on">✅ 現在開催中</span>
-    <span class="status-badge badge-ended">已結束</span>
+    <span class="status-badge badge-trip">🔥 行程期間內</span>
+    <span class="status-badge badge-on">✅ 開催中（跨行程前後）</span>
+    <span class="status-badge badge-warn">⚠️ 需現場確認</span>
   </div>
 
   <div class="note">
-    📌 GW 期間部分活動人潮多，建議提前確認官網入場方式<br>
-    📌 下方「已結束」活動仍列出供參考，部分商品仍可購買
+    📌 資料來源：collabo-cafe.com、アニメイト官網（查詢日 2026/08/20）<br>
+    📌 出發前建議再次確認各活動官方頁面，檔期偶有異動
   </div>
 
   <!-- 分類 Tabs -->
   <div class="cat-tabs">
     <button class="cat-tab active" onclick="filterCat('all')">全部</button>
-    <button class="cat-tab" onclick="filterCat('frieren')">🧝 芙莉蓮</button>
-    <button class="cat-tab" onclick="filterCat('bluelock')">⚽ 藍色監獄</button>
-    <button class="cat-tab" onclick="filterCat('oshinoko')">⭐ 我推的孩子</button>
-    <button class="cat-tab" onclick="filterCat('kisekoi')">🎎 換裝娃娃</button>
+    <button class="cat-tab" onclick="filterCat('haikyu')">🏐 排球少年</button>
+    <button class="cat-tab" onclick="filterCat('oshinoko')">⭐ 推しの子</button>
+    <button class="cat-tab" onclick="filterCat('chiikawa')">🐹 ちいかわ</button>
+    <button class="cat-tab" onclick="filterCat('kusuriya')">🌿 薬屋のひとりごと</button>
     <button class="cat-tab" onclick="filterCat('other')">🎡 其他</button>
   </div>
 
-  <!-- ════ 芙莉蓮 ════ -->
-  <div class="cat-section" data-cat="frieren">
+  <!-- ════ 排球少年 ════ -->
+  <div class="cat-section" data-cat="haikyu">
     <div class="section-title">
-      <span class="icon">🧝</span>
-      <span class="label">葬送のフリーレン</span>
+      <span class="icon">🏐</span>
+      <span class="label">排球少年 ハイキュー!!</span>
       <div class="line"></div>
     </div>
 
-    <!-- GW期間中 -->
-    <a class="event-card" href="https://frieren-anime.jp/news/4897/" target="_blank">
+    <a class="event-card" href="https://collabo-cafe.com/events/collabo/haikyu-plaza-vs-loft2026/" target="_blank">
       <div class="card-inner">
-        <div class="card-accent a-frieren"></div>
+        <div class="card-accent a-haikyu"></div>
         <div class="card-content">
-          <div class="card-series">葬送のフリーレン × マッドハウス</div>
+          <div class="card-series">ハイキュー!! × ロフト</div>
           <div class="card-top">
-            <div class="card-name">「創作のフリーレン」POP UP SHOP<br>博多マルイ 5F</div>
+            <div class="card-name">ハイキュー!!プラザ ーVSー ストア<br>仙台ロフト</div>
             <div class="card-arrow">›</div>
           </div>
-          <div class="card-period period-gw">🔥 5/1（五）〜 5/10（日）GW完全覆蓋！</div>
-          <div class="card-desc">描き下ろし創作テーマグッズ多數<br>購滿¥3,000可參加抽獎（A賞アクリルボード、B賞コースター、C賞ポストカード）</div>
+          <div class="card-period period-trip">🔥 8/14（五）〜10/12（一）行程完全覆蓋</div>
+          <div class="card-desc">對戰主題全新描き下ろし，PLAZA限定壓克力立牌・徽章等<br>仙台先行開催，之後才會巡迴東京・大阪</div>
           <div class="card-footer">
-            <span class="tag tag-gw">GW開催</span>
-            <span class="tag tag-fukuoka">福岡</span>
+            <span class="tag tag-trip">行程期間</span>
+            <span class="tag tag-sendai">仙台ロフト</span>
           </div>
         </div>
       </div>
     </a>
 
-    <a class="event-card" href="https://collabo-cafe.com/events/category/frieren/" target="_blank">
+    <a class="event-card" href="https://www.animate.co.jp/" target="_blank">
       <div class="card-inner">
-        <div class="card-accent a-frieren"></div>
+        <div class="card-accent a-haikyu"></div>
         <div class="card-content">
-          <div class="card-series">葬送のフリーレン × あべのハルカス</div>
+          <div class="card-series">ハイキュー!! × アニメイト</div>
           <div class="card-top">
-            <div class="card-name">「高層のフリーレン」コラボイベント<br>あべのハルカス300 展望台</div>
+            <div class="card-name">ハイキュー!! クールダウンフェア<br>全国アニメイト（含仙台店）</div>
             <div class="card-arrow">›</div>
           </div>
-          <div class="card-period period-gw">🔥 4/28（火）〜 7/22（水）</div>
-          <div class="card-desc">大阪！限定チケット・コラボカフェ・館内装飾<br>夜間限定マッピングあり、展望台でフリーレンの世界へ</div>
+          <div class="card-period period-trip">🔥 8/22（六）〜9/23（水）</div>
+          <div class="card-desc">購買特典等，仙台店同步開催<br>可與アニメイト仙台既有的其他フェア一起逛</div>
           <div class="card-footer">
-            <span class="tag tag-gw">GW開催</span>
-            <span class="tag tag-osaka">大阪 阿倍野</span>
-          </div>
-        </div>
-      </div>
-    </a>
-
-    <a class="event-card" href="https://collabo-cafe.com/events/category/frieren/" target="_blank">
-      <div class="card-inner">
-        <div class="card-accent a-frieren"></div>
-        <div class="card-content">
-          <div class="card-series">葬送のフリーレン × スイーツパラダイス</div>
-          <div class="card-top">
-            <div class="card-name">フリーレン コラボカフェ<br>京都河原町OPA店・梅田店</div>
-            <div class="card-arrow">›</div>
-          </div>
-          <div class="card-period period-gw">🔥 3/3（火）〜 開催中（GW期間も継続）</div>
-          <div class="card-desc">アニメ2期の場面をイメージしたコラボメニュー<br>カフェ限定の描き起こしグッズも！京都・大阪両方あり</div>
-          <div class="card-footer">
-            <span class="tag tag-gw">GW開催</span>
-            <span class="tag tag-kyoto">京都 河原町</span>
-            <span class="tag tag-osaka">大阪 梅田</span>
-            <span class="tag tag-cafe">コラボカフェ</span>
-          </div>
-        </div>
-      </div>
-    </a>
-
-    <a class="event-card" href="https://collabo-cafe.com/events/category/frieren/" target="_blank">
-      <div class="card-inner">
-        <div class="card-accent a-frieren"></div>
-        <div class="card-content">
-          <div class="card-series">葬送のフリーレン × ジャンカラ</div>
-          <div class="card-top">
-            <div class="card-name">フリーレン コラボカラオケ<br>全国ジャンカラ（大阪・京都多数）</div>
-            <div class="card-arrow">›</div>
-          </div>
-          <div class="card-period period-gw">🔥 2/25（水）〜 5/26（火）</div>
-          <div class="card-desc">全店でコラボドリンクコース展開<br>全国14店舗でコラボルームも実施！大阪・京都に多数あり</div>
-          <div class="card-footer">
-            <span class="tag tag-gw">GW開催</span>
-            <span class="tag tag-osaka">大阪</span>
-            <span class="tag tag-kyoto">京都</span>
-          </div>
-        </div>
-      </div>
-    </a>
-
-    <a class="event-card" href="https://www.usj.co.jp/web/ja/jp/events/universal-cool-japan-2026/frieren" target="_blank">
-      <div class="card-inner">
-        <div class="card-accent a-usj"></div>
-        <div class="card-content">
-          <div class="card-series">葬送のフリーレン × USJ（ユニバーサル・スタジオ・ジャパン）</div>
-          <div class="card-top">
-            <div class="card-name">フリーレン ストーリー・ウォーク<br>〜追憶の旅〜（USJ 大阪）</div>
-            <div class="card-arrow">›</div>
-          </div>
-          <div class="card-period period-gw">🔥 5/30（六）〜 開始（GW後）</div>
-          <div class="card-desc">USJ初コラボ！大阪に行くなら要チェック<br>作品モチーフのコラボレストランも登場予定</div>
-          <div class="card-footer">
-            <span class="tag tag-usj">USJ 大阪</span>
-          </div>
-        </div>
-      </div>
-    </a>
-
-    <!-- 一番くじ -->
-    <a class="event-card" href="https://collabo-cafe.com/events/category/frieren/" target="_blank">
-      <div class="card-inner">
-        <div class="card-accent a-frieren"></div>
-        <div class="card-content">
-          <div class="card-series">葬送のフリーレン × 一番くじ</div>
-          <div class="card-top">
-            <div class="card-name">フリーレン 一番くじ<br>全国セブン-イレブン等</div>
-            <div class="card-arrow">›</div>
-          </div>
-          <div class="card-period period-gw">🔥 4/10（金）〜 在庫なくなり次第終了</div>
-          <div class="card-desc">GW期間もコンビニで購入できる！<br>フィギュアやぬいぐるみが景品に</div>
-          <div class="card-footer">
-            <span class="tag tag-gw">GW開催</span>
-            <span class="tag tag-osaka">全国</span>
-          </div>
-        </div>
-      </div>
-    </a>
-
-    <!-- 已結束 -->
-    <a class="event-card" href="https://collabo-cafe.com/events/category/frieren/" target="_blank" style="opacity:0.6">
-      <div class="card-inner">
-        <div class="card-accent a-frieren"></div>
-        <div class="card-content">
-          <div class="card-series">葬送のフリーレン × マッドハウス</div>
-          <div class="card-top">
-            <div class="card-name">「創作のフリーレン」POP UP SHOP<br>東京・神戸・名古屋 巡回</div>
-            <div class="card-arrow">›</div>
-          </div>
-          <div class="card-period period-ended">已結束 3/6〜4/27</div>
-          <div class="card-desc">東京→神戸→名古屋で巡回開催済み<br>オンライン通販（MeeToMa）では継続販売中</div>
-          <div class="card-footer">
-            <span class="ended-label">已結束</span>
-            <span class="tag tag-online">オンライン継続</span>
+            <span class="tag tag-trip">行程期間</span>
+            <span class="tag tag-sendai">アニメイト仙台</span>
           </div>
         </div>
       </div>
     </a>
   </div>
 
-  <!-- ════ 藍色監獄 ════ -->
-  <div class="cat-section" data-cat="bluelock">
-    <div class="section-title">
-      <span class="icon">⚽</span>
-      <span class="label">ブルーロック</span>
-      <div class="line"></div>
-    </div>
-
-    <a class="event-card" href="https://collabo-cafe.com/events/category/blue-lock/" target="_blank">
-      <div class="card-inner">
-        <div class="card-accent a-bluelock"></div>
-        <div class="card-content">
-          <div class="card-series">ブルーロック × バンダイスピリッツ</div>
-          <div class="card-top">
-            <div class="card-name">一番くじ「あでぃしょなる・たいむ！」<br>全国量販店</div>
-            <div class="card-arrow">›</div>
-          </div>
-          <div class="card-period period-gw">🔥 5/2（六）〜 在庫なくなり次第終了</div>
-          <div class="card-desc">エゴイスト達のいつもと違う姿がグッズに！<br>GWにゲームセンター・量販店でくじ引き</div>
-          <div class="card-footer">
-            <span class="tag tag-gw">GW開始</span>
-            <span class="tag tag-osaka">全国</span>
-          </div>
-        </div>
-      </div>
-    </a>
-
-    <a class="event-card" href="https://collabo-cafe.com/events/category/blue-lock/" target="_blank">
-      <div class="card-inner">
-        <div class="card-accent a-bluelock"></div>
-        <div class="card-content">
-          <div class="card-series">ブルーロック × 東京スカイツリー</div>
-          <div class="card-top">
-            <div class="card-name">ブルーロック コラボイベント<br>東京スカイツリー</div>
-            <div class="card-arrow">›</div>
-          </div>
-          <div class="card-period period-gw">🔥 4/9（木）〜 7/6（月）</div>
-          <div class="card-desc">カフェメニュー・展示装飾が登場<br>東京観光と合わせて</div>
-          <div class="card-footer">
-            <span class="tag tag-gw">GW開催</span>
-            <span class="tag tag-tokyo">東京</span>
-            <span class="tag tag-cafe">コラボカフェ</span>
-          </div>
-        </div>
-      </div>
-    </a>
-
-    <a class="event-card" href="https://www.bluelockegoistexhibition.com/" target="_blank">
-      <div class="card-inner">
-        <div class="card-accent a-bluelock"></div>
-        <div class="card-content">
-          <div class="card-series">ブルーロック展 EGOIST EXHIBITION the animation</div>
-          <div class="card-top">
-            <div class="card-name">ブルーロック展 "Extra Time" 全国巡回<br>要確認最新巡回地點</div>
-            <div class="card-arrow">›</div>
-          </div>
-          <div class="card-period period-on">✅ 全国巡回中（地點需確認）</div>
-          <div class="card-desc">ノ村優介先生原画展・等身大立像・3面シアター<br>1期・2期・劇場版凪すべてを網羅した総決算展示</div>
-          <div class="card-footer">
-            <span class="tag tag-osaka">巡回中</span>
-          </div>
-        </div>
-      </div>
-    </a>
-
-    <a class="event-card" href="https://collabo-cafe.com/events/category/blue-lock/" target="_blank" style="opacity:0.6">
-      <div class="card-inner">
-        <div class="card-accent a-bluelock"></div>
-        <div class="card-content">
-          <div class="card-series">ブルーロック × ロフト おとぎ話テーマ</div>
-          <div class="card-top">
-            <div class="card-name">ブルーロック POP UP STORE in ロフト<br>梅田ロフト（他5店舗）</div>
-            <div class="card-arrow">›</div>
-          </div>
-          <div class="card-period period-ended">已結束 12/4〜2/11</div>
-          <div class="card-desc">おとぎ話テーマ描き下ろし、梅田ロフトで開催済み</div>
-          <div class="card-footer">
-            <span class="ended-label">已結束</span>
-          </div>
-        </div>
-      </div>
-    </a>
-  </div>
-
-  <!-- ════ 我推的孩子 ════ -->
+  <!-- ════ 推しの子 ════ -->
   <div class="cat-section" data-cat="oshinoko">
     <div class="section-title">
       <span class="icon">⭐</span>
@@ -473,86 +290,132 @@
       <div class="line"></div>
     </div>
 
-    <a class="event-card" href="https://collabo-cafe.com/" target="_blank">
+    <a class="event-card" href="https://collabo-cafe.com/events/collabo/oshinoko-gigo-campaign-2026/" target="_blank">
       <div class="card-inner">
         <div class="card-accent a-oshinoko"></div>
         <div class="card-content">
-          <div class="card-series">【推しの子】× スイーツパラダイス</div>
+          <div class="card-series">【推しの子】× GiGO</div>
           <div class="card-top">
-            <div class="card-name">推しの子 コラボカフェ 第3弾<br>スイーツパラダイス（梅田・京都含む）</div>
+            <div class="card-name">【推しの子】キャンペーン<br>GiGO仙台</div>
             <div class="card-arrow">›</div>
           </div>
-          <div class="card-period period-gw">🔥 2/6（金）〜 GW期間も継続中</div>
-          <div class="card-desc">第3弾コラボ！キャラクターイメージメニュー<br>カフェ限定グッズもあり</div>
+          <div class="card-period period-trip">🔥 8/15（六）〜10/25（日）行程完全覆蓋</div>
+          <div class="card-desc">東京・大阪道頓堀・仙台 3店舗同步開催<br>プライズ商品・裝飾等，詳情以GiGO店頭公告為準</div>
           <div class="card-footer">
-            <span class="tag tag-gw">GW開催</span>
-            <span class="tag tag-osaka">大阪 梅田</span>
-            <span class="tag tag-kyoto">京都</span>
-            <span class="tag tag-cafe">コラボカフェ</span>
-          </div>
-        </div>
-      </div>
-    </a>
-
-    <a class="event-card" href="https://www.fun-japan.jp/jp/articlesPromotion/14430" target="_blank">
-      <div class="card-inner">
-        <div class="card-accent a-oshinoko"></div>
-        <div class="card-content">
-          <div class="card-series">【推しの子】× 京まふ（京都国際マンガ・アニメフェア）</div>
-          <div class="card-top">
-            <div class="card-name">推しの子 展示・ステージ<br>みやこめっせ（京都）</div>
-            <div class="card-arrow">›</div>
-          </div>
-          <div class="card-period period-ended">参考：例年9月頃開催（2026年秋予定）</div>
-          <div class="card-desc">昨年も推しの子ステージ登場、今年の詳細は未発表<br>京都の大型アニメイベント、秋に要チェック</div>
-          <div class="card-footer">
-            <span class="ended-label">秋開催予定</span>
-            <span class="tag tag-kyoto">京都</span>
+            <span class="tag tag-trip">行程期間</span>
+            <span class="tag tag-sendai">GiGO仙台</span>
           </div>
         </div>
       </div>
     </a>
   </div>
 
-  <!-- ════ 換裝娃娃 ════ -->
-  <div class="cat-section" data-cat="kisekoi">
+  <!-- ════ ちいかわ ════ -->
+  <div class="cat-section" data-cat="chiikawa">
     <div class="section-title">
-      <span class="icon">🎎</span>
-      <span class="label">その着せ替え人形は恋をする</span>
+      <span class="icon">🐹</span>
+      <span class="label">ちいかわ</span>
       <div class="line"></div>
     </div>
 
-    <a class="event-card" href="https://bisquedoll-anime-exhibition.com/" target="_blank">
+    <a class="event-card" href="https://collabo-cafe.com/events/collabo/chiikawa-pocket-popup-store-2026/" target="_blank">
       <div class="card-inner">
-        <div class="card-accent a-kisekoi"></div>
+        <div class="card-accent a-chiikawa"></div>
         <div class="card-content">
-          <div class="card-series">その着せ替え人形は恋をする</div>
+          <div class="card-series">スマホゲーム『ちいかわぽけっと』</div>
           <div class="card-top">
-            <div class="card-name">着せ恋 展覧会<br>大阪（TVアニメ放送1周年記念）</div>
+            <div class="card-name">ちいかわぽけっと POP UP STORE 第3弾<br>イオンモール仙台上杉</div>
             <div class="card-arrow">›</div>
           </div>
-          <div class="card-period period-on">✅ 開催詳細は公式サイトで確認</div>
-          <div class="card-desc">大阪での開催が決定！貴重な原画・特別衣装展示<br>作品世界観に浸れる多数の展示あり</div>
+          <div class="card-period period-trip">🔥 8/21（五）〜9/27（日）行程完全覆蓋</div>
+          <div class="card-desc">「恐竜」「アリス」テーマの新作グッズ（マスコット・トレーディング缶バッジ等）<br>お買い上げ特典スタンプVol.3・専用ショッパーあり</div>
           <div class="card-footer">
-            <span class="tag tag-osaka">大阪</span>
+            <span class="tag tag-trip">行程期間</span>
+            <span class="tag tag-sendai">イオンモール仙台上杉</span>
           </div>
         </div>
       </div>
     </a>
 
-    <a class="event-card" href="https://bisquedoll-anime-exhibition.com/" target="_blank">
+    <a class="event-card" href="https://collabo-cafe.com/events/collabo/nagano-market-popup-sendai-2026/" target="_blank">
       <div class="card-inner">
-        <div class="card-accent a-kisekoi"></div>
+        <div class="card-accent a-warn"></div>
         <div class="card-content">
-          <div class="card-series">その着せ替え人形は恋をする × アニメイト</div>
+          <div class="card-series">ナガノ先生（ちいかわ作者）その他キャラ作品</div>
           <div class="card-top">
-            <div class="card-name">着せ恋 グッズ・フェア<br>アニメイト各店（大阪日本橋・梅田）</div>
+            <div class="card-name">ナガノマーケット POP UP SHOP<br>JR仙台駅 2F ステンドグラス前催事場</div>
             <div class="card-arrow">›</div>
           </div>
-          <div class="card-period period-on">✅ 随時開催（公式X確認推薦）</div>
-          <div class="card-desc">アニメイト大阪日本橋・梅田でフェア開催<br>公式X（@kisekoi_animeEX）で最新情報確認</div>
+          <div class="card-period period-trip">🔥 8/26（三）〜9/21（月）</div>
+          <div class="card-desc">くまのふわもち抱っこぬいぐるみ等、全19種グッズ<br>⚠️ 地點與「JR東日本ようこそ仙台キャンペーン」(8/26–9/2) 完全相同、時間重疊，可能是同一場地的連續檔期或同一報導，現場確認即可、不用特地排兩次</div>
           <div class="card-footer">
-            <span class="tag tag-osaka">大阪 日本橋・梅田</span>
+            <span class="tag tag-warn">現場確認</span>
+            <span class="tag tag-station">JR仙台駅</span>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <a class="event-card" href="#" style="pointer-events:none;">
+      <div class="card-inner">
+        <div class="card-accent a-chiikawa"></div>
+        <div class="card-content">
+          <div class="card-series">常設店舗</div>
+          <div class="card-top">
+            <div class="card-name">ちいかわらんど<br>仙台PARCO 8F</div>
+            <div class="card-arrow">›</div>
+          </div>
+          <div class="card-period period-on">✅ 常設（既有記錄）</div>
+          <div class="card-desc">全國常設店，行程期間隨時可逛，無檔期限制</div>
+          <div class="card-footer">
+            <span class="tag tag-permanent">常設</span>
+            <span class="tag tag-sendai">仙台PARCO</span>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <!-- ════ 薬屋のひとりごと ════ -->
+  <div class="cat-section" data-cat="kusuriya">
+    <div class="section-title">
+      <span class="icon">🌿</span>
+      <span class="label">薬屋のひとりごと</span>
+      <div class="line"></div>
+    </div>
+
+    <a class="event-card" href="https://collabo-cafe.com/events/collabo/kusuriya-hyouka-toride-animate-fair2026/" target="_blank">
+      <div class="card-inner">
+        <div class="card-accent a-kusuriya"></div>
+        <div class="card-content">
+          <div class="card-series">薬屋のひとりごと × アニメイト</div>
+          <div class="card-top">
+            <div class="card-name">アニメイトフェア -氷菓/砦-<br>全国アニメイト（含仙台店）</div>
+            <div class="card-arrow">›</div>
+          </div>
+          <div class="card-period period-trip">🔥 8/29（六）〜9/23（水）行程最後兩天有機會碰到</div>
+          <div class="card-desc">猫猫・小蘭・子翠・壬氏イラストグッズ<br>1,100円ごとに「しおり風カード 全4種」プレゼント</div>
+          <div class="card-footer">
+            <span class="tag tag-trip">8/29起</span>
+            <span class="tag tag-sendai">アニメイト仙台</span>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <a class="event-card" href="https://collabo-cafe.com/events/collabo/kusuriya-no-hitorigoto-sendai-tanabata-2026/" target="_blank" style="opacity:0.6">
+      <div class="card-inner">
+        <div class="card-accent a-kusuriya"></div>
+        <div class="card-content">
+          <div class="card-series">薬屋のひとりごと × 仙台七夕まつり</div>
+          <div class="card-top">
+            <div class="card-name">七夕飾りコラボ<br>マーブルロードおおまち商店街</div>
+            <div class="card-arrow">›</div>
+          </div>
+          <div class="card-period period-ended">已結束 8/6〜8/8</div>
+          <div class="card-desc">已在行程開始前結束，僅供參考</div>
+          <div class="card-footer">
+            <span class="ended-label">已結束</span>
           </div>
         </div>
       </div>
@@ -563,103 +426,62 @@
   <div class="cat-section" data-cat="other">
     <div class="section-title">
       <span class="icon">🎡</span>
-      <span class="label">其他 GW 期間動漫活動</span>
+      <span class="label">其他仙台動漫零售活動</span>
       <div class="line"></div>
     </div>
 
-    <a class="event-card" href="https://collabo-cafe.com/" target="_blank">
+    <a class="event-card" href="https://collabo-cafe.com/events/collabo/karakai-takagisan-animate-fair-2026/" target="_blank">
       <div class="card-inner">
         <div class="card-accent a-other"></div>
         <div class="card-content">
-          <div class="card-series">魔法つかいプリキュア！10周年</div>
+          <div class="card-series">からかい上手の高木さん × アニメイト</div>
           <div class="card-top">
-            <div class="card-name">魔法つかいプリキュア！10周年カフェ<br>大阪・京都・東京 3都市</div>
+            <div class="card-name">アニメイトフェア in 2026<br>アニメイト仙台店</div>
             <div class="card-arrow">›</div>
           </div>
-          <div class="card-period period-gw">🔥 5/2（六）〜 開催</div>
-          <div class="card-desc">10周年記念コラボカフェが関西にも！<br>プリキュアファンは要チェック</div>
+          <div class="card-period period-trip">🔥 8/22（六）〜9/6（日）行程完全覆蓋</div>
+          <div class="card-desc">「お仕事体験ver. 第2弾」描き下ろしトレーディンググッズ<br>等身大タペストリー・キャラファイングラフあり</div>
           <div class="card-footer">
-            <span class="tag tag-gw">GW開始</span>
-            <span class="tag tag-osaka">大阪</span>
-            <span class="tag tag-kyoto">京都</span>
-            <span class="tag tag-cafe">コラボカフェ</span>
+            <span class="tag tag-trip">行程期間</span>
+            <span class="tag tag-sendai">アニメイト仙台</span>
           </div>
         </div>
       </div>
     </a>
 
-    <a class="event-card" href="https://collabo-cafe.com/" target="_blank">
+    <a class="event-card" href="https://collabo-cafe.com/events/collabo/tamagotchi-omise-sendai-parco-2026/" target="_blank">
       <div class="card-inner">
-        <div class="card-accent a-other"></div>
+        <div class="card-accent a-warn"></div>
         <div class="card-content">
-          <div class="card-series">少女終末旅行</div>
+          <div class="card-series">たまごっち 30周年</div>
           <div class="card-top">
-            <div class="card-name">少女終末旅行 POP UP STORE<br>東京・大阪</div>
+            <div class="card-name">みんなしゅ〜ご〜! たまごっちのおみせ<br>仙台PARCO 1・4F 吹き抜けイベントスペース</div>
             <div class="card-arrow">›</div>
           </div>
-          <div class="card-period period-gw">🔥 4/24（金）〜 開催中</div>
-          <div class="card-desc">東京と大阪で同時展開</div>
+          <div class="card-period period-trip">⚠️ 8/14（五）〜8/30（日）8/30抵達當天閉展</div>
+          <div class="card-desc">限定「Original Tamagotchi 祝30しゅーねん」等<br>行程最後一天（8/30）才是最終日，時間非常緊迫，建議提早排入前幾天</div>
           <div class="card-footer">
-            <span class="tag tag-gw">GW開催</span>
-            <span class="tag tag-osaka">大阪</span>
-            <span class="tag tag-tokyo">東京</span>
+            <span class="tag tag-warn">時間緊迫</span>
+            <span class="tag tag-sendai">仙台PARCO</span>
           </div>
         </div>
       </div>
     </a>
 
-    <a class="event-card" href="https://collabo-cafe.com/" target="_blank">
+    <a class="event-card" href="#" style="pointer-events:none;">
       <div class="card-inner">
         <div class="card-accent a-other"></div>
         <div class="card-content">
-          <div class="card-series">うらみちお兄さん × スーツ</div>
+          <div class="card-series">既有記錄・仍在檔期內</div>
           <div class="card-top">
-            <div class="card-name">うらみちお兄さん スーツ ストア<br>東京・大阪</div>
+            <div class="card-name">アオのハコ／ブルーロック Cyber Cat 第2弾／<br>ONE PIECE スタンディパネル展／ヒロアカ応援フェア</div>
             <div class="card-arrow">›</div>
           </div>
-          <div class="card-period period-gw">🔥 2/26（木）〜 5/5（火）</div>
-          <div class="card-desc">GW最終日まで！</div>
+          <div class="card-period period-trip">🔥 全部 〜8/30（日）行程最後一天結束</div>
+          <div class="card-desc">アニメイト仙台，4個フェア皆於8/30結束，建議提早幾天造訪較從容</div>
           <div class="card-footer">
-            <span class="tag tag-gw">GW最終日まで</span>
-            <span class="tag tag-osaka">大阪</span>
-          </div>
-        </div>
-      </div>
-    </a>
-
-    <a class="event-card" href="https://www.fun-japan.jp/jp/articlesPromotion/14430" target="_blank">
-      <div class="card-inner">
-        <div class="card-accent a-other"></div>
-        <div class="card-content">
-          <div class="card-series">大阪・京都・兵庫 動漫活動總整理</div>
-          <div class="card-top">
-            <div class="card-name">2026 関西動漫遊戲イベント年間一覧<br>Fun Japan 整理</div>
-            <div class="card-arrow">›</div>
-          </div>
-          <div class="card-period period-on">✅ 持續更新</div>
-          <div class="card-desc">涵蓋大阪・京都・兵庫的コスプレ・漫画・声優活動<br>出發前可查詢最新追加活動</div>
-          <div class="card-footer">
-            <span class="tag tag-osaka">大阪</span>
-            <span class="tag tag-kyoto">京都</span>
-            <span class="tag tag-free">免費查看</span>
-          </div>
-        </div>
-      </div>
-    </a>
-
-    <a class="event-card" href="https://collabo-cafe.com/" target="_blank">
-      <div class="card-inner">
-        <div class="card-accent a-other"></div>
-        <div class="card-content">
-          <div class="card-series">コラボカフェ 最新動漫活動情報</div>
-          <div class="card-top">
-            <div class="card-name">collabo-cafe.com 動漫活動總覽<br>隨時更新</div>
-            <div class="card-arrow">›</div>
-          </div>
-          <div class="card-period period-on">✅ 持續更新</div>
-          <div class="card-desc">日本最大動漫コラボ情報サイト<br>出發前最後確認有無新增活動</div>
-          <div class="card-footer">
-            <span class="tag tag-free">免費查看</span>
+            <span class="tag tag-trip">8/30止</span>
+            <span class="tag tag-sendai">アニメイト仙台</span>
           </div>
         </div>
       </div>
