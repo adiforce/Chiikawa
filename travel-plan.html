@@ -459,7 +459,7 @@
     <div class="day-head">
       <span class="day-num">🛫 Day 1</span>
       <span class="day-date">2026/08/25（二）</span>
-      <span class="day-weather">☀️ 晴 34°/25°</span>
+      <span class="day-weather" data-wdate="2026-08-25">☀️ 晴 34°/25°</span>
     </div>
     <div class="day-title">🛬 抵達仙台，落地開吃！</div>
     <div class="timeline">
@@ -501,7 +501,7 @@
     <div class="day-head">
       <span class="day-num">⛴️ Day 2</span>
       <span class="day-date">2026/08/26（三）</span>
-      <span class="day-weather">☁️ 多雲 32°/23°</span>
+      <span class="day-weather" data-wdate="2026-08-26">☁️ 多雲 32°/23°</span>
     </div>
     <div class="day-title">⛴️ 松島一日遊・日本三景</div>
     <div class="timeline">
@@ -536,6 +536,17 @@
           </div>
         </div>
       </div>
+      <div class="stop" data-date="2026-08-26" data-start="13:00" data-end="14:00">
+        <div class="stop-top">
+          <div class="stop-main">
+            <div class="stop-time">🍽️ 13:00</div>
+            <div class="stop-name">海の食べ放題 松島おさしみ水族館</div>
+            <div class="stop-note">松島海岸駅步行1分。牡蠣（蒸／生／天婦羅）、三陸厚切生魚片吃到飽，60分3,500円，未訂位，建議到場前先電話確認可否入場</div>
+            <span class="stop-tag">🦀 海鮮吃到飽</span>
+          </div>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=海の食べ放題 松島おさしみ水族館" target="_blank" rel="noopener">📍</a>
+        </div>
+      </div>
       <div class="stop" data-date="2026-08-26" data-start="11:00" data-end="11:50">
         <div class="stop-top">
           <div class="stop-main">
@@ -545,17 +556,6 @@
             <span class="stop-tag">🌅 景點／絕景</span>
           </div>
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=松島" target="_blank" rel="noopener">📍</a>
-        </div>
-      </div>
-      <div class="stop" data-date="2026-08-26" data-start="13:00" data-end="14:00">
-        <div class="stop-top">
-          <div class="stop-main">
-            <div class="stop-time">🍽️ 13:00</div>
-            <div class="stop-name">海の食べ放題 松島おさしみ水族館</div>
-            <div class="stop-note">松島海岸駅步行1分。牡蠣（蒸／生／炸）、三陸厚切生魚片吃到飽，60分3,500円。非假日免預約也可入店，但建議事前電話 022-762-5492 或線上訂位較保險</div>
-            <span class="stop-tag">🦀 海鮮吃到飽</span>
-          </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=海の食べ放題 松島おさしみ水族館" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
       <div class="stop" data-date="2026-08-26" data-start="14:15" data-end="15:00">
@@ -587,7 +587,7 @@
     <div class="day-head">
       <span class="day-num">🐬 Day 3</span>
       <span class="day-date">2026/08/27（四）</span>
-      <span class="day-weather">🌧️ 多雲偶陣雨(50%) 30°/22°</span>
+      <span class="day-weather" data-wdate="2026-08-27">🌧️ 多雲偶陣雨(50%) 30°/22°</span>
     </div>
     <div class="day-title">🐬 水族館 + 🛍️ Outlet 血拚日</div>
 <div class="timeline">
@@ -652,7 +652,7 @@
     <div class="day-head">
       <span class="day-num">🐬 Day 4</span>
       <span class="day-date">2026/08/28（五）</span>
-      <span class="day-weather">☁️ 多雲 31°/21°</span>
+      <span class="day-weather" data-wdate="2026-08-28">☁️ 多雲 31°/21°</span>
     </div>
     <div class="day-title">🎮 西口動漫購物日 全開火力</div>
 <div class="timeline">
@@ -742,7 +742,7 @@
     <div class="day-head">
       <span class="day-num">🐍 Day 5</span>
       <span class="day-date">2026/08/29（六）</span>
-      <span class="day-weather">☁️ 多雲 28°/20°</span>
+      <span class="day-weather" data-wdate="2026-08-29">☁️ 多雲 28°/20°</span>
     </div>
     <div class="day-title">🐍 金蛇水神社 + 🏮 一番町逛街</div>
     <div class="timeline">
@@ -841,7 +841,7 @@
     <div class="day-head">
       <span class="day-num">🏯 Day 6</span>
       <span class="day-date">2026/08/30（日）</span>
-      <span class="day-weather">☁️ 多雲 27°/21°</span>
+      <span class="day-weather" data-wdate="2026-08-30">☁️ 多雲 27°/21°</span>
     </div>
     <div class="day-title">🏯 仙台城跡 + 退房回程</div>
     <div class="timeline">
@@ -932,6 +932,24 @@ async function loadVenues(){
     initDetailToggles();
   } catch(err){
     console.warn('venues.json 載入失敗：', err.message, '（詳細資訊功能將不可用，但行程表其餘內容不受影響）');
+  }
+}
+
+async function loadWeather(){
+  try {
+    const res = await fetch('weather.json');
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const wj = await res.json();
+    const byDate = {};
+    (wj.days || []).forEach(d => { byDate[d.date] = d; });
+    document.querySelectorAll('.day-weather[data-wdate]').forEach(el => {
+      const d = byDate[el.dataset.wdate];
+      if(!d) return;
+      el.textContent = `${d.icon} ${d.desc} ${d.high}°/${d.low}°`;
+      if(wj.updated) el.title = '資料更新：' + wj.updated + (wj.note ? '\n' + wj.note : '');
+    });
+  } catch(err){
+    console.warn('weather.json 載入失敗：', err.message, '（將顯示行程表內建的預設天氣文字）');
   }
 }
 
@@ -1107,6 +1125,7 @@ updateActiveStops();
 setInterval(updateActiveStops, 60000);
 
 loadVenues();
+loadWeather();
 </script>
 
 </body>
