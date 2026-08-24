@@ -117,59 +117,19 @@
     justify-content:space-between;
     gap:8px;
   }
-  .day-nav-toggle{
+  .day-nav-select{
     flex-shrink:0;
-    display:inline-flex;
-    align-items:center;
-    gap:3px;
+    max-width:160px;
     background:var(--white);
     border:1px solid var(--border);
     border-radius:999px;
-    padding:3px 10px;
+    padding:4px 10px;
     font-family:'Zen Maru Gothic',sans-serif;
-    font-size:.66rem;
+    font-size:.7rem;
     font-weight:700;
     color:var(--brown);
-    opacity:.85;
+    opacity:.9;
     cursor:pointer;
-    user-select:none;
-  }
-  .day-nav-toggle .chevron{
-    display:inline-block;
-    font-size:.6rem;
-    opacity:.6;
-    transition:transform .25s ease;
-  }
-  .day-nav-toggle.open .chevron{
-    transform:rotate(180deg);
-  }
-  .day-nav{
-    max-width:960px;
-    margin:0 auto;
-    padding:0 18px;
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
-    overflow:hidden;
-    max-height:0;
-    opacity:0;
-    transition:max-height .3s ease, opacity .2s ease, margin-top .3s ease;
-  }
-  .day-nav.open{
-    max-height:400px;
-    opacity:1;
-    margin-top:10px;
-  }
-  .day-nav a{
-    text-decoration:none;
-    border:1.5px solid var(--border);
-    background:var(--white);
-    color:var(--brown);
-    font-family:'Zen Maru Gothic',sans-serif;
-    padding:7px 14px;
-    border-radius:999px;
-    font-size:.8rem;
-    font-weight:700;
   }
   .wrap{
     max-width:960px;
@@ -484,20 +444,16 @@
   <div class="now-status-item" id="nowStatusCurrent"><span class="status-dot"></span>目前：讀取中…</div>
   <div class="now-status-item now-status-next-row">
     <span id="nowStatusNext">⏭️ 下一站：讀取中…</span>
-    <button class="day-nav-toggle" id="dayNavToggle" type="button">
-      <span>📅 跳日</span>
-      <span class="chevron">▾</span>
-    </button>
+    <select class="day-nav-select" id="dayNavSelect">
+      <option value="">📅 跳日／選擇日期</option>
+      <option value="#day1">🛫 Day1（8/25二）抵達</option>
+      <option value="#day2">⛴️ Day2（8/26三）松島</option>
+      <option value="#day3">🐬 Day3（8/27四）水族館+Outlet</option>
+      <option value="#day4">🎮 Day4（8/28五）西口購物</option>
+      <option value="#day5">🐍 Day5（8/29六）金蛇水神社+逛街</option>
+      <option value="#day6">🏯 Day6（8/30日）城跡+回程</option>
+    </select>
   </div>
-</div>
-
-<div class="day-nav" id="dayNav">
-  <a href="#day1">🛫 Day1（二）抵達</a>
-  <a href="#day2">🐬 Day2（三）水族館+Outlet</a>
-  <a href="#day3">⛴️ Day3（四）松島</a>
-  <a href="#day4">🎮 Day4（五）西口購物</a>
-  <a href="#day5">🐍 Day5（六）金蛇水神社+逛街</a>
-  <a href="#day6">🏯 Day6（日）城跡+回程</a>
 </div>
 </div>
 
@@ -1297,29 +1253,21 @@ function updateActiveStops(){
   updateNowStatus();
 }
 
-function initDayNavToggle(){
-  const toggle = document.getElementById('dayNavToggle');
-  const nav = document.getElementById('dayNav');
-  if(!toggle || !nav) return;
+function initDayNavSelect(){
+  const select = document.getElementById('dayNavSelect');
+  if(!select) return;
 
-  const setOpen = open => {
-    toggle.classList.toggle('open', open);
-    nav.classList.toggle('open', open);
-  };
-
-  toggle.addEventListener('click', () => {
-    setOpen(!nav.classList.contains('open'));
+  select.addEventListener('change', () => {
+    const target = select.value;
+    if(target){
+      document.querySelector(target)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    select.value = '';
   });
-
-  nav.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => setOpen(false));
-  });
-
-  setOpen(false);
 }
 
 initScheduleLabels();
-initDayNavToggle();
+initDayNavSelect();
 updateActiveStops();
 setInterval(updateActiveStops, 60000);
 
