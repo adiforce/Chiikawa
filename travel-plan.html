@@ -203,6 +203,18 @@
     color:var(--brown);
     opacity:.6;
   }
+  .day-weather{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    font-size:.78rem;
+    font-weight:700;
+    color:var(--brown);
+    background:#eaf3fb;
+    border:1px solid #cfe3f3;
+    border-radius:999px;
+    padding:2px 10px;
+  }
   .day-title{
     font-family:'Zen Maru Gothic',sans-serif;
     font-size:1.0rem;
@@ -447,6 +459,7 @@
     <div class="day-head">
       <span class="day-num">🛫 Day 1</span>
       <span class="day-date">2026/08/25（二）</span>
+      <span class="day-weather">☀️ 晴 34°/25°</span>
     </div>
     <div class="day-title">🛬 抵達仙台，落地開吃！</div>
     <div class="timeline">
@@ -486,12 +499,99 @@
   <!-- DAY 2 -->
   <div class="day-card" id="day2">
     <div class="day-head">
-      <span class="day-num">🛍️ Day 2</span>
+      <span class="day-num">⛴️ Day 2</span>
       <span class="day-date">2026/08/26（三）</span>
+      <span class="day-weather">☁️ 多雲 32°/23°</span>
+    </div>
+    <div class="day-title">⛴️ 松島一日遊・日本三景</div>
+    <div class="timeline">
+      <div class="stop" data-date="2026-08-26" data-start="07:00" data-end="08:00">
+        <div class="stop-top">
+          <div class="stop-main">
+            <div class="stop-time">🍳 07:00</div>
+            <div class="stop-name">仙台朝市</div>
+            <div class="stop-note">西口步行5分，老字號市場，生鮮熟食皆有，感受在地生活氣息</div>
+            <span class="stop-tag">🐟 市場</span>
+          </div>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=仙台朝市" target="_blank" rel="noopener">📍</a>
+        </div>
+      </div>
+      <div class="stop" data-date="2026-08-26" data-start="08:15" data-end="08:30">
+        <div class="stop-top">
+          <div class="stop-main">
+            <div class="stop-time">🚶 08:15</div>
+            <div class="stop-name">榴岡天満宮</div>
+            <div class="stop-note">仙台朝市後搭仙石線先在「榴ヶ岡駅」下車，步行3分鐘參拜，再搭下一班車繼續往松島，不繞路</div>
+            <span class="stop-tag">⛩️ 神社</span>
+          </div>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=榴岡天満宮" target="_blank" rel="noopener">📍</a>
+        </div>
+      </div>
+      <div class="stop" data-date="2026-08-26" data-start="08:30" data-end="09:30">
+        <div class="stop-top">
+          <div class="stop-main">
+            <div class="stop-time">☀️ 08:30</div>
+            <div class="stop-name">JR仙石線 → 松島海岸駅</div>
+            <div class="stop-note">榴ヶ岡駅搭下一班車繼續前往松島海岸駅，全程約1小時</div>
+          </div>
+        </div>
+      </div>
+      <div class="stop" data-date="2026-08-26" data-start="13:00" data-end="14:00">
+        <div class="stop-top">
+          <div class="stop-main">
+            <div class="stop-time">🍽️ 13:00</div>
+            <div class="stop-name">海の食べ放題 松島おさしみ水族館</div>
+            <div class="stop-note">松島海岸駅步行1分。牡蠣（蒸／生／天婦羅）、三陸厚切生魚片吃到飽，60分3,500円，未訂位，建議到場前先電話確認可否入場</div>
+            <span class="stop-tag">🦀 海鮮吃到飽</span>
+          </div>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=海の食べ放題 松島おさしみ水族館" target="_blank" rel="noopener">📍</a>
+        </div>
+      </div>
+      <div class="stop" data-date="2026-08-26" data-start="11:00" data-end="11:50">
+        <div class="stop-top">
+          <div class="stop-main">
+            <div class="stop-time">🌤️ 11:00</div>
+            <div class="stop-name">松島島巡り観光船（仁王丸コース）</div>
+            <div class="stop-note">日本三景之一，260多座小島，搭船賞灣約50分。原訂11:00整點發船，約11:50下船；如與其他行程銜接不上，可視情況改搭下午班次</div>
+            <span class="stop-tag">🌅 景點／絕景</span>
+          </div>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=松島" target="_blank" rel="noopener">📍</a>
+        </div>
+      </div>
+      <div class="stop" data-date="2026-08-26" data-start="14:15" data-end="15:00">
+        <div class="stop-top">
+          <div class="stop-main">
+            <div class="stop-time">🌤️ 14:15</div>
+            <div class="stop-name">瑞巌寺</div>
+            <div class="stop-note">松島海岸駅步行約6分，伊達政宗菩提寺，本堂・庫裡為國寶，拝觀約30-40分鐘</div>
+            <span class="stop-tag">🛕 寺廟</span>
+          </div>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=瑞巌寺" target="_blank" rel="noopener">📍</a>
+        </div>
+      </div>
+      <div class="stop" data-date="2026-08-26" data-start="18:30" data-end="19:30">
+        <div class="stop-top">
+          <div class="stop-main">
+            <div class="stop-time">🌆 18:30</div>
+            <div class="stop-name"><font color=red>未定</font></div>
+            <div class="stop-note">搭車回程後在站內或西口隨意找店，不用刻意安排</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="day-summary">💡 松島來回車程加起來約2小時，建議上午就出發，把握白天時間看灣景。天氣多雲、無雨，適合露天觀光船。</div>
+  </div>
+
+  <!-- DAY 3 -->
+  <div class="day-card" id="day3">
+    <div class="day-head">
+      <span class="day-num">🐬 Day 3</span>
+      <span class="day-date">2026/08/27（四）</span>
+      <span class="day-weather">🌧️ 多雲偶陣雨(50%) 30°/22°</span>
     </div>
     <div class="day-title">🐬 水族館 + 🛍️ Outlet 血拚日</div>
 <div class="timeline">
-      <div class="stop" data-date="2026-08-26" data-start="07:30" data-end="08:30">
+      <div class="stop" data-date="2026-08-27" data-start="07:30" data-end="08:30">
         <div class="stop-top">
           <div class="stop-main">
             <div class="stop-time">🍳 07:30</div>
@@ -499,7 +599,7 @@
           </div>
         </div>
       </div>
-      <div class="stop" data-date="2026-08-26" data-start="09:00" data-end="11:30">
+      <div class="stop" data-date="2026-08-27" data-start="09:00" data-end="11:30">
         <div class="stop-top">
           <div class="stop-main">
             <div class="stop-time">☀️ 09:00</div>
@@ -510,7 +610,7 @@
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=仙台うみの杜水族館" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
-      <div class="stop" data-date="2026-08-26" data-start="11:30" data-end="13:00">
+      <div class="stop" data-date="2026-08-27" data-start="11:30" data-end="13:00">
         <div class="stop-top">
           <div class="stop-main">
             <div class="stop-time">🍽️ 11:30</div>
@@ -521,7 +621,7 @@
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=くら寿司 仙台中野栄店" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
-      <div class="stop" data-date="2026-08-26" data-start="13:00" data-end="16:30">
+      <div class="stop" data-date="2026-08-27" data-start="13:00" data-end="16:30">
         <div class="stop-top">
           <div class="stop-main">
             <div class="stop-time">🌤️ 13:00</div>
@@ -532,7 +632,7 @@
           <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=三井OUTLET PARK 仙台港" target="_blank" rel="noopener">📍</a>
         </div>
       </div>
-      <div class="stop" data-date="2026-08-26" data-start="18:00" data-end="19:30">
+      <div class="stop" data-date="2026-08-27" data-start="18:00" data-end="19:30">
         <div class="stop-top">
           <div class="stop-main">
             <div class="stop-time">🌆 18:00</div>
@@ -544,92 +644,7 @@
         </div>
       </div>
     </div>
-    <div class="day-summary">💡 水族館+Outlet都在仙台港區域，兩個地點車程相近，一次跑完不用往返市區。早餐地點未定，抵達仙台港附近（中野栄駅周邊）再找。</div>
-  </div>
-
-  <!-- DAY 3 -->
-  <div class="day-card" id="day3">
-    <div class="day-head">
-      <span class="day-num">⛴️ Day 3</span>
-      <span class="day-date">2026/08/27（四）</span>
-    </div>
-    <div class="day-title">⛴️ 松島一日遊・日本三景</div>
-    <div class="timeline">
-      <div class="stop" data-date="2026-08-27" data-start="07:00" data-end="08:00">
-        <div class="stop-top">
-          <div class="stop-main">
-            <div class="stop-time">🍳 07:00</div>
-            <div class="stop-name">仙台朝市</div>
-            <div class="stop-note">西口步行5分，老字號市場，生鮮熟食皆有，感受在地生活氣息</div>
-            <span class="stop-tag">🐟 市場</span>
-          </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=仙台朝市" target="_blank" rel="noopener">📍</a>
-        </div>
-      </div>
-      <div class="stop" data-date="2026-08-27" data-start="08:15" data-end="08:30">
-        <div class="stop-top">
-          <div class="stop-main">
-            <div class="stop-time">🚶 08:15</div>
-            <div class="stop-name">榴岡天満宮</div>
-            <div class="stop-note">仙台朝市後搭仙石線先在「榴ヶ岡駅」下車，步行3分鐘參拜，再搭下一班車繼續往松島，不繞路</div>
-            <span class="stop-tag">⛩️ 神社</span>
-          </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=榴岡天満宮" target="_blank" rel="noopener">📍</a>
-        </div>
-      </div>
-      <div class="stop" data-date="2026-08-27" data-start="08:30" data-end="09:30">
-        <div class="stop-top">
-          <div class="stop-main">
-            <div class="stop-time">☀️ 08:30</div>
-            <div class="stop-name">JR仙石線 → 松島海岸駅</div>
-            <div class="stop-note">榴ヶ岡駅搭下一班車繼續前往松島海岸駅，全程約1小時</div>
-          </div>
-        </div>
-      </div>
-      <div class="stop" data-date="2026-08-27" data-start="13:00" data-end="14:00">
-        <div class="stop-top">
-          <div class="stop-main">
-            <div class="stop-time">🍽️ 13:00</div>
-            <div class="stop-name">海の食べ放題 松島おさしみ水族館</div>
-            <div class="stop-note">松島海岸駅步行1分。牡蠣（蒸／生／天婦羅）、三陸厚切生魚片吃到飽，60分3,500円，4人已訂位</div>
-            <span class="stop-tag">🦀 海鮮吃到飽</span>
-          </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=海の食べ放題 松島おさしみ水族館" target="_blank" rel="noopener">📍</a>
-        </div>
-      </div>
-      <div class="stop" data-date="2026-08-27" data-start="11:00" data-end="11:50">
-        <div class="stop-top">
-          <div class="stop-main">
-            <div class="stop-time">🌤️ 11:00</div>
-            <div class="stop-name">松島島巡り観光船（仁王丸コース）</div>
-            <div class="stop-note">日本三景之一，260多座小島，搭船賞灣約50分。原訂11:00整點發船，約11:50下船；如與其他行程銜接不上，可視情況改搭下午班次</div>
-            <span class="stop-tag">🌅 景點／絕景</span>
-          </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=松島" target="_blank" rel="noopener">📍</a>
-        </div>
-      </div>
-      <div class="stop" data-date="2026-08-27" data-start="14:15" data-end="15:00">
-        <div class="stop-top">
-          <div class="stop-main">
-            <div class="stop-time">🌤️ 14:15</div>
-            <div class="stop-name">瑞巌寺</div>
-            <div class="stop-note">松島海岸駅步行約6分，伊達政宗菩提寺，本堂・庫裡為國寶，拝觀約30-40分鐘</div>
-            <span class="stop-tag">🛕 寺廟</span>
-          </div>
-          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=瑞巌寺" target="_blank" rel="noopener">📍</a>
-        </div>
-      </div>
-      <div class="stop" data-date="2026-08-27" data-start="18:30" data-end="19:30">
-        <div class="stop-top">
-          <div class="stop-main">
-            <div class="stop-time">🌆 18:30</div>
-            <div class="stop-name"><font color=red>未定</font></div>
-            <div class="stop-note">搭車回程後在站內或西口隨意找店，不用刻意安排</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="day-summary">💡 松島來回車程加起來約2小時，建議上午就出發，把握白天時間看灣景。</div>
+    <div class="day-summary">💡 水族館+Outlet都在仙台港區域，兩個地點車程相近，一次跑完不用往返市區，且都在室內，剛好對上偶陣雨的預報。早餐地點未定，抵達仙台港附近（中野栄駅周邊）再找。</div>
   </div>
 
   <!-- DAY 4 -->
@@ -637,6 +652,7 @@
     <div class="day-head">
       <span class="day-num">🐬 Day 4</span>
       <span class="day-date">2026/08/28（五）</span>
+      <span class="day-weather">☁️ 多雲 31°/21°</span>
     </div>
     <div class="day-title">🎮 西口動漫購物日 全開火力</div>
 <div class="timeline">
@@ -726,6 +742,7 @@
     <div class="day-head">
       <span class="day-num">🐍 Day 5</span>
       <span class="day-date">2026/08/29（六）</span>
+      <span class="day-weather">☁️ 多雲 28°/20°</span>
     </div>
     <div class="day-title">🐍 金蛇水神社 + 🏮 一番町逛街</div>
     <div class="timeline">
@@ -824,6 +841,7 @@
     <div class="day-head">
       <span class="day-num">🏯 Day 6</span>
       <span class="day-date">2026/08/30（日）</span>
+      <span class="day-weather">☁️ 多雲 27°/21°</span>
     </div>
     <div class="day-title">🏯 仙台城跡 + 退房回程</div>
     <div class="timeline">
