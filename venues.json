@@ -1,5 +1,27 @@
 [
   {
+  "name": "S-PAL Sendai",
+  "jp": "エスパル仙台",
+  "type": "shop",
+  "cat": "購物商場",
+  "img": "",
+  "gRating": null,
+  "gReviews": null,
+  "tRating": null,
+  "tReviews": null,
+  "lat": 38.2604,
+  "lng": 140.8820,
+  "price": "依店舖而異",
+  "hours": "本館10:00-21:00／B1美食街約8:00-22:00（各店略異）",
+  "addr": "宮城県仙台市青葉区中央1-1-1 エスパル仙台（本館・東館）",
+  "mapAddr": "宮城県仙台市青葉区中央1-1-1",
+  "access": "JR仙台駅直結，步行1分",
+  "rec": [],
+  "notes": "商場非單店，無統一食べログ/Google評分；如需個別店舖評分請另外指定店名",
+  "wasFilled": false
+}
+,
+  {
   "name": "ankoya 駅前店",
   "jp": "アンコヤ 駅前店",
   "type": "shop",
