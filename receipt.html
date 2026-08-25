@@ -546,6 +546,9 @@ const prompt = `你是日本收據專業解析員。仔細觀察圖片中的收�
             if (!res.ok || d.error) throw new Error(JSON.stringify(d.error) || `HTTP ${res.status}`);
             const block = d.content && d.content[0];
             if (!block || typeof block.text !== 'string') {
+                if (d.stop_reason === 'refusal') {
+                    throw new Error('Claude 因安全機制拒絕解析這張圖（常見於收據上有卡號、IC卡餘額等看起來像支付卡資訊的內容）。試試拍照時裁掉下半部卡號/IC卡資訊區塊，只留商品明細');
+                }
                 throw new Error('Claude 未回傳有效文字內容，請重試');
             }
             rawText = block.text;
