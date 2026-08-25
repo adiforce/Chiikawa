@@ -517,7 +517,12 @@ const prompt = `你是日本收據專業解析員。仔細觀察圖片中的收�
             });
             const d = await res.json();
             if (!res.ok || d.error) throw new Error(d.error?.message || `HTTP ${res.status}`);
-            rawText = d.candidates[0].content.parts[0].text;
+            const cand = d.candidates && d.candidates[0];
+            const part = cand && cand.content && cand.content.parts && cand.content.parts[0];
+            if (!part || typeof part.text !== 'string') {
+                throw new Error('Gemini 未回傳有效內容' + (cand?.finishReason ? `（原因：${cand.finishReason}，可能觸發安全過濾或圖片不清楚）` : '，請重試或換一張圖片'));
+            }
+            rawText = part.text;
         } else {
             const res = await fetch('https://api.anthropic.com/v1/messages', {
                 method: 'POST',
@@ -539,7 +544,11 @@ const prompt = `你是日本收據專業解析員。仔細觀察圖片中的收�
             });
             const d = await res.json();
             if (!res.ok || d.error) throw new Error(JSON.stringify(d.error) || `HTTP ${res.status}`);
-            rawText = d.content[0].text;
+            const block = d.content && d.content[0];
+            if (!block || typeof block.text !== 'string') {
+                throw new Error('Claude 未回傳有效文字內容，請重試');
+            }
+            rawText = block.text;
         }
 
         const jsonMatch = rawText.match(/\[[\s\S]*\]/);
