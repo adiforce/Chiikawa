@@ -735,8 +735,13 @@ function renderChips() {
   }
 }
 // ── 送出 ──
+let isSubmitting = false;
+function makeRequestId() {
+  return 'r' + Date.now() + '_' + Math.random().toString(36).slice(2, 10);
+}
 async function submitRecord() {
   if (!unlocked) return showToast('🔒 請先輸入密碼解鎖');
+  if (isSubmitting) return; // 防止網路重試/連點造成重複送出
   const month = document.getElementById('inputMonth').value;
   const day = document.getElementById('inputDay').value;
   const name = document.getElementById('inputName').value.trim();
@@ -750,8 +755,10 @@ async function submitRecord() {
   if (!selectedCat) return showToast('請選擇類別');
   if (!selectedPay) return showToast('請選擇付款工具');
   const btn = document.getElementById('submitBtn');
+  isSubmitting = true;
   btn.disabled = true;
   btn.textContent = '送出中…';
+  const requestId = makeRequestId();
   const params = new URLSearchParams({
     action: 'write',
     date: `${month}/${day}`,
@@ -761,9 +768,16 @@ async function submitRecord() {
     payment: selectedPay,
     kid: kid,
     en: en,
+    requestId: requestId,
   });
   try {
-    await fetch(`${GAS_URL}?${params}`);
+    // 網路不穩時避免無限卡住：15 秒逾時就視為失敗，讓使用者可重試
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000);
+    const res = await fetch(`${GAS_URL}?${params}`, { signal: controller.signal });
+    clearTimeout(timeoutId);
+    const json = await res.json().catch(() => null);
+    if (json && json.success === false) throw new Error(json.error || '送出失敗');
     // 清空
     document.getElementById('inputName').value = '';
     document.getElementById('inputJpy').value = '';
@@ -774,8 +788,9 @@ async function submitRecord() {
     showToast('✓ 記帳成功！');
     switchTab('list');
   } catch (e) {
-    showToast('❌ 送出失敗，請重試');
+    showToast('❌ 送出失敗（可能是網路問題），請確認紀錄頁是否已有這筆，避免重複送出');
   }
+  isSubmitting = false;
   btn.disabled = !unlocked;
   btn.textContent = '記帳 ✓';
 }
